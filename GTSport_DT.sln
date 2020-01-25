@@ -5,9 +5,14 @@ VisualStudioVersion = 16.0.29709.97
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTSport_DT", "GTSport_DT\GTSport_DT.csproj", "{1F014F32-A299-4A96-B8A0-1A1DCA717F0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GTSport_DT_Testing", "GTSport_DT_Testing\GTSport_DT_Testing.csproj", "{C18D2926-5D8D-443F-9C4F-9933C3B22603}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GTSport_DT_Testing", "GTSport_DT_Testing\GTSport_DT_Testing.csproj", "{C18D2926-5D8D-443F-9C4F-9933C3B22603}"
 	ProjectSection(ProjectDependencies) = postProject
 		{1F014F32-A299-4A96-B8A0-1A1DCA717F0E} = {1F014F32-A299-4A96-B8A0-1A1DCA717F0E}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A39697C3-791C-48CA-BD42-444CD332C904}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
 Global

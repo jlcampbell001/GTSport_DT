@@ -22,7 +22,7 @@ namespace GTSport_DT.General.KeySequence
             keySequenceRepository = new KeySequenceRepository(npgsqlConnection);
         }
 
-        public String getNextKey(string tableName, String keyPrefix)
+        public String GetNextKey(string tableName, String keyPrefix)
         {
             int keyValue = GetNextKeyValue(tableName);
 

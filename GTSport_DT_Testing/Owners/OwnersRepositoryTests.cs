@@ -10,7 +10,7 @@ using static GTSport_DT_Testing.Owners.OwnersForTesting;
 namespace GTSport_DT_Testing.Owners
 {
     [TestClass]
-    public class OwnerRepositoryTests : TestBase
+    public class OwnersRepositoryTests : TestBase
     {
 
         private static OwnersRepository ownersRepository;

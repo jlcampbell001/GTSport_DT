@@ -57,6 +57,8 @@ namespace GTSport_DT.Owners
 
             dataReader.Close();
 
+            cmd.Dispose();
+
             return owner;
         }
 
@@ -78,6 +80,7 @@ namespace GTSport_DT.Owners
 
             dataReader.Close();
 
+            cmd.Dispose();
             return owner;
         }
 
@@ -101,29 +104,9 @@ namespace GTSport_DT.Owners
 
             dataReader.Close();
 
+            cmd.Dispose();
+
             return owners;
         }
-
-        public string GetMaxKey()
-        {
-            string maxKey = "";
-
-            var cmd = new NpgsqlCommand();
-
-            cmd.Connection = npgsqlConnection;
-            cmd.CommandText = "SELECT max(ownkey) as maxkey FROM owners";
-
-            NpgsqlDataReader dataReader = cmd.ExecuteReader();
-
-            if (dataReader.Read())
-            {
-                maxKey = dataReader.GetString(0);
-            }
-
-            dataReader.Close();
-
-            return maxKey;
-        }
-
     }
 }

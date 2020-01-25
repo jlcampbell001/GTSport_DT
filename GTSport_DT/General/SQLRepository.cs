@@ -12,7 +12,7 @@ namespace GTSport_DT.General
     {
         protected NpgsqlConnection npgsqlConnection;
         
-        protected string tableName = "";
+        public string tableName = "";
         protected string idField = "";
         protected string primaryKeyObject = "PrimaryKey";
         protected string updateCommand = "";
@@ -62,6 +62,8 @@ namespace GTSport_DT.General
             cmd.Prepare();
 
             cmd.ExecuteNonQuery();
+
+            cmd.Dispose();
         }
 
         public virtual T GetById(string id)
@@ -84,6 +86,7 @@ namespace GTSport_DT.General
             }
 
             dataReader.Close();
+            cmd.Dispose();
 
             return dataObject;
         }
@@ -107,8 +110,31 @@ namespace GTSport_DT.General
             }
 
             dataReader.Close();
+            cmd.Dispose();
 
             return records;
+        }
+
+        public virtual string GetMaxKey()
+        {
+            string maxKey = "";
+
+            var cmd = new NpgsqlCommand();
+
+            cmd.Connection = npgsqlConnection;
+            cmd.CommandText = "SELECT max(" + idField + ") as maxkey FROM " + tableName;
+
+            NpgsqlDataReader dataReader = cmd.ExecuteReader();
+
+            if (dataReader.Read())
+            {
+                maxKey = dataReader.GetString(0);
+            }
+
+            dataReader.Close();
+            cmd.Dispose();
+
+            return maxKey;
         }
     }
 }

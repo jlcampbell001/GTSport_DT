@@ -49,7 +49,7 @@ namespace GTSport_DT_Testing
         [TestMethod]
         public void A010_GetNextKeyWithNewTable()
         {
-            string newKey = keySequenceService.getNextKey(testingTableName, keyPrefix);
+            string newKey = keySequenceService.GetNextKey(testingTableName, keyPrefix);
 
             Assert.AreEqual(expectedNewValue, newKey);
         }
@@ -57,7 +57,7 @@ namespace GTSport_DT_Testing
         [TestMethod]
         public void A020_GetNextKeyWithExistingTable()
         {
-            string newKey = keySequenceService.getNextKey(testingTableName, keyPrefix);
+            string newKey = keySequenceService.GetNextKey(testingTableName, keyPrefix);
 
             Assert.AreEqual(expectedExistingValue, newKey);
         }
@@ -67,7 +67,7 @@ namespace GTSport_DT_Testing
         {
             keySequenceService.ResetKeyValue(testingTableName, newKeyValue);
 
-            string keyValue = keySequenceService.getNextKey(testingTableName, keyPrefix);
+            string keyValue = keySequenceService.GetNextKey(testingTableName, keyPrefix);
 
             Assert.AreEqual(expectedExistingValueAfterReset, keyValue);
         }
