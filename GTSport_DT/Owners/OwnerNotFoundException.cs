@@ -7,13 +7,18 @@ using System.Threading.Tasks;
 
 namespace GTSport_DT.Owners
 {
+    // --------------------------------------------------------------------------------
+    /// <summary>
+    /// The owner not found exception.  When deleting an owner the owner must exists first.
+    /// </summary>
+    // --------------------------------------------------------------------------------
     [Serializable]
     public class OwnerNotFoundException : Exception
     {
-        public static readonly string OwnerKeyNotFoundMsg = "Could not find owner by key.";
-        public static readonly string OwnerNameNotFoundMsg = "Could not find owner by name.";
+        public const string OwnerKeyNotFoundMsg = "Could not find owner by key.";
+        public const string OwnerNameNotFoundMsg = "Could not find owner by name.";
 
-        public string SearchParameter { get; }
+        public string SearchParmater{ get; set; }
 
         public OwnerNotFoundException()
         {
@@ -27,15 +32,14 @@ namespace GTSport_DT.Owners
         {
         }
 
-        public OwnerNotFoundException(string message, string searchParameter) : this(message)
-        {
-            SearchParameter = searchParameter;
-        }
-
         protected OwnerNotFoundException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }
 
+        public OwnerNotFoundException(string message, string searchParameter) : this(message)
+        {
+            SearchParmater = searchParameter;
+        }
 
     }
 }

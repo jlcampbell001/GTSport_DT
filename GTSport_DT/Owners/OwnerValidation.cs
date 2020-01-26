@@ -12,6 +12,11 @@ using System.Threading.Tasks;
 namespace GTSport_DT.Owners
 {
 
+    // --------------------------------------------------------------------------------
+    /// <summary>
+    /// Validations to save or delete an owner entity.
+    /// </summary>
+    // --------------------------------------------------------------------------------
     class OwnerValidation : Validation<Owner>
     {
         private OwnersRepository ownersRepository;
@@ -21,6 +26,13 @@ namespace GTSport_DT.Owners
             ownersRepository = new OwnersRepository(npgsqlConnection);
         }
 
+        // ********************************************************************************
+        /// <summary>
+        /// Validations to delete an owner for the passed primary key.
+        /// </summary>
+        /// <param name="primaryKey">The primary key related to the owner to delete.</param>
+        /// <exception cref="OwnerNotFoundException">The owner must exist before it can be deleted.</exception>
+        // ********************************************************************************
         public override void ValidateDelete(string primaryKey)
         {
             Owner owner = ownersRepository.GetById(primaryKey);
@@ -31,20 +43,28 @@ namespace GTSport_DT.Owners
             }
         }
 
-        public override void ValidateSave(Owner validateRecord)
+        // ********************************************************************************
+        /// <summary>
+        /// Validations to save the passed owner entity.
+        /// </summary>
+        /// <param name="validateEntity">The owner entity to validate.</param>
+        /// <exception cref="OwnerNameNotSetException">The owner name must be filled to save.</exception>
+        /// <exception cref="OwnerNameAlreadyExistsException">The owner name can not already exist when saving an owner for a different primary key.</exception>
+        // ********************************************************************************
+        public override void ValidateSave(Owner validateEntity)
         {
-            if (String.IsNullOrWhiteSpace(validateRecord.OwnerName))
+            if (String.IsNullOrWhiteSpace(validateEntity.OwnerName))
             {
                 throw new OwnerNameNotSetException(OwnerNameNotSetException.OwnerNameNoSetMsg);
             }
 
-            Owner existingOwner = ownersRepository.GetByName(validateRecord.OwnerName);
+            Owner existingOwner = ownersRepository.GetByName(validateEntity.OwnerName);
 
             if (existingOwner != null)
             {
-                if (String.IsNullOrWhiteSpace(validateRecord.PrimaryKey) 
-                    || !String.Equals(validateRecord.PrimaryKey, existingOwner.PrimaryKey)) {
-                    throw new OwnerNameAlreadyExistsException(OwnerNameAlreadyExistsException.OwnerNameAlreadyExistsMsg, validateRecord.OwnerName);
+                if (String.IsNullOrWhiteSpace(validateEntity.PrimaryKey) 
+                    || !String.Equals(validateEntity.PrimaryKey, existingOwner.PrimaryKey)) {
+                    throw new OwnerNameAlreadyExistsException(OwnerNameAlreadyExistsException.OwnerNameAlreadyExistsMsg, validateEntity.OwnerName);
                 }
             }
         }

@@ -28,12 +28,12 @@ namespace GTSport_DT.General.KeySequence
             cmd.Parameters.AddWithValue("keyvalue", saveRecord.LastKeyValue);
         }
 
-        protected override KeySequence RecordToObject(NpgsqlDataReader dataReader)
+        protected override KeySequence RecordToEntity(NpgsqlDataReader dataReader)
         {
             KeySequence keySequence = new KeySequence();
             keySequence.TableName = dataReader.GetString(0);
             keySequence.LastKeyValue = dataReader.GetInt32(1);
-
+            
             return keySequence;
         }
     }

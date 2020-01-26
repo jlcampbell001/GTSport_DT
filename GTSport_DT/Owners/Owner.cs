@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GTSport_DT.General;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,12 @@ using System.Threading.Tasks;
 
 namespace GTSport_DT.Owners
 {
-    class Owner
+    // --------------------------------------------------------------------------------
+    /// <summary>
+    /// The owner entity.
+    /// </summary>
+    // --------------------------------------------------------------------------------
+    class Owner : Entity
     {
         public Owner()
         {
@@ -19,7 +25,6 @@ namespace GTSport_DT.Owners
             this.DefaultOwner = defaultOwner;
         }
 
-        public string PrimaryKey { get; set; }
         public string OwnerName { get; set; }
         public Boolean DefaultOwner { get; set; }
     }

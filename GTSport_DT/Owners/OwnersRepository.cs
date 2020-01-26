@@ -10,6 +10,11 @@ using System.Threading.Tasks;
 [assembly: InternalsVisibleTo("GTSport_DT_Testing")]
 namespace GTSport_DT.Owners
 {
+    // --------------------------------------------------------------------------------
+    /// <summary>
+    /// The repository class for the owner table.
+    /// </summary>
+    // --------------------------------------------------------------------------------
     class OwnersRepository : SQLRespository<Owner>
     {
         public OwnersRepository(NpgsqlConnection npgsqlConnection) : base(npgsqlConnection)
@@ -19,7 +24,8 @@ namespace GTSport_DT.Owners
             updateCommand = "UPDATE owners SET ownname = @name, owndefault = @default WHERE ownkey = @pk";
             insertCommand = "INSERT INTO owners(ownkey, ownname, owndefault) VALUES (@pk, @name, @default)";
         }
-        protected override Owner RecordToObject(NpgsqlDataReader dataReader)
+
+        protected override Owner RecordToEntity(NpgsqlDataReader dataReader)
         {
             Owner owner = new Owner();
             owner.PrimaryKey = dataReader.GetString(0);
@@ -36,6 +42,13 @@ namespace GTSport_DT.Owners
             cmd.Parameters.AddWithValue("default", saveRecord.DefaultOwner);
         }
 
+        // ********************************************************************************
+        /// <summary>
+        /// Gets an owner entity using a name.
+        /// </summary>
+        /// <param name="name">The name of a owner to look for.</param>
+        /// <returns>An owner entity if found or null if not found.</returns>
+        // ********************************************************************************
         public Owner GetByName(string name)
         {
             Owner owner = null;
@@ -52,7 +65,7 @@ namespace GTSport_DT.Owners
 
             if (dataReader.Read())
             {
-                owner = RecordToObject(dataReader);
+                owner = RecordToEntity(dataReader);
             }
 
             dataReader.Close();
@@ -62,6 +75,12 @@ namespace GTSport_DT.Owners
             return owner;
         }
 
+        // ********************************************************************************
+        /// <summary>
+        /// Gets the first owner it finds that is set to be the default.
+        /// </summary>
+        /// <returns>The default owner found or null if one is not found.</returns>
+        // ********************************************************************************
         public Owner GetDefaultOwner()
         {
             Owner owner = null;
@@ -75,7 +94,7 @@ namespace GTSport_DT.Owners
 
             if (dataReader.Read())
             {
-                owner = RecordToObject(dataReader);
+                owner = RecordToEntity(dataReader);
             }
 
             dataReader.Close();
@@ -84,6 +103,12 @@ namespace GTSport_DT.Owners
             return owner;
         }
 
+        // ********************************************************************************
+        /// <summary>
+        /// Gets a list of all the owners set to be the default owner.
+        /// </summary>
+        /// <returns>A list of owner entities that are set to default.</returns>
+        // ********************************************************************************
         public List<Owner> GetAllDefaultOwners()
         {
             List<Owner> owners = new List<Owner>();
@@ -97,7 +122,7 @@ namespace GTSport_DT.Owners
 
             while (dataReader.Read())
             {
-                var owner = RecordToObject(dataReader);
+                var owner = RecordToEntity(dataReader);
 
                 owners.Add(owner);
             }

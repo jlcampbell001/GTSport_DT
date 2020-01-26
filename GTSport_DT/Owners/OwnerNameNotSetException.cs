@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace GTSport_DT.Owners
 {
+    // --------------------------------------------------------------------------------
+    /// <summary>
+    /// The owner name not set exception.  The owner name must be filled before a record can be saved.
+    /// </summary>
+    // --------------------------------------------------------------------------------
     [Serializable]
     public class OwnerNameNotSetException : Exception
     {

@@ -1,4 +1,5 @@
-﻿using GTSport_DT.General.KeySequence;
+﻿using GTSport_DT.General;
+using GTSport_DT.General.KeySequence;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -8,45 +9,34 @@ using System.Text;
 using System.Threading.Tasks;
 
 [assembly: InternalsVisibleTo("GTSport_DT_Testing")]
-namespace GTSport_DT.Owners
+namespace GTSport_DT.Owners 
 {
-    class OwnersService
+    // --------------------------------------------------------------------------------
+    /// <summary>
+    /// The service for the owners table.
+    /// </summary>
+    // --------------------------------------------------------------------------------
+    class OwnersService : BackEndService<Owner, OwnersRepository, OwnerValidation, OwnerNotFoundException>
     {
         public const string DefaultOwnerName = "DEFAULT";
-
-        private const string PrimaryKeyPrefix = "OWN";
-
-        private NpgsqlConnection npgsqlConnection;
-
-        private KeySequenceService keySequenceService;
-
-        private OwnersRepository ownersRepository;
-
-        private OwnerValidation ownerValidation;
-
-        public OwnersService(NpgsqlConnection npgsqlConnection)
+        
+        public OwnersService(NpgsqlConnection npgsqlConnection) : base(npgsqlConnection)
         {
-            this.npgsqlConnection = npgsqlConnection ?? throw new ArgumentNullException(nameof(npgsqlConnection));
-            keySequenceService = new KeySequenceService(npgsqlConnection);
-            ownersRepository = new OwnersRepository(npgsqlConnection);
-            ownerValidation = new OwnerValidation(npgsqlConnection);
+            primaryKeyPrefix = "OWN";
+            keyNotFoundMessage = OwnerNotFoundException.OwnerKeyNotFoundMsg;
         }
 
-        public Owner GetOwnerByKey(string primaryKey)
+        // ********************************************************************************
+        /// <summary>
+        /// Gets an owner that has the name passed.
+        /// </summary>
+        /// <param name="name">The name to look for.</param>
+        /// <returns>The owner entity that was found.</returns>
+        /// <exception cref="OwnerNotFoundException">Thrown is the owner can not be found with the passed name.</exception>
+        // ********************************************************************************
+        public Owner GetByName(String name)
         {
-            Owner owner = ownersRepository.GetById(primaryKey);
-
-            if (owner == null)
-            {
-                throw new OwnerNotFoundException(OwnerNotFoundException.OwnerKeyNotFoundMsg, primaryKey);
-            }
-
-            return owner;
-        }
-
-        public Owner GetOwnerByName(String name)
-        {
-            Owner owner = ownersRepository.GetByName(name);
+            Owner owner = repository.GetByName(name);
 
             if (owner == null)
             {
@@ -56,20 +46,28 @@ namespace GTSport_DT.Owners
             return owner;
         }
 
+        // ********************************************************************************
+        /// <summary>
+        /// Gets the default owner.
+        /// <para>If there is no default owner set it will first check is there is a record with the default owner name and set that to the default owner.</para>
+        /// <para>Or it will create a new default owner record.</para>
+        /// </summary>
+        /// <returns>The default owner entity that was found or created.</returns>
+        // ********************************************************************************
         public Owner GetDefaultOwner()
         {
-            Owner defaultOwner = ownersRepository.GetDefaultOwner();
+            Owner defaultOwner = repository.GetDefaultOwner();
 
             if (defaultOwner == null)
             {
-                List<Owner> owners = ownersRepository.GetList();
+                List<Owner> owners = repository.GetList();
                 if (owners.Count == 1)
                 {
                     defaultOwner = owners[0];
                     defaultOwner.DefaultOwner = true;
                 } else
                 {
-                    defaultOwner = ownersRepository.GetByName(DefaultOwnerName);
+                    defaultOwner = repository.GetByName(DefaultOwnerName);
 
                     if (defaultOwner == null)
                     {
@@ -80,23 +78,31 @@ namespace GTSport_DT.Owners
                     defaultOwner.DefaultOwner = true;
                 }
 
-                SaveOwner(ref defaultOwner);
+                Save(ref defaultOwner);
             }
 
             return defaultOwner;
         }
 
-        public void SaveOwner(ref Owner owner)
+        // ********************************************************************************
+        /// <summary>
+        /// Saves an owner entity to the table.
+        /// <para>If the primary key was not filled it will be filled with the next key.</para>
+        /// <para>If the owner is set to be the default owner, it will make a call to clear any other owners set to be the default.</para>
+        /// </summary>
+        /// <param name="owner">The owner entity to save.</param>
+        // ********************************************************************************
+        public override void Save(ref Owner owner)
         {
             //validate owner
-            ownerValidation.ValidateSave(owner);
+            validation.ValidateSave(owner);
 
             if (String.IsNullOrWhiteSpace(owner.PrimaryKey))
             {
-                owner.PrimaryKey = keySequenceService.GetNextKey(ownersRepository.tableName, PrimaryKeyPrefix);
+                owner.PrimaryKey = keySequenceService.GetNextKey(repository.tableName, primaryKeyPrefix);
             }
 
-            ownersRepository.Save(owner);
+            repository.Save(owner);
 
             // make sure there is only one default
             if (owner.DefaultOwner)
@@ -104,32 +110,16 @@ namespace GTSport_DT.Owners
                 ClearOtherDefaultUsers(owner);
             }
         }
-
-        public void DeleteOwner(string primaryKey)
-        {
-            // validate owner
-            ownerValidation.ValidateDelete(primaryKey);
-
-            ownersRepository.Delete(primaryKey);
-        }
-
-        public void ResetKey()
-        {
-            string maxKey = ownersRepository.GetMaxKey();
-
-            int maxKeyValue = 0;
-
-            if (!String.IsNullOrWhiteSpace(maxKey))
-            {
-                maxKeyValue = int.Parse(maxKey.Substring(3));
-            }
-
-            keySequenceService.ResetKeyValue(ownersRepository.tableName, maxKeyValue);
-        }
-
+        
+        // ********************************************************************************
+        /// <summary>
+        /// Will clear any other owner that is set to the default owner that is not the passed owner.
+        /// </summary>
+        /// <param name="currentDefaultOwner">The current owner that is the default owner.</param>
+        // ********************************************************************************
         private void ClearOtherDefaultUsers(Owner currentDefaultOwner)
         {
-            List<Owner> owners = ownersRepository.GetAllDefaultOwners();
+            List<Owner> owners = repository.GetAllDefaultOwners();
 
             foreach(Owner owner in owners)
             {
@@ -137,7 +127,7 @@ namespace GTSport_DT.Owners
                 {
                     owner.DefaultOwner = false;
 
-                    ownersRepository.Save(owner);
+                    repository.Save(owner);
                 }
             }
         }

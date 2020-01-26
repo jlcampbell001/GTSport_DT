@@ -7,6 +7,11 @@ using System.Threading.Tasks;
 
 namespace GTSport_DT.Owners
 {
+    // --------------------------------------------------------------------------------
+    /// <summary>
+    /// The owner name already exists exception.  Each owner name is expected to be unique.
+    /// </summary>
+    // --------------------------------------------------------------------------------
     [Serializable]
     public class OwnerNameAlreadyExistsException : Exception
     {

@@ -7,7 +7,12 @@ using System.Threading.Tasks;
 
 namespace GTSport_DT.General
 {
-    abstract class Validation<T>
+    // --------------------------------------------------------------------------------
+    /// <summary>
+    /// The base class for validations.
+    /// </summary>
+    // --------------------------------------------------------------------------------
+    public abstract class Validation<T>
     {
         protected NpgsqlConnection npgsqlConnection;
 
@@ -16,7 +21,20 @@ namespace GTSport_DT.General
             this.npgsqlConnection = npgsqlConnection ?? throw new ArgumentNullException(nameof(npgsqlConnection));
         }
 
-        public abstract void ValidateSave(T validateRecord);
+        // ********************************************************************************
+        /// <summary>
+        /// Validations done to an entity before it is saved.
+        /// </summary>
+        /// <param name="validateEntity">The entity to validate.</param>
+        // ********************************************************************************
+        public abstract void ValidateSave(T validateEntity);
+
+        // ********************************************************************************
+        /// <summary>Validations done to an entity for the passed primary key before it is deleted.
+        /// 
+        /// </summary>
+        /// <param name="primaryKey">The primary key of the entity to delete.</param>
+        // ********************************************************************************
         public abstract void ValidateDelete(string primaryKey);
     }
 }

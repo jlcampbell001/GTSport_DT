@@ -2,3 +2,6 @@
 
 # CA1051: Do not declare visible instance fields
 dotnet_diagnostic.CA1051.severity = none
+
+# CA1707: Remove the underscores from assembly name GTSport_DT.
+dotnet_diagnostic.CA1707.severity = silent

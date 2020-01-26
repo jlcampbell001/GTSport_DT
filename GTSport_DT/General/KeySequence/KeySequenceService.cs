@@ -9,7 +9,12 @@ using System.Threading.Tasks;
 [assembly: InternalsVisibleTo("GTSport_DT_Testing")]
 namespace GTSport_DT.General.KeySequence
 {
-    class KeySequenceService
+    // --------------------------------------------------------------------------------
+    /// <summary>
+    /// This is the service for the key sequence table.
+    /// </summary>
+    // --------------------------------------------------------------------------------
+    public class KeySequenceService
     {
         private NpgsqlConnection npgsqlConnection;
 
@@ -22,6 +27,14 @@ namespace GTSport_DT.General.KeySequence
             keySequenceRepository = new KeySequenceRepository(npgsqlConnection);
         }
 
+        // ********************************************************************************
+        /// <summary>
+        /// Gets the next primary key for the passed table.
+        /// </summary>
+        /// <param name="tableName">The table to get the key for.</param>
+        /// <param name="keyPrefix">The prefix used to create the primary key passed back.</param>
+        /// <returns>A primary key for the table.</returns>
+        // ********************************************************************************
         public String GetNextKey(string tableName, String keyPrefix)
         {
             int keyValue = GetNextKeyValue(tableName);
@@ -31,6 +44,13 @@ namespace GTSport_DT.General.KeySequence
             return primaryKey;
         }
 
+        // ********************************************************************************
+        /// <summary>
+        /// Sets the key value in the key sequence table for the passed table.
+        /// </summary>
+        /// <param name="tableName">The table to set the key value for.</param>
+        /// <param name="keyValue">This is the key value to set to.</param>
+        // ********************************************************************************
         public void ResetKeyValue(string tableName, int keyValue)
         {
             KeySequence keySequence = GetCreateKeySequence(tableName);
@@ -40,6 +60,13 @@ namespace GTSport_DT.General.KeySequence
             keySequenceRepository.Save(keySequence);
         }
 
+        // ********************************************************************************
+        /// <summary>
+        /// Retrieves the next key value for the passed table.
+        /// </summary>
+        /// <param name="tableName">The table to get the key value for.</param>
+        /// <returns>The next key value.</returns>
+        // ********************************************************************************
         private int GetNextKeyValue(string tableName)
         {
             KeySequence keySequence = GetCreateKeySequence(tableName);
@@ -51,6 +78,13 @@ namespace GTSport_DT.General.KeySequence
             return keySequence.LastKeyValue;
         }
 
+        // ********************************************************************************
+        /// <summary>
+        /// Creates a new key sequence entity for the passed table name.
+        /// </summary>
+        /// <param name="tableName">The table to create a new entity for.</param>
+        /// <returns>The created key sequence entity.</returns>
+        // ********************************************************************************
         private KeySequence GetCreateKeySequence(string tableName)
         {
             KeySequence keySequence = keySequenceRepository.GetById(tableName);

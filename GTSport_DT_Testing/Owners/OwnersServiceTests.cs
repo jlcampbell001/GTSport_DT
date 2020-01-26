@@ -59,7 +59,7 @@ namespace GTSport_DT_Testing.Owners
         {
             Owner owner = new Owner("", Owner4Name, Owner4Default);
 
-            ownersService.SaveOwner(ref owner);
+            ownersService.Save(ref owner);
 
             Owner4PrimaryKey = owner.PrimaryKey;
         }
@@ -69,13 +69,13 @@ namespace GTSport_DT_Testing.Owners
         {
             Owner owner = new Owner(Owner4PrimaryKey, Owner4NewName, Owner4Default);
 
-            ownersService.SaveOwner(ref owner);
+            ownersService.Save(ref owner);
         }
 
         [TestMethod]
         public void A030_DeleteOwner()
         {
-            ownersService.DeleteOwner(Owner4PrimaryKey);
+            ownersService.Delete(Owner4PrimaryKey);
         }
 
         [TestMethod]
@@ -85,7 +85,7 @@ namespace GTSport_DT_Testing.Owners
 
             Owner owner = new Owner("", Owner4Name, Owner4Default);
 
-            ownersService.SaveOwner(ref owner);
+            ownersService.Save(ref owner);
 
             Owner4PrimaryKey = owner.PrimaryKey;
 
@@ -95,7 +95,7 @@ namespace GTSport_DT_Testing.Owners
         [TestMethod]
         public void A050_GetOwnerByKey()
         {
-            Owner owner = ownersService.GetOwnerByKey(owner3.PrimaryKey);
+            Owner owner = ownersService.GetByKey(owner3.PrimaryKey);
 
             Assert.AreEqual(owner3.OwnerName, owner.OwnerName);
         }
@@ -106,7 +106,7 @@ namespace GTSport_DT_Testing.Owners
         {
             try
             {
-                Owner owner = ownersService.GetOwnerByKey(BadKey);
+                Owner owner = ownersService.GetByKey(BadKey);
             }
             catch (OwnerNotFoundException onfe)
             {
@@ -118,7 +118,7 @@ namespace GTSport_DT_Testing.Owners
         [TestMethod]
         public void A070_GetOwnerByName()
         {
-            Owner owner = ownersService.GetOwnerByName(owner2.OwnerName);
+            Owner owner = ownersService.GetByName(owner2.OwnerName);
 
             Assert.AreEqual(owner2.PrimaryKey, owner.PrimaryKey);
         }
@@ -129,7 +129,7 @@ namespace GTSport_DT_Testing.Owners
         {
             try
             {
-                Owner owner = ownersService.GetOwnerByName(BadName);
+                Owner owner = ownersService.GetByName(BadName);
             }
             catch (OwnerNotFoundException onfe)
             {
@@ -157,7 +157,7 @@ namespace GTSport_DT_Testing.Owners
             defaultOwner.OwnerName = OwnersService.DefaultOwnerName;
             defaultOwner.DefaultOwner = false;
 
-            ownersService.SaveOwner(ref defaultOwner);
+            ownersService.Save(ref defaultOwner);
 
             Owner owner = ownersService.GetDefaultOwner();
 
@@ -190,7 +190,7 @@ namespace GTSport_DT_Testing.Owners
 
             Owner ownerNo2 = new Owner(owner2.PrimaryKey, owner2.OwnerName, true);
 
-            ownersService.SaveOwner(ref ownerNo2);
+            ownersService.Save(ref ownerNo2);
 
             Owner defaultOwner = ownersService.GetDefaultOwner();
 
