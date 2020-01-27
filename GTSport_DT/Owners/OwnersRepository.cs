@@ -15,12 +15,13 @@ namespace GTSport_DT.Owners
     /// The repository class for the owner table.
     /// </summary>
     // --------------------------------------------------------------------------------
-    class OwnersRepository : SQLRespository<Owner>
+    public class OwnersRepository : SQLRespository<Owner>
     {
         public OwnersRepository(NpgsqlConnection npgsqlConnection) : base(npgsqlConnection)
         {
-            tableName = "owners";
+            tableName = "OWNERS";
             idField = "ownkey";
+            getListOrderByField = "ownname";
             updateCommand = "UPDATE owners SET ownname = @name, owndefault = @default WHERE ownkey = @pk";
             insertCommand = "INSERT INTO owners(ownkey, ownname, owndefault) VALUES (@pk, @name, @default)";
         }

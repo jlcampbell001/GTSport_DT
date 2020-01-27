@@ -16,7 +16,7 @@ namespace GTSport_DT.Owners
     /// The service for the owners table.
     /// </summary>
     // --------------------------------------------------------------------------------
-    class OwnersService : BackEndService<Owner, OwnersRepository, OwnerValidation, OwnerNotFoundException>
+    public class OwnersService : BackEndService<Owner, OwnersRepository, OwnerValidation, OwnerNotFoundException>
     {
         public const string DefaultOwnerName = "DEFAULT";
         

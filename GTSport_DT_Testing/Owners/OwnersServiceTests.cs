@@ -24,6 +24,8 @@ namespace GTSport_DT_Testing.Owners
 
         private const string Owner4PrimaryKeyExpectedAfterReset = "OWN900000004";
 
+        private const int NumberOfListRecordsExpected = 4;
+
         private static string Owner4PrimaryKey = "";
 
         [ClassInitialize]
@@ -113,6 +115,24 @@ namespace GTSport_DT_Testing.Owners
                 Assert.AreEqual(OwnerNotFoundException.OwnerKeyNotFoundMsg, onfe.Message);
                 throw onfe;
             }
+        }
+
+        [TestMethod]
+        public void A065_GetOwnerList()
+        {
+            List<Owner> owners = ownersService.GetList();
+
+            Assert.AreEqual(NumberOfListRecordsExpected, owners.Count);
+            Assert.AreEqual(owner1.PrimaryKey, owners[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A067_GetOwnerListOrdered()
+        {
+            List<Owner> owners = ownersService.GetList(true);
+
+            Assert.AreEqual(NumberOfListRecordsExpected, owners.Count);
+            Assert.AreEqual(owner1.PrimaryKey, owners[0].PrimaryKey);
         }
 
         [TestMethod]

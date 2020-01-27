@@ -15,7 +15,7 @@ namespace GTSport_DT.General.KeySequence
     {
         public KeySequenceRepository(NpgsqlConnection npgsqlConnection) : base(npgsqlConnection)
         {
-            tableName = "keysequence";
+            tableName = "KEYSEQUENCE";
             idField = "tablename";
             primaryKeyObject = "TableName";
             updateCommand = "UPDATE keysequence SET lastkeyvalue = @keyvalue WHERE tablename = @name";

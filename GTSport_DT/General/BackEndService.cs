@@ -1,6 +1,7 @@
 ﻿using GTSport_DT.General.KeySequence;
 using Npgsql;
 using System;
+using System.Collections.Generic;
 
 namespace GTSport_DT.General
 {
@@ -56,6 +57,19 @@ namespace GTSport_DT.General
             }
 
             return entity;
+        }
+
+        // ********************************************************************************
+        /// <summary>
+        /// Retrieves the list of entities from the table.
+        /// </summary>
+        /// <returns>A list of entities.</returns>
+        // ********************************************************************************
+        public virtual List<T> GetList(Boolean orderedList = false)
+        {
+            List<T> entities = repository.GetList(orderedList);
+
+            return entities;
         }
 
         // ********************************************************************************

@@ -17,7 +17,7 @@ namespace GTSport_DT.Owners
     /// Validations to save or delete an owner entity.
     /// </summary>
     // --------------------------------------------------------------------------------
-    class OwnerValidation : Validation<Owner>
+    public class OwnerValidation : Validation<Owner>
     {
         private OwnersRepository ownersRepository;
 

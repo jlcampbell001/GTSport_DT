@@ -22,6 +22,7 @@ namespace GTSport_DT.General
         protected string primaryKeyObject = "PrimaryKey";
         protected string updateCommand = "";
         protected string insertCommand = "";
+        protected string getListOrderByField = "";
 
         protected SQLRespository(NpgsqlConnection npgsqlConnection)
         {
@@ -146,7 +147,7 @@ namespace GTSport_DT.General
         /// </summary>
         /// <returns>A list of entities from the table.</returns>
         // ********************************************************************************
-        public virtual List<T> GetList()
+        public virtual List<T> GetList(Boolean orderedList = false)
         {
             List<T> records = new List<T>();
 
@@ -154,6 +155,16 @@ namespace GTSport_DT.General
 
             cmd.Connection = npgsqlConnection;
             cmd.CommandText = "SELECT * FROM " + tableName;
+
+            if (orderedList)
+            {
+                if (String.IsNullOrWhiteSpace(getListOrderByField))
+                {
+                    getListOrderByField = idField;
+                }
+
+                cmd.CommandText = cmd.CommandText + " ORDER BY " + getListOrderByField;
+            }
 
             NpgsqlDataReader dataReader = cmd.ExecuteReader();
 

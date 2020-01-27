@@ -12,7 +12,7 @@ namespace GTSport_DT.Owners
     /// The owner entity.
     /// </summary>
     // --------------------------------------------------------------------------------
-    class Owner : Entity
+    public class Owner : Entity
     {
         public Owner()
         {
@@ -27,5 +27,11 @@ namespace GTSport_DT.Owners
 
         public string OwnerName { get; set; }
         public Boolean DefaultOwner { get; set; }
+
+        public override string ToString()
+        {
+            string line = "{PrimaryKey = '" + this.PrimaryKey + "', OwnerName = '" + this.OwnerName + "', DefaultOwner = " + this.DefaultOwner + "}";
+            return line;
+        }
     }
 }

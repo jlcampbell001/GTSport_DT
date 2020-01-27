@@ -98,6 +98,15 @@ namespace GTSport_DT_Testing.Owners
         }
 
         [TestMethod]
+        public void A055_GetListOrdered()
+        {
+            List<Owner> owners = ownersRepository.GetList(true);
+
+            Assert.AreEqual(numberOfOwners, owners.Count);
+            Assert.AreEqual(owner1.PrimaryKey, owners[0].PrimaryKey);
+        }
+
+        [TestMethod]
         public void A060_GetByName()
         {
             Owner foundOwner = ownersRepository.GetByName(owner3.OwnerName);
