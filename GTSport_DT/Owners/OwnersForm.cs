@@ -38,6 +38,11 @@ namespace GTSport_DT.Owners
         }
 
 
+        // ********************************************************************************
+        /// <summary>
+        /// Update the tree list.
+        /// </summary>
+        // ********************************************************************************
         private void UpdateOwnersList()
         {
             // make sure there is a default owner set.
@@ -90,6 +95,13 @@ namespace GTSport_DT.Owners
             ownersService.Save(ref owner);
         }
 
+        // ********************************************************************************
+        /// <summary>
+        /// Set up the working owner with the selected owner from the list.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        // ********************************************************************************
         private void trevOwners_AfterSelect(object sender, TreeViewEventArgs e)
         {
             workingOwner = (Owner)trevOwners.SelectedNode.Tag;
@@ -99,6 +111,11 @@ namespace GTSport_DT.Owners
             SetButtons();
         }
 
+        // ********************************************************************************
+        /// <summary>
+        /// Set the user entry fields with the data from the working owner object.
+        /// </summary>
+        // ********************************************************************************
         private void SetToWorkingOwner()
         {
             txtOwnerName.Text = workingOwner.OwnerName;
@@ -106,6 +123,11 @@ namespace GTSport_DT.Owners
             chkDefaultOwner.Checked = workingOwner.DefaultOwner;
         }
 
+        // ********************************************************************************
+        /// <summary>
+        /// Set the working owner object with data entered by the user.
+        /// </summary>
+        // ********************************************************************************
         private void UpdateWorkingOwner()
         {
             workingOwner.OwnerName = txtOwnerName.Text;
@@ -183,6 +205,11 @@ namespace GTSport_DT.Owners
             SetButtons();
         }
 
+        // ********************************************************************************
+        /// <summary>
+        /// Enabled / Disable the buttons.
+        /// </summary>
+        // ********************************************************************************
         private void SetButtons()
         {
             if (workingOwner.OwnerName != txtOwnerName.Text || workingOwner.DefaultOwner != chkDefaultOwner.Checked)
@@ -217,6 +244,15 @@ namespace GTSport_DT.Owners
             SetButtons();
         }
 
+        // ********************************************************************************
+        /// <summary>
+        /// Updates the current owner information on the main form if there are changes done to the owner or a new owner is picked.
+        /// <para>If the current owner was deleted the current owner will be set to the default owner.</para>
+        /// </summary>
+        /// <param name="owner">The owner that was updated.</param>
+        /// <param name="deleted">If the owner was deleted.</param>
+        /// <param name="force">Forces the current owner to be changed to the passed owner.</param>
+        // ********************************************************************************
         private void UpdateCurrentOwnerInParent(Owner owner, Boolean deleted = false, Boolean force = false)
         {
             GTSportForm workingParentForm = (GTSportForm)this.ParentForm;
@@ -240,6 +276,12 @@ namespace GTSport_DT.Owners
             UpdateCurrentOwnerInParent(workingOwner, force: true);
         }
 
+        // ********************************************************************************
+        /// <summary>
+        /// Sets the tree views selected owner to the owner with the passed primary key.
+        /// </summary>
+        /// <param name="primaryKey"></param>
+        // ********************************************************************************
         private void SetSelectedOwner(string primaryKey)
         {
             if (!String.IsNullOrWhiteSpace(primaryKey))
