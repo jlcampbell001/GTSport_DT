@@ -1,4 +1,5 @@
 ﻿using GTSport_DT.Owners;
+using GTSport_DT.Regions;
 using Npgsql;
 using System;
 using System.Windows.Forms;
@@ -41,6 +42,10 @@ namespace GTSport_DT
         {
             ShowOwnerForm();
         }
+        private void regionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowRegionForm();
+        }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -78,6 +83,35 @@ namespace GTSport_DT
             if (ownersForm != null)
             {
                 ownersForm.Show();
+                ownersForm.Activate();
+            }
+        }
+
+        private void ShowRegionForm()
+        {
+            Boolean createNewForm = true;
+
+            RegionsForm regionForm = null;
+
+            foreach (Form form in this.MdiChildren)
+            {
+                if (form.Name == "RegionsForm")
+                {
+                    regionForm = (RegionsForm)form;
+                    createNewForm = false;
+                }
+            }
+
+            if (createNewForm)
+            {
+                regionForm = new RegionsForm(con);
+                regionForm.MdiParent = this;
+            }
+
+            if (regionForm != null)
+            {
+                regionForm.Show();
+                regionForm.Activate();
             }
         }
 

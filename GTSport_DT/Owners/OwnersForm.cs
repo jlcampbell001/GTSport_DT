@@ -33,7 +33,7 @@ namespace GTSport_DT.Owners
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            UpdateOwnersList();
+            UpdateList();
             SetButtons();
         }
 
@@ -43,15 +43,15 @@ namespace GTSport_DT.Owners
         /// Update the tree list.
         /// </summary>
         // ********************************************************************************
-        private void UpdateOwnersList()
+        private void UpdateList()
         {
             // make sure there is a default owner set.
             ownersService.GetDefaultOwner();
 
             List<Owner> owners = ownersService.GetList(true);
 
-            trevOwners.BeginUpdate();
-            trevOwners.Nodes.Clear();
+            tvOwners.BeginUpdate();
+            tvOwners.Nodes.Clear();
 
             foreach (Owner owner in owners)
             {
@@ -62,14 +62,14 @@ namespace GTSport_DT.Owners
                 if (owner.DefaultOwner)
                 {
                     treeNode.ForeColor = Color.Blue;
-                    Font font = new Font(trevOwners.Font, FontStyle.Bold);
+                    Font font = new Font(tvOwners.Font, FontStyle.Bold);
                     treeNode.NodeFont = font;
                 }
 
-                trevOwners.Nodes.Add(treeNode);
+                tvOwners.Nodes.Add(treeNode);
             }
 
-            trevOwners.EndUpdate();
+            tvOwners.EndUpdate();
         }
 
         private void AddTestData()
@@ -102,9 +102,9 @@ namespace GTSport_DT.Owners
         /// <param name="sender"></param>
         /// <param name="e"></param>
         // ********************************************************************************
-        private void trevOwners_AfterSelect(object sender, TreeViewEventArgs e)
+        private void tvOwners_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            workingOwner = (Owner)trevOwners.SelectedNode.Tag;
+            workingOwner = (Owner)tvOwners.SelectedNode.Tag;
 
             SetToWorkingOwner();
 
@@ -142,7 +142,7 @@ namespace GTSport_DT.Owners
             {
                 ownersService.Save(ref workingOwner);
 
-                UpdateOwnersList();
+                UpdateList();
 
                 UpdateCurrentOwnerInParent(workingOwner);
 
@@ -167,11 +167,13 @@ namespace GTSport_DT.Owners
                     {
                         ownersService.Delete(workingOwner.PrimaryKey);
 
-                        UpdateOwnersList();
+                        UpdateList();
 
                         UpdateCurrentOwnerInParent(workingOwner, deleted: true);
 
-                        trevOwners.Focus();
+                        tvOwners.SelectedNode = tvOwners.Nodes[0];
+
+                        tvOwners.Focus();
                     }
                     catch (Exception ex)
                     {
@@ -216,12 +218,13 @@ namespace GTSport_DT.Owners
             {
                 btnSave.Enabled = true;
                 btnCancel.Enabled = true;
+                btnSetCurrentOwner.Enabled = false;
             }
             else
             {
                 btnSave.Enabled = false;
                 btnCancel.Enabled = false;
-
+                btnSetCurrentOwner.Enabled = true;
             }
 
             if (String.IsNullOrWhiteSpace(workingOwner.PrimaryKey))
@@ -286,12 +289,12 @@ namespace GTSport_DT.Owners
         {
             if (!String.IsNullOrWhiteSpace(primaryKey))
             {
-                for (int i = 0; i < trevOwners.Nodes.Count; i++)
+                for (int i = 0; i < tvOwners.Nodes.Count; i++)
                 {
-                    Owner owner = (Owner)trevOwners.Nodes[i].Tag;
+                    Owner owner = (Owner)tvOwners.Nodes[i].Tag;
                     if (owner.PrimaryKey == primaryKey)
                     {
-                        trevOwners.SelectedNode = trevOwners.Nodes[i];
+                        tvOwners.SelectedNode = tvOwners.Nodes[i];
                     }
                 }
             }

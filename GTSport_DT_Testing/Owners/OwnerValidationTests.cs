@@ -65,7 +65,7 @@ namespace GTSport_DT_Testing.Owners
                 ownerValidation.ValidateSave(owner);
             } catch (OwnerNameNotSetException onnse) 
             {
-                Assert.AreEqual(OwnerNameNotSetException.OwnerNameNoSetMsg, onnse.Message);
+                Assert.AreEqual(OwnerNameNotSetException.OwnerNameNotSetMsg, onnse.Message);
                 throw onnse;
             }
         }

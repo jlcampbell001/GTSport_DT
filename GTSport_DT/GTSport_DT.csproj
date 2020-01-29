@@ -128,6 +128,19 @@
     <Compile Include="Owners\OwnerValidation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Regions\Region.cs" />
+    <Compile Include="Regions\RegionDescriptionAlreadyExistsException.cs" />
+    <Compile Include="Regions\RegionDescriptionNotSetException.cs" />
+    <Compile Include="Regions\RegionNotFoundException.cs" />
+    <Compile Include="Regions\RegionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Regions\RegionsForm.Designer.cs">
+      <DependentUpon>RegionsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Regions\RegionsRepository.cs" />
+    <Compile Include="Regions\RegionsService.cs" />
+    <Compile Include="Regions\RegionValidation.cs" />
     <EmbeddedResource Include="GTSportForm.resx">
       <DependentUpon>GTSportForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -143,6 +156,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Regions\RegionsForm.resx">
+      <DependentUpon>RegionsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="..\.editorconfig">
       <Link>.editorconfig</Link>
     </None>

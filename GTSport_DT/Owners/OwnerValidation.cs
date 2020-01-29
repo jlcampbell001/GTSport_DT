@@ -55,7 +55,7 @@ namespace GTSport_DT.Owners
         {
             if (String.IsNullOrWhiteSpace(validateEntity.OwnerName))
             {
-                throw new OwnerNameNotSetException(OwnerNameNotSetException.OwnerNameNoSetMsg);
+                throw new OwnerNameNotSetException(OwnerNameNotSetException.OwnerNameNotSetMsg);
             }
 
             Owner existingOwner = ownersRepository.GetByName(validateEntity.OwnerName);

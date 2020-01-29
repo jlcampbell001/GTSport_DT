@@ -14,6 +14,9 @@ namespace GTSport_DT.Owners
     // --------------------------------------------------------------------------------
     public class Owner : Entity
     {
+        public string OwnerName { get; set; }
+        public Boolean DefaultOwner { get; set; }
+
         public Owner()
         {
         }
@@ -24,9 +27,6 @@ namespace GTSport_DT.Owners
             this.OwnerName = ownerName ?? throw new ArgumentNullException(nameof(ownerName));
             this.DefaultOwner = defaultOwner;
         }
-
-        public string OwnerName { get; set; }
-        public Boolean DefaultOwner { get; set; }
 
         public override string ToString()
         {

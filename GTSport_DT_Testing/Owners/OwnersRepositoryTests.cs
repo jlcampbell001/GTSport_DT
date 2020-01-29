@@ -15,12 +15,12 @@ namespace GTSport_DT_Testing.Owners
 
         private static OwnersRepository ownersRepository;
 
-        private static readonly string ownerNameChange = "CHANGED NAME";
-        private static readonly string badOwnerName = "XXX_";
-        private static readonly string maxOwnKey = owner3.PrimaryKey;
+        private const string ownerNameChange = "CHANGED NAME";
+        private const string badOwnerName = "XXX_";
+        private readonly string maxOwnKey = owner3.PrimaryKey;
 
-        private static readonly int numberOfOwners = 3;
-        private static readonly int numberOfDefaultOwners = 1;
+        private const int numberOfOwners = 3;
+        private const int numberOfDefaultOwners = 1;
 
         [ClassInitialize]
         public static void TestFixtureSetup(TestContext context)
@@ -57,7 +57,7 @@ namespace GTSport_DT_Testing.Owners
         public void A020_SaveUpdateTest()
         {
             Owner owner = owner1;
-
+            
             owner.OwnerName = ownerNameChange;
 
             ownersRepository.Save(owner);

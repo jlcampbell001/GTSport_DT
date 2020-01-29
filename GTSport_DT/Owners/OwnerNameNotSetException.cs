@@ -15,7 +15,7 @@ namespace GTSport_DT.Owners
     [Serializable]
     public class OwnerNameNotSetException : Exception
     {
-        public const string OwnerNameNoSetMsg = "The owner name was not set.";
+        public const string OwnerNameNotSetMsg = "The owner name was not set.";
 
         public OwnerNameNotSetException()
         {
