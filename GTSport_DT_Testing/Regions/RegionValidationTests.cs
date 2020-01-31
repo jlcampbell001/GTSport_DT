@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using static GTSport_DT_Testing.Regions.RegionsForTesting;
+using static GTSport_DT_Testing.Countries.CountriesForTesting;
+using GTSport_DT.Countries;
 
 namespace GTSport_DT_Testing.Regions
 {
@@ -14,6 +16,7 @@ namespace GTSport_DT_Testing.Regions
     {
         private static RegionValidation regionValidation;
         private static RegionsRepository regionsRepository;
+        private static CountriesRepository countriesRepository;
 
         private const string BadRegionKey = "X!!990000009";
 
@@ -25,20 +28,26 @@ namespace GTSport_DT_Testing.Regions
 
             regionValidation = new RegionValidation(con);
             regionsRepository = new RegionsRepository(con);
+            countriesRepository = new CountriesRepository(con);
 
-            regionsRepository.Save(region1);
-            regionsRepository.Save(region2);
-            regionsRepository.Save(region3);
+            regionsRepository.Save(Region1);
+            regionsRepository.Save(Region2);
+            regionsRepository.Save(Region3);
+
+            countriesRepository.Save(Country3);
         }
 
-        [ClassCleanup]
-        public static void TestFixtureTearDown()
+        [TestMethod]
+        public void ZZZZ_CleanUp()
         {
             if (con != null)
             {
-                regionsRepository.Delete(region1.PrimaryKey);
-                regionsRepository.Delete(region2.PrimaryKey);
-                regionsRepository.Delete(region3.PrimaryKey);
+                countriesRepository.Delete(Country3.PrimaryKey);
+
+                regionsRepository.Delete(Region1.PrimaryKey);
+                regionsRepository.Delete(Region2.PrimaryKey);
+                regionsRepository.Delete(Region3.PrimaryKey);
+
                 con.Close();
             }
         }
@@ -46,7 +55,7 @@ namespace GTSport_DT_Testing.Regions
         [TestMethod]
         public void A010_ValidateSave()
         {
-            regionValidation.ValidateSave(region1);
+            regionValidation.ValidateSave(Region1);
         }
 
         [TestMethod]
@@ -70,7 +79,7 @@ namespace GTSport_DT_Testing.Regions
         [ExpectedException(typeof(RegionDescriptionAlreadyExistsException))]
         public void A030_ValidateSaveDescriptionAlreadyExists()
         {
-            Region duplicateDescription = new Region("", region2.Description);
+            Region duplicateDescription = new Region("", Region2.Description);
 
             try
             {
@@ -86,21 +95,36 @@ namespace GTSport_DT_Testing.Regions
         [TestMethod]
         public void A040_ValidateDelete()
         {
-            regionValidation.ValidateDelete(region3.PrimaryKey);
+            regionValidation.ValidateDelete(Region3.PrimaryKey);
 
         }
 
         [TestMethod]
         [ExpectedException(typeof(RegionNotFoundException))]
-        public void A500_ValidateDeleteKeyNotFound()
+        public void A050_ValidateDeleteKeyNotFound()
         {
             try
             {
                 regionValidation.ValidateDelete(BadRegionKey);
-            } catch (RegionNotFoundException rnfe)
+            }
+            catch (RegionNotFoundException rnfe)
             {
                 Assert.AreEqual(RegionNotFoundException.RegionKeyNotFoundMsg, rnfe.Message);
                 throw rnfe;
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(RegionInUseException))]
+        public void A060_ValidateDeleteInUse()
+        {
+            try
+            {
+                regionValidation.ValidateDelete(Region1.PrimaryKey);
+            } catch (RegionInUseException riue)
+            {
+                Assert.AreEqual(RegionInUseException.RegionInUseCanNotBeDeletedCountryMsg, riue.Message);
+                throw riue;
             }
         }
     }

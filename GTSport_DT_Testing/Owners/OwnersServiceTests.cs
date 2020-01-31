@@ -37,19 +37,19 @@ namespace GTSport_DT_Testing.Owners
             ownersRepository = new OwnersRepository(con);
             ownersService = new OwnersService(con);
 
-            ownersRepository.Save(owner1);
-            ownersRepository.Save(owner2);
-            ownersRepository.Save(owner3);
+            ownersRepository.Save(Owner1);
+            ownersRepository.Save(Owner2);
+            ownersRepository.Save(Owner3);
         }
 
-        [ClassCleanup]
-        public static void TestFixtureTearDown()
+        [TestMethod]
+        public void ZZZZ_ClassCleanUp()
         {
             if (con != null)
             {
-                ownersRepository.Delete(owner1.PrimaryKey);
-                ownersRepository.Delete(owner2.PrimaryKey);
-                ownersRepository.Delete(owner3.PrimaryKey);
+                ownersRepository.Delete(Owner1.PrimaryKey);
+                ownersRepository.Delete(Owner2.PrimaryKey);
+                ownersRepository.Delete(Owner3.PrimaryKey);
                 ownersRepository.Delete(Owner4PrimaryKey);
 
                 con.Close();
@@ -97,9 +97,9 @@ namespace GTSport_DT_Testing.Owners
         [TestMethod]
         public void A050_GetOwnerByKey()
         {
-            Owner owner = ownersService.GetByKey(owner3.PrimaryKey);
+            Owner owner = ownersService.GetByKey(Owner3.PrimaryKey);
 
-            Assert.AreEqual(owner3.OwnerName, owner.OwnerName);
+            Assert.AreEqual(Owner3.OwnerName, owner.OwnerName);
         }
 
         [TestMethod]
@@ -123,7 +123,7 @@ namespace GTSport_DT_Testing.Owners
             List<Owner> owners = ownersService.GetList();
 
             Assert.AreEqual(NumberOfListRecordsExpected, owners.Count);
-            Assert.AreEqual(owner1.PrimaryKey, owners[0].PrimaryKey);
+            Assert.AreEqual(Owner1.PrimaryKey, owners[0].PrimaryKey);
         }
 
         [TestMethod]
@@ -132,15 +132,15 @@ namespace GTSport_DT_Testing.Owners
             List<Owner> owners = ownersService.GetList(true);
 
             Assert.AreEqual(NumberOfListRecordsExpected, owners.Count);
-            Assert.AreEqual(owner1.PrimaryKey, owners[0].PrimaryKey);
+            Assert.AreEqual(Owner1.PrimaryKey, owners[0].PrimaryKey);
         }
 
         [TestMethod]
         public void A070_GetOwnerByName()
         {
-            Owner owner = ownersService.GetByName(owner2.OwnerName);
+            Owner owner = ownersService.GetByName(Owner2.OwnerName);
 
-            Assert.AreEqual(owner2.PrimaryKey, owner.PrimaryKey);
+            Assert.AreEqual(Owner2.PrimaryKey, owner.PrimaryKey);
         }
 
         [TestMethod]
@@ -163,7 +163,7 @@ namespace GTSport_DT_Testing.Owners
         {
             Owner owner = ownersService.GetDefaultOwner();
 
-            Assert.AreEqual(owner2.PrimaryKey, owner.PrimaryKey);
+            Assert.AreEqual(Owner2.PrimaryKey, owner.PrimaryKey);
         }
 
         [TestMethod]
@@ -205,16 +205,16 @@ namespace GTSport_DT_Testing.Owners
         {
             ClearDefaultOwners();
 
-            Owner ownerNo3 = new Owner(owner3.PrimaryKey, owner3.OwnerName, true);
+            Owner ownerNo3 = new Owner(Owner3.PrimaryKey, Owner3.OwnerName, true);
             ownersRepository.Save(ownerNo3);
 
-            Owner ownerNo2 = new Owner(owner2.PrimaryKey, owner2.OwnerName, true);
+            Owner ownerNo2 = new Owner(Owner2.PrimaryKey, Owner2.OwnerName, true);
 
             ownersService.Save(ref ownerNo2);
 
             Owner defaultOwner = ownersService.GetDefaultOwner();
 
-            Assert.AreEqual(owner2.PrimaryKey, defaultOwner.PrimaryKey);
+            Assert.AreEqual(Owner2.PrimaryKey, defaultOwner.PrimaryKey);
         }
 
         private void DeleteDefaultOwner()

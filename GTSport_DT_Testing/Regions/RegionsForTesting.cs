@@ -16,8 +16,8 @@ namespace GTSport_DT_Testing.Regions
         private const string region3Key = "REG900000003";
         private const string region3Description = "AMERICA";
 
-        public static Region region1 = new Region(region1Key, region1Description);
-        public static Region region2 = new Region(region2Key, region2Description);
-        public static Region region3 = new Region(region3Key, region3Description);
+        public static Region Region1 = new Region(region1Key, region1Description);
+        public static Region Region2 = new Region(region2Key, region2Description);
+        public static Region Region3 = new Region(region3Key, region3Description);
     }
 }

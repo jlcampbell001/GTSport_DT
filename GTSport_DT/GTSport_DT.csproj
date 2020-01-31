@@ -99,6 +99,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Countries\CountriesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Countries\CountriesForm.Designer.cs">
+      <DependentUpon>CountriesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Countries\CountriesRepository.cs" />
+    <Compile Include="Countries\CountriesService.cs" />
+    <Compile Include="Countries\Country.cs" />
+    <Compile Include="Countries\CountryDescriptionAlreadyExistsException.cs" />
+    <Compile Include="Countries\CountryDescriptionNotSetException.cs" />
+    <Compile Include="Countries\CountryInUseException.cs" />
+    <Compile Include="Countries\CountryNotFoundException.cs" />
+    <Compile Include="Countries\CountryRegionKeyNotSetException.cs" />
+    <Compile Include="Countries\CountryValidation.cs" />
     <Compile Include="General\BackEndService.cs" />
     <Compile Include="General\Entity.cs" />
     <Compile Include="General\KeySequence\KeySequence.cs" />
@@ -131,6 +146,7 @@
     <Compile Include="Regions\Region.cs" />
     <Compile Include="Regions\RegionDescriptionAlreadyExistsException.cs" />
     <Compile Include="Regions\RegionDescriptionNotSetException.cs" />
+    <Compile Include="Regions\RegionInUseException.cs" />
     <Compile Include="Regions\RegionNotFoundException.cs" />
     <Compile Include="Regions\RegionsForm.cs">
       <SubType>Form</SubType>
@@ -141,6 +157,9 @@
     <Compile Include="Regions\RegionsRepository.cs" />
     <Compile Include="Regions\RegionsService.cs" />
     <Compile Include="Regions\RegionValidation.cs" />
+    <EmbeddedResource Include="Countries\CountriesForm.resx">
+      <DependentUpon>CountriesForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GTSportForm.resx">
       <DependentUpon>GTSportForm.cs</DependentUpon>
     </EmbeddedResource>

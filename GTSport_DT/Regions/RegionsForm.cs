@@ -35,6 +35,108 @@ namespace GTSport_DT.Regions
             // AddTestData();
         }
 
+        protected override void OnLoad(EventArgs e)
+        {
+            base.OnLoad(e);
+            UpdateList();
+            SetButtons();
+        }
+
+        private void tvRegions_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            workingRegion = (Region)tvRegions.SelectedNode.Tag;
+
+            SetToWorkingRegion();
+
+            SetButtons();
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            UpdateWorkingRegion();
+
+            try
+            {
+                regionsService.Save(ref workingRegion);
+
+                UpdateList();
+
+                SetSelected(workingRegion.PrimaryKey);
+
+                UpdateOtherForms();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+
+            txtDescription.Focus();
+            SetButtons();
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (workingRegion.PrimaryKey != null)
+            {
+                if (MessageBox.Show("Do you wish to delete region " + workingRegion.Description + "?", "Delete Region", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    try
+                    {
+                        regionsService.Delete(workingRegion.PrimaryKey);
+
+                        UpdateList();
+
+                        if (tvRegions.Nodes.Count > 0)
+                        {
+                            tvRegions.SelectedNode = tvRegions.Nodes[0];
+                        }
+                        else
+                        {
+                            workingRegion = new Region();
+                            SetToWorkingRegion();
+                        }
+
+                        UpdateOtherForms();
+
+                        tvRegions.Focus();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Select a region to delete first.", "Error");
+            }
+        }
+
+        private void btnNew_Click(object sender, EventArgs e)
+        {
+            workingRegion = new Region();
+
+            SetToWorkingRegion();
+
+            txtDescription.Focus();
+
+            SetButtons();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            SetToWorkingRegion();
+
+            txtDescription.Focus();
+
+            SetButtons();
+        }
+
+        private void txtDescription_TextChanged(object sender, EventArgs e)
+        {
+            SetButtons();
+        }
+
         // ********************************************************************************
         /// <summary>
         /// Update the tree list.
@@ -74,104 +176,6 @@ namespace GTSport_DT.Regions
 
             region = new Region("", "ASIA-PACIFIC");
             regionsService.Save(ref region);
-        }
-
-        protected override void OnLoad(EventArgs e)
-        {
-            base.OnLoad(e);
-            UpdateList();
-            SetButtons();
-        }
-
-        private void tvRegions_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            workingRegion = (Region)tvRegions.SelectedNode.Tag;
-
-            SetToWorkingRegion();
-
-            SetButtons();
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            UpdateWorkingRegion();
-
-            try
-            {
-                regionsService.Save(ref workingRegion);
-
-                UpdateList();
-
-                SetSelected(workingRegion.PrimaryKey);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error");
-            }
-
-            txtDescription.Focus();
-            SetButtons();
-        }
-
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            if (workingRegion.PrimaryKey != null)
-            {
-                if (MessageBox.Show("Do you wish to delete region " + workingRegion.Description + "?", "Delete Region", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    try
-                    {
-                        regionsService.Delete(workingRegion.PrimaryKey);
-
-                        UpdateList();
-
-                        if (tvRegions.Nodes.Count > 0)
-                        {
-                            tvRegions.SelectedNode = tvRegions.Nodes[0];
-                        }
-                        else
-                        {
-                            workingRegion = new Region();
-                            SetToWorkingRegion();
-                        }
-
-                        tvRegions.Focus();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.Message, "Error");
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Select a region to delete first.", "Error");
-            }
-        }
-
-        private void btnNew_Click(object sender, EventArgs e)
-        {
-            workingRegion = new Region();
-
-            SetToWorkingRegion();
-
-            txtDescription.Focus();
-
-            SetButtons();
-        }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            SetToWorkingRegion();
-
-            txtDescription.Focus();
-
-            SetButtons();
-        }
-
-        private void txtDescription_TextChanged(object sender, EventArgs e)
-        {
-            SetButtons();
         }
 
         // ********************************************************************************
@@ -242,6 +246,13 @@ namespace GTSport_DT.Regions
             {
                 btnDelete.Enabled = true;
             }
+        }
+
+        private void UpdateOtherForms()
+        {
+            GTSportForm workingParentForm = (GTSportForm)this.ParentForm;
+
+            workingParentForm.UpdateRegionsOnForms();
         }
     }
 }

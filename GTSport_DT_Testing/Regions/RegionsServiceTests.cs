@@ -35,19 +35,19 @@ namespace GTSport_DT_Testing.Regions
             regionsService = new RegionsService(con);
             regionsRepository = new RegionsRepository(con);
 
-            regionsRepository.Save(region1);
-            regionsRepository.Save(region2);
-            regionsRepository.Save(region3);
+            regionsRepository.Save(Region1);
+            regionsRepository.Save(Region2);
+            regionsRepository.Save(Region3);
         }
 
-        [ClassCleanup]
-        public static void TestFixtureTearDown()
+        [TestMethod]
+        public void ZZZZ_ClassCleanUp()
         {
             if (con != null)
             {
-                regionsRepository.Delete(region1.PrimaryKey);
-                regionsRepository.Delete(region2.PrimaryKey);
-                regionsRepository.Delete(region3.PrimaryKey);
+                regionsRepository.Delete(Region1.PrimaryKey);
+                regionsRepository.Delete(Region2.PrimaryKey);
+                regionsRepository.Delete(Region3.PrimaryKey);
                 regionsRepository.Delete(region4Key);
                 con.Close();
             }
@@ -56,9 +56,9 @@ namespace GTSport_DT_Testing.Regions
         [TestMethod]
         public void A010_GetByKey()
         {
-            Region region = regionsService.GetByKey(region3.PrimaryKey);
+            Region region = regionsService.GetByKey(Region3.PrimaryKey);
 
-            Assert.AreEqual(region3.Description, region.Description);
+            Assert.AreEqual(Region3.Description, region.Description);
         }
 
         [TestMethod]
@@ -78,9 +78,9 @@ namespace GTSport_DT_Testing.Regions
         [TestMethod]
         public void A030_GetByDescription()
         {
-            Region region = regionsService.GetByDescription(region1.Description);
+            Region region = regionsService.GetByDescription(Region1.Description);
 
-            Assert.AreEqual(region1.PrimaryKey, region.PrimaryKey);
+            Assert.AreEqual(Region1.PrimaryKey, region.PrimaryKey);
         }
 
         [TestMethod]
@@ -141,7 +141,7 @@ namespace GTSport_DT_Testing.Regions
             List<Region> regions = regionsService.GetList();
 
             Assert.AreEqual(expectedNumberOfRecords, regions.Count);
-            Assert.AreEqual(region1.PrimaryKey, regions[0].PrimaryKey);
+            Assert.AreEqual(Region1.PrimaryKey, regions[0].PrimaryKey);
         }
 
         [TestMethod]
@@ -150,7 +150,7 @@ namespace GTSport_DT_Testing.Regions
             List<Region> regions = regionsService.GetList(orderedList: true);
 
             Assert.AreEqual(expectedNumberOfRecords, regions.Count);
-            Assert.AreEqual(region3.PrimaryKey, regions[0].PrimaryKey);
+            Assert.AreEqual(Region3.PrimaryKey, regions[0].PrimaryKey);
         }
     }
 }

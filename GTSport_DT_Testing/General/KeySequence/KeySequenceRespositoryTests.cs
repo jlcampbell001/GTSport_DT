@@ -23,8 +23,8 @@ namespace GTSport_DT_Testing
             keySequenceRepository = new KeySequenceRepository(con);
         }
 
-        [ClassCleanup]
-        public static void TestFixtureTearDown()
+        [TestMethod]
+        public void ZZZZ_ClassCleanUp()
         {
             if (con != null)
             {

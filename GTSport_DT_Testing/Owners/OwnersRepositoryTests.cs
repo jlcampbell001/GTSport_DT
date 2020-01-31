@@ -17,7 +17,7 @@ namespace GTSport_DT_Testing.Owners
 
         private const string ownerNameChange = "CHANGED NAME";
         private const string badOwnerName = "XXX_";
-        private readonly string maxOwnKey = owner3.PrimaryKey;
+        private readonly string maxOwnKey = Owner3.PrimaryKey;
 
         private const int numberOfOwners = 3;
         private const int numberOfDefaultOwners = 1;
@@ -31,8 +31,8 @@ namespace GTSport_DT_Testing.Owners
             ownersRepository = new OwnersRepository(con);
         }
 
-        [ClassCleanup]
-        public static void TestFixtureTearDown()
+        [TestMethod]
+        public void ZZZZ_ClassCleanUp()
         {
             if (con != null)
             {
@@ -43,36 +43,36 @@ namespace GTSport_DT_Testing.Owners
         [TestMethod]
         public void A010_SaveNewTest()
         {
-            ownersRepository.Save(owner1);
+            ownersRepository.Save(Owner1);
 
-            Owner ownerCheck = ownersRepository.GetById(owner1.PrimaryKey);
+            Owner ownerCheck = ownersRepository.GetById(Owner1.PrimaryKey);
 
             Assert.IsNotNull(ownerCheck);
-            Assert.AreEqual(owner1.PrimaryKey, ownerCheck.PrimaryKey);
-            Assert.AreEqual(owner1.OwnerName, ownerCheck.OwnerName);
-            Assert.AreEqual(owner1.DefaultOwner, ownerCheck.DefaultOwner);
+            Assert.AreEqual(Owner1.PrimaryKey, ownerCheck.PrimaryKey);
+            Assert.AreEqual(Owner1.OwnerName, ownerCheck.OwnerName);
+            Assert.AreEqual(Owner1.DefaultOwner, ownerCheck.DefaultOwner);
         }
 
         [TestMethod]
         public void A020_SaveUpdateTest()
         {
-            Owner owner = owner1;
+            Owner owner = Owner1;
             
             owner.OwnerName = ownerNameChange;
 
             ownersRepository.Save(owner);
 
-            Owner ownerCheck = ownersRepository.GetById(owner1.PrimaryKey);
+            Owner ownerCheck = ownersRepository.GetById(Owner1.PrimaryKey);
 
             Assert.IsNotNull(ownerCheck);
-            Assert.AreEqual(owner1.PrimaryKey, ownerCheck.PrimaryKey);
+            Assert.AreEqual(Owner1.PrimaryKey, ownerCheck.PrimaryKey);
             Assert.AreEqual(ownerNameChange, ownerCheck.OwnerName);
         }
 
         [TestMethod]
         public void A030_DeleteTest()
         {
-            string pk = owner1.PrimaryKey;
+            string pk = Owner1.PrimaryKey;
 
             ownersRepository.Delete(pk);
 
@@ -84,9 +84,9 @@ namespace GTSport_DT_Testing.Owners
         [TestMethod]
         public void A040_Add3Owners()
         {
-            ownersRepository.Save(owner1);
-            ownersRepository.Save(owner2);
-            ownersRepository.Save(owner3);
+            ownersRepository.Save(Owner1);
+            ownersRepository.Save(Owner2);
+            ownersRepository.Save(Owner3);
         }
 
         [TestMethod]
@@ -103,15 +103,15 @@ namespace GTSport_DT_Testing.Owners
             List<Owner> owners = ownersRepository.GetList(true);
 
             Assert.AreEqual(numberOfOwners, owners.Count);
-            Assert.AreEqual(owner1.PrimaryKey, owners[0].PrimaryKey);
+            Assert.AreEqual(Owner1.PrimaryKey, owners[0].PrimaryKey);
         }
 
         [TestMethod]
         public void A060_GetByName()
         {
-            Owner foundOwner = ownersRepository.GetByName(owner3.OwnerName);
+            Owner foundOwner = ownersRepository.GetByName(Owner3.OwnerName);
 
-            Assert.AreEqual(owner3.PrimaryKey, foundOwner.PrimaryKey);
+            Assert.AreEqual(Owner3.PrimaryKey, foundOwner.PrimaryKey);
         }
 
         [TestMethod]
@@ -127,7 +127,7 @@ namespace GTSport_DT_Testing.Owners
         {
             Owner foundOwner = ownersRepository.GetDefaultOwner();
 
-            Assert.AreEqual(owner2.PrimaryKey, foundOwner.PrimaryKey);
+            Assert.AreEqual(Owner2.PrimaryKey, foundOwner.PrimaryKey);
         }
 
         [TestMethod]
@@ -149,9 +149,9 @@ namespace GTSport_DT_Testing.Owners
         [TestMethod]
         public void A110_Delete3Owners()
         {
-            ownersRepository.Delete(owner1.PrimaryKey);
-            ownersRepository.Delete(owner2.PrimaryKey);
-            ownersRepository.Delete(owner3.PrimaryKey);
+            ownersRepository.Delete(Owner1.PrimaryKey);
+            ownersRepository.Delete(Owner2.PrimaryKey);
+            ownersRepository.Delete(Owner3.PrimaryKey);
         }
     }
 }

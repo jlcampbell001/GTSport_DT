@@ -28,19 +28,19 @@ namespace GTSport_DT_Testing.Owners
 
             ownersRepository = new OwnersRepository(con);
 
-            ownersRepository.Save(owner1);
-            ownersRepository.Save(owner2);
-            ownersRepository.Save(owner3);
+            ownersRepository.Save(Owner1);
+            ownersRepository.Save(Owner2);
+            ownersRepository.Save(Owner3);
         }
 
-        [ClassCleanup]
-        public static void TestFixtureTearDown()
+        [TestMethod]
+        public void ZZZZ_ClassCleanUp()
         {
             if (con != null)
             {
-                ownersRepository.Delete(owner1.PrimaryKey);
-                ownersRepository.Delete(owner2.PrimaryKey);
-                ownersRepository.Delete(owner3.PrimaryKey);
+                ownersRepository.Delete(Owner1.PrimaryKey);
+                ownersRepository.Delete(Owner2.PrimaryKey);
+                ownersRepository.Delete(Owner3.PrimaryKey);
 
                 con.Close();
             }
@@ -49,7 +49,7 @@ namespace GTSport_DT_Testing.Owners
         [TestMethod]
         public void A010_ValidateSave()
         {
-            Owner owner = new Owner(owner1.PrimaryKey, owner1.OwnerName, owner1.DefaultOwner);
+            Owner owner = new Owner(Owner1.PrimaryKey, Owner1.OwnerName, Owner1.DefaultOwner);
 
             ownerValidation.ValidateSave(owner);
         }
@@ -60,7 +60,7 @@ namespace GTSport_DT_Testing.Owners
         {
             try
             {
-                Owner owner = new Owner("", "", owner1.DefaultOwner);
+                Owner owner = new Owner("", "", Owner1.DefaultOwner);
 
                 ownerValidation.ValidateSave(owner);
             } catch (OwnerNameNotSetException onnse) 
@@ -76,7 +76,7 @@ namespace GTSport_DT_Testing.Owners
         {
             try
             {
-                Owner owner = new Owner("", owner1.OwnerName, owner1.DefaultOwner);
+                Owner owner = new Owner("", Owner1.OwnerName, Owner1.DefaultOwner);
 
                 ownerValidation.ValidateSave(owner);
             } catch (OwnerNameAlreadyExistsException onaee)
@@ -89,7 +89,7 @@ namespace GTSport_DT_Testing.Owners
         [TestMethod]
         public void A040_ValidateDelete()
         {
-            ownerValidation.ValidateDelete(owner2.PrimaryKey);
+            ownerValidation.ValidateDelete(Owner2.PrimaryKey);
         }
 
         [TestMethod]

@@ -1,4 +1,5 @@
-﻿using GTSport_DT.General;
+﻿using GTSport_DT.Countries;
+using GTSport_DT.General;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,12 @@ namespace GTSport_DT.Regions
     public class RegionValidation : Validation<Region>
     {
         private RegionsRepository regionsRepository;
+        private CountriesRepository countriesRespository;
 
         public RegionValidation(NpgsqlConnection npgsqlConnection) : base(npgsqlConnection)
         {
             regionsRepository = new RegionsRepository(npgsqlConnection);
+            countriesRespository = new CountriesRepository(npgsqlConnection);
         }
 
         // ********************************************************************************
@@ -36,6 +39,13 @@ namespace GTSport_DT.Regions
             if (region == null)
             {
                 throw new RegionNotFoundException(RegionNotFoundException.RegionKeyNotFoundMsg, primaryKey);
+            }
+
+            List<Country> countries = countriesRespository.GetListForRegionKey(primaryKey);
+
+            if (countries.Count > 0)
+            {
+                throw new RegionInUseException(RegionInUseException.RegionInUseCanNotBeDeletedCountryMsg);
             }
         }
 

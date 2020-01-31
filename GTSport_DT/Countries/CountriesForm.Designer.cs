@@ -1,6 +1,6 @@
-﻿namespace GTSport_DT.Regions
+﻿namespace GTSport_DT.Countries
 {
-    partial class RegionsForm
+    partial class CountriesForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,27 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RegionsForm));
-            this.tvRegions = new System.Windows.Forms.TreeView();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CountriesForm));
+            this.tvCountries = new System.Windows.Forms.TreeView();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.btnSave = new System.Windows.Forms.ToolStripButton();
             this.btnDelete = new System.Windows.Forms.ToolStripButton();
             this.btnNew = new System.Windows.Forms.ToolStripButton();
             this.btnCancel = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.label1 = new System.Windows.Forms.Label();
             this.txtDescription = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.cmbRegion = new System.Windows.Forms.ComboBox();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tvRegions
+            // tvCountries
             // 
-            this.tvRegions.Dock = System.Windows.Forms.DockStyle.Left;
-            this.tvRegions.Location = new System.Drawing.Point(0, 0);
-            this.tvRegions.Name = "tvRegions";
-            this.tvRegions.Size = new System.Drawing.Size(225, 450);
-            this.tvRegions.TabIndex = 1;
-            this.tvRegions.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvRegions_AfterSelect);
+            this.tvCountries.Dock = System.Windows.Forms.DockStyle.Left;
+            this.tvCountries.Location = new System.Drawing.Point(0, 0);
+            this.tvCountries.Name = "tvCountries";
+            this.tvCountries.Size = new System.Drawing.Size(225, 450);
+            this.tvCountries.TabIndex = 2;
+            this.tvCountries.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvCountries_AfterSelect);
             // 
             // toolStrip1
             // 
@@ -61,7 +63,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(225, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(575, 25);
-            this.toolStrip1.TabIndex = 10;
+            this.toolStrip1.TabIndex = 11;
             this.toolStrip1.Text = "toolStrip1";
             // 
             // btnSave
@@ -109,35 +111,56 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
+            // txtDescription
+            // 
+            this.txtDescription.Location = new System.Drawing.Point(309, 28);
+            this.txtDescription.Name = "txtDescription";
+            this.txtDescription.Size = new System.Drawing.Size(479, 20);
+            this.txtDescription.TabIndex = 14;
+            this.txtDescription.TextChanged += new System.EventHandler(this.txtDescription_TextChanged);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(240, 28);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(63, 13);
-            this.label1.TabIndex = 11;
+            this.label1.TabIndex = 13;
             this.label1.Text = "Description:";
             // 
-            // txtDescription
+            // label2
             // 
-            this.txtDescription.Location = new System.Drawing.Point(309, 28);
-            this.txtDescription.Name = "txtDescription";
-            this.txtDescription.Size = new System.Drawing.Size(479, 20);
-            this.txtDescription.TabIndex = 12;
-            this.txtDescription.TextChanged += new System.EventHandler(this.txtDescription_TextChanged);
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(240, 59);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(44, 13);
+            this.label2.TabIndex = 15;
+            this.label2.Text = "Region:";
             // 
-            // RegionsForm
+            // cmbRegion
+            // 
+            this.cmbRegion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbRegion.FormattingEnabled = true;
+            this.cmbRegion.Location = new System.Drawing.Point(290, 59);
+            this.cmbRegion.Name = "cmbRegion";
+            this.cmbRegion.Size = new System.Drawing.Size(498, 21);
+            this.cmbRegion.TabIndex = 16;
+            this.cmbRegion.SelectedIndexChanged += new System.EventHandler(this.cmbRegion_SelectedIndexChanged);
+            // 
+            // CountriesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.cmbRegion);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.txtDescription);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.toolStrip1);
-            this.Controls.Add(this.tvRegions);
-            this.Name = "RegionsForm";
+            this.Controls.Add(this.tvCountries);
+            this.Name = "CountriesForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Regions";
+            this.Text = "Countries";
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -147,14 +170,16 @@
 
         #endregion
 
-        private System.Windows.Forms.TreeView tvRegions;
+        private System.Windows.Forms.TreeView tvCountries;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton btnSave;
         private System.Windows.Forms.ToolStripButton btnDelete;
         private System.Windows.Forms.ToolStripButton btnNew;
         private System.Windows.Forms.ToolStripButton btnCancel;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtDescription;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox cmbRegion;
     }
 }

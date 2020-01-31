@@ -32,10 +32,11 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ownersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.regionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslCurrentOwner = new System.Windows.Forms.ToolStripStatusLabel();
-            this.regionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.countriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -45,7 +46,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.ownersToolStripMenuItem,
-            this.regionsToolStripMenuItem});
+            this.regionsToolStripMenuItem,
+            this.countriesToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 24);
@@ -74,6 +76,13 @@
             this.ownersToolStripMenuItem.Text = "Owners";
             this.ownersToolStripMenuItem.Click += new System.EventHandler(this.ownersToolStripMenuItem_Click);
             // 
+            // regionsToolStripMenuItem
+            // 
+            this.regionsToolStripMenuItem.Name = "regionsToolStripMenuItem";
+            this.regionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.regionsToolStripMenuItem.Text = "Regions";
+            this.regionsToolStripMenuItem.Click += new System.EventHandler(this.regionsToolStripMenuItem_Click);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -100,12 +109,12 @@
             this.tsslCurrentOwner.Text = "Owner";
             this.tsslCurrentOwner.Click += new System.EventHandler(this.tsslCurrentOwner_Click);
             // 
-            // regionsToolStripMenuItem
+            // countriesToolStripMenuItem
             // 
-            this.regionsToolStripMenuItem.Name = "regionsToolStripMenuItem";
-            this.regionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.regionsToolStripMenuItem.Text = "Regions";
-            this.regionsToolStripMenuItem.Click += new System.EventHandler(this.regionsToolStripMenuItem_Click);
+            this.countriesToolStripMenuItem.Name = "countriesToolStripMenuItem";
+            this.countriesToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
+            this.countriesToolStripMenuItem.Text = "Countries";
+            this.countriesToolStripMenuItem.Click += new System.EventHandler(this.countriesToolStripMenuItem_Click);
             // 
             // GTSportForm
             // 
@@ -138,6 +147,7 @@
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripStatusLabel tsslCurrentOwner;
         private System.Windows.Forms.ToolStripMenuItem regionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem countriesToolStripMenuItem;
     }
 }
 

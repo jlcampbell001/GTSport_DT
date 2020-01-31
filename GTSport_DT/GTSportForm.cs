@@ -1,4 +1,5 @@
-﻿using GTSport_DT.Owners;
+﻿using GTSport_DT.Countries;
+using GTSport_DT.Owners;
 using GTSport_DT.Regions;
 using Npgsql;
 using System;
@@ -45,6 +46,11 @@ namespace GTSport_DT
         private void regionsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowRegionForm();
+        }
+
+        private void countriesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowCountryForm();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -115,9 +121,49 @@ namespace GTSport_DT
             }
         }
 
+        private void ShowCountryForm()
+        {
+            Boolean createNewForm = true;
+
+            CountriesForm countryForm = null;
+
+            foreach (Form form in this.MdiChildren)
+            {
+                if (form.Name == "CountriesForm")
+                {
+                    countryForm = (CountriesForm)form;
+                    createNewForm = false;
+                }
+            }
+
+            if (createNewForm)
+            {
+                countryForm = new CountriesForm(con);
+                countryForm.MdiParent = this;
+            }
+
+            if (countryForm != null)
+            {
+                countryForm.Show();
+                countryForm.Activate();
+            }
+        }
+
         private void tsslCurrentOwner_Click(object sender, EventArgs e)
         {
             ShowOwnerForm();
+        }
+
+        public void UpdateRegionsOnForms()
+        {
+            foreach (Form form in this.MdiChildren)
+            {
+                if (form.Name == "CountriesForm")
+                {
+                    CountriesForm countriesForm = (CountriesForm)form;
+                    countriesForm.UpdateFromOtherForms();
+                }
+            }
         }
     }
 }

@@ -27,8 +27,8 @@ namespace GTSport_DT_Testing.Regions
             regionsRepository = new RegionsRepository(con);
         }
 
-        [ClassCleanup]
-        public static void TestFixtureTearDown()
+        [TestMethod]
+        public void ZZZZ_ClassCleanUp()
         {
             if (con != null)
             {
@@ -39,37 +39,37 @@ namespace GTSport_DT_Testing.Regions
         [TestMethod]
         public void A010_SaveNewTest()
         {
-            regionsRepository.Save(region1);
+            regionsRepository.Save(Region1);
 
-            Region regionCheck = regionsRepository.GetById(region1.PrimaryKey);
+            Region regionCheck = regionsRepository.GetById(Region1.PrimaryKey);
 
             Assert.IsNotNull(regionCheck);
-            Assert.AreEqual(region1.PrimaryKey, regionCheck.PrimaryKey);
-            Assert.AreEqual(region1.Description, regionCheck.Description);
+            Assert.AreEqual(Region1.PrimaryKey, regionCheck.PrimaryKey);
+            Assert.AreEqual(Region1.Description, regionCheck.Description);
         }
 
         [TestMethod]
         public void A020_SaveUpdateTest()
         {
-            Region region = region1;
+            Region region = new Region (Region1.PrimaryKey, Region1.Description);
 
             region.Description = descriptionChange;
 
             regionsRepository.Save(region);
 
-            Region regionCheck = regionsRepository.GetById(region1.PrimaryKey);
+            Region regionCheck = regionsRepository.GetById(Region1.PrimaryKey);
 
             Assert.IsNotNull(regionCheck);
-            Assert.AreEqual(region1.PrimaryKey, regionCheck.PrimaryKey);
-            Assert.AreEqual(region1.Description, regionCheck.Description);
+            Assert.AreEqual(Region1.PrimaryKey, regionCheck.PrimaryKey);
+            Assert.AreEqual(descriptionChange, regionCheck.Description);
         }
 
         [TestMethod]
         public void A030_Delete()
         {
-            regionsRepository.Delete(region1.PrimaryKey);
+            regionsRepository.Delete(Region1.PrimaryKey);
 
-            Region regionCheck = regionsRepository.GetById(region1.PrimaryKey);
+            Region regionCheck = regionsRepository.GetById(Region1.PrimaryKey);
 
             Assert.IsNull(regionCheck);
         }
@@ -77,9 +77,9 @@ namespace GTSport_DT_Testing.Regions
         [TestMethod]
         public void A040_Add3Regions()
         {
-            regionsRepository.Save(region1);
-            regionsRepository.Save(region2);
-            regionsRepository.Save(region3);
+            regionsRepository.Save(Region1);
+            regionsRepository.Save(Region2);
+            regionsRepository.Save(Region3);
         }
 
         [TestMethod]
@@ -96,15 +96,15 @@ namespace GTSport_DT_Testing.Regions
             List<Region> regions = regionsRepository.GetList(orderedList: true);
 
             Assert.AreEqual(numberofRegions, regions.Count);
-            Assert.AreEqual(region3.PrimaryKey, regions[0].PrimaryKey);
+            Assert.AreEqual(Region3.PrimaryKey, regions[0].PrimaryKey);
         }
 
         [TestMethod]
         public void A070_GetByDesciption()
         {
-            Region region = regionsRepository.GetByDescription(region2.Description);
+            Region region = regionsRepository.GetByDescription(Region2.Description);
 
-            Assert.AreEqual(region2.PrimaryKey, region.PrimaryKey);
+            Assert.AreEqual(Region2.PrimaryKey, region.PrimaryKey);
         }
 
         [TestMethod]
@@ -120,15 +120,15 @@ namespace GTSport_DT_Testing.Regions
         {
             string maxKey = regionsRepository.GetMaxKey();
 
-            Assert.AreEqual(region3.PrimaryKey, maxKey);
+            Assert.AreEqual(Region3.PrimaryKey, maxKey);
         }
-
+        
         [TestMethod]
-        public void A100_Delete3Owners()
+        public void A100_Delete3Regions()
         {
-            regionsRepository.Delete(region1.PrimaryKey);
-            regionsRepository.Delete(region2.PrimaryKey);
-            regionsRepository.Delete(region3.PrimaryKey);
+            regionsRepository.Delete(Region1.PrimaryKey);
+            regionsRepository.Delete(Region2.PrimaryKey);
+            regionsRepository.Delete(Region3.PrimaryKey);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace GTSport_DT.Regions
     public class RegionNotFoundException : Exception
     {
         public const string RegionKeyNotFoundMsg = "Could not find region by key.";
-        public const string RegionDescriptionNotFoundMsg = "Could not find region by name.";
+        public const string RegionDescriptionNotFoundMsg = "Could not find region by description.";
 
         public string SearchParameter { get; set; }
 
