@@ -3,35 +3,29 @@ using GTSport_DT.General;
 using Npgsql;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GTSport_DT.Regions
 {
-    // --------------------------------------------------------------------------------
-    /// <summary>
-    /// The validations to save / delete a region.
-    /// </summary>
-    // --------------------------------------------------------------------------------
+    /// <summary>The validations to save / delete a region.</summary>
     public class RegionValidation : Validation<Region>
     {
-        private RegionsRepository regionsRepository;
         private CountriesRepository countriesRespository;
+        private RegionsRepository regionsRepository;
 
+        /// <summary>Initializes a new instance of the <see cref="RegionValidation"/> class.</summary>
+        /// <param name="npgsqlConnection">The NPGSQL connection.</param>
         public RegionValidation(NpgsqlConnection npgsqlConnection) : base(npgsqlConnection)
         {
             regionsRepository = new RegionsRepository(npgsqlConnection);
             countriesRespository = new CountriesRepository(npgsqlConnection);
         }
 
-        // ********************************************************************************
-        /// <summary>
-        /// The validations for a delete.
-        /// </summary>
+        /// <summary>The validations for a delete.</summary>
         /// <param name="primaryKey">The primary key of the region to delete.</param>
-        /// <exception cref="RegionNotFoundException">Happens when the primary key can not be found.</exception>
-        // ********************************************************************************
+        /// <exception cref="RegionNotFoundException">
+        /// Happens when the primary key can not be found.
+        /// </exception>
+        /// <exception cref="RegionInUseException">Happens when the regions is used in a country.</exception>
         public override void ValidateDelete(string primaryKey)
         {
             Region region = regionsRepository.GetById(primaryKey);
@@ -49,19 +43,18 @@ namespace GTSport_DT.Regions
             }
         }
 
-        // ********************************************************************************
-        /// <summary>
-        /// The validations for a save.
-        /// </summary>
+        /// <summary>The validations for a save.</summary>
         /// <param name="validateEntity">The region to check.</param>
         /// <exception cref="RegionDescriptionNotSetException">The region must be filled.</exception>
-        /// <exception cref="RegionDescriptionAlreadyExistsException">The region descriptions must be unique.</exception>"
-        // ********************************************************************************
+        /// <exception cref="RegionDescriptionAlreadyExistsException">
+        /// The region descriptions must be unique.
+        /// </exception>
+        /// "
         public override void ValidateSave(Region validateEntity)
         {
             if (String.IsNullOrWhiteSpace(validateEntity.Description))
             {
-                throw new RegionDescriptionNotSetException(RegionDescriptionNotSetException.regionDescriptionNotSet);
+                throw new RegionDescriptionNotSetException(RegionDescriptionNotSetException.regionDescriptionNotSetMsg);
             }
 
             Region existingRegion = regionsRepository.GetByDescription(validateEntity.Description);

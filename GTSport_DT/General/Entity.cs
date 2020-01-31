@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GTSport_DT.General
+﻿namespace GTSport_DT.General
 {
-    // --------------------------------------------------------------------------------
-    /// <summary>
-    /// The base entity class.
-    /// </summary>
-    // --------------------------------------------------------------------------------
+    /// <summary>The base entity class.</summary>
     public abstract class Entity
     {
+        /// <summary>Gets or sets the primary key.</summary>
+        /// <value>The primary key.</value>
         public string PrimaryKey { get; set; }
     }
 }

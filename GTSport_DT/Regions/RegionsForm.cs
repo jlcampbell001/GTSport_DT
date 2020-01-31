@@ -1,12 +1,6 @@
 ﻿using Npgsql;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GTSport_DT.Regions
@@ -18,11 +12,15 @@ namespace GTSport_DT.Regions
 
         private Region workingRegion = new Region();
 
+        /// <summary>Initializes a new instance of the <see cref="RegionsForm"/> class.</summary>
         public RegionsForm()
         {
             InitializeComponent();
         }
 
+        /// <summary>Initializes a new instance of the <see cref="RegionsForm"/> class.</summary>
+        /// <param name="con">The con.</param>
+        /// <exception cref="ArgumentNullException">con</exception>
         public RegionsForm(NpgsqlConnection con)
         {
             this.con = con ?? throw new ArgumentNullException(nameof(con));
@@ -31,10 +29,11 @@ namespace GTSport_DT.Regions
 
             InitializeComponent();
 
-            // add test data to work with.
-            // AddTestData();
+            // add test data to work with. AddTestData();
         }
 
+        /// <summary>Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.</summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -42,35 +41,24 @@ namespace GTSport_DT.Regions
             SetButtons();
         }
 
-        private void tvRegions_AfterSelect(object sender, TreeViewEventArgs e)
+        private void AddTestData()
         {
-            workingRegion = (Region)tvRegions.SelectedNode.Tag;
+            Region region = new Region("", "AMERICA");
+            regionsService.Save(ref region);
 
-            SetToWorkingRegion();
+            region = new Region("", "EUROPE");
+            regionsService.Save(ref region);
 
-            SetButtons();
+            region = new Region("", "ASIA-PACIFIC");
+            regionsService.Save(ref region);
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void btnCancel_Click(object sender, EventArgs e)
         {
-            UpdateWorkingRegion();
-
-            try
-            {
-                regionsService.Save(ref workingRegion);
-
-                UpdateList();
-
-                SetSelected(workingRegion.PrimaryKey);
-
-                UpdateOtherForms();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error");
-            }
+            SetToWorkingRegion();
 
             txtDescription.Focus();
+
             SetButtons();
         }
 
@@ -123,11 +111,77 @@ namespace GTSport_DT.Regions
             SetButtons();
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            SetToWorkingRegion();
+            UpdateWorkingRegion();
+
+            try
+            {
+                regionsService.Save(ref workingRegion);
+
+                UpdateList();
+
+                SetSelected(workingRegion.PrimaryKey);
+
+                UpdateOtherForms();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
 
             txtDescription.Focus();
+            SetButtons();
+        }
+
+        private void SetButtons()
+        {
+            if (workingRegion.Description != txtDescription.Text)
+            {
+                btnSave.Enabled = true;
+                btnCancel.Enabled = true;
+            }
+            else
+            {
+                btnSave.Enabled = false;
+                btnCancel.Enabled = false;
+            }
+
+            if (String.IsNullOrWhiteSpace(workingRegion.PrimaryKey))
+            {
+                btnDelete.Enabled = false;
+            }
+            else
+            {
+                btnDelete.Enabled = true;
+            }
+        }
+
+        private void SetSelected(string primaryKey)
+        {
+            if (!String.IsNullOrWhiteSpace(primaryKey))
+            {
+                for (int i = 0; i < tvRegions.Nodes.Count; i++)
+                {
+                    Region region = (Region)tvRegions.Nodes[i].Tag;
+                    if (region.PrimaryKey == primaryKey)
+                    {
+                        tvRegions.SelectedNode = tvRegions.Nodes[i];
+                    }
+                }
+            }
+        }
+
+        private void SetToWorkingRegion()
+        {
+            txtDescription.Text = workingRegion.Description;
+        }
+
+        private void tvRegions_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            workingRegion = (Region)tvRegions.SelectedNode.Tag;
+
+            SetToWorkingRegion();
 
             SetButtons();
         }
@@ -137,11 +191,6 @@ namespace GTSport_DT.Regions
             SetButtons();
         }
 
-        // ********************************************************************************
-        /// <summary>
-        /// Update the tree list.
-        /// </summary>
-        // ********************************************************************************
         private void UpdateList()
         {
             List<Region> regions = regionsService.GetList(true);
@@ -161,98 +210,16 @@ namespace GTSport_DT.Regions
             tvRegions.EndUpdate();
         }
 
-        // ********************************************************************************
-        /// <summary>
-        /// Some test data to work with.
-        /// </summary>
-        // ********************************************************************************
-        private void AddTestData()
-        {
-            Region region = new Region("", "AMERICA");
-            regionsService.Save(ref region);
-
-            region = new Region("", "EUROPE");
-            regionsService.Save(ref region);
-
-            region = new Region("", "ASIA-PACIFIC");
-            regionsService.Save(ref region);
-        }
-
-        // ********************************************************************************
-        /// <summary>
-        /// Set the fields to the values in the work entity.
-        /// </summary>
-        // ********************************************************************************
-        private void SetToWorkingRegion()
-        {
-            txtDescription.Text = workingRegion.Description;
-        }
-
-        // ********************************************************************************
-        /// <summary>
-        /// Set the working entity to the values of the fields.
-        /// </summary>
-        // ********************************************************************************
-        private void UpdateWorkingRegion()
-        {
-            workingRegion.Description = txtDescription.Text;
-        }
-
-        // ********************************************************************************
-        /// <summary>
-        /// Sets the tree views selected region to the region with the passed primary key.
-        /// </summary>
-        /// <param name="primaryKey"></param>
-        // ********************************************************************************
-        private void SetSelected(string primaryKey)
-        {
-            if (!String.IsNullOrWhiteSpace(primaryKey))
-            {
-                for (int i = 0; i < tvRegions.Nodes.Count; i++)
-                {
-                    Region region = (Region)tvRegions.Nodes[i].Tag;
-                    if (region.PrimaryKey == primaryKey)
-                    {
-                        tvRegions.SelectedNode = tvRegions.Nodes[i];
-                    }
-                }
-            }
-        }
-
-        // ********************************************************************************
-        /// <summary>
-        /// Enabled / Disable the buttons.
-        /// </summary>
-        // ********************************************************************************
-        private void SetButtons()
-        {
-            if (workingRegion.Description != txtDescription.Text)
-            {
-                btnSave.Enabled = true;
-                btnCancel.Enabled = true;
-            }
-            else
-            {
-                btnSave.Enabled = false;
-                btnCancel.Enabled = false;
-
-            }
-
-            if (String.IsNullOrWhiteSpace(workingRegion.PrimaryKey))
-            {
-                btnDelete.Enabled = false;
-            }
-            else
-            {
-                btnDelete.Enabled = true;
-            }
-        }
-
         private void UpdateOtherForms()
         {
             GTSportForm workingParentForm = (GTSportForm)this.ParentForm;
 
             workingParentForm.UpdateRegionsOnForms();
+        }
+
+        private void UpdateWorkingRegion()
+        {
+            workingRegion.Description = txtDescription.Text;
         }
     }
 }

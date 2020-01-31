@@ -109,7 +109,7 @@ namespace GTSport_DT_Testing.Countries
             }
             catch (CountryDescriptionAlreadyExistsException cdaee)
             {
-                Assert.AreEqual(CountryDescriptionAlreadyExistsException.CountryDesciprtionAlreadyExistsMsg, cdaee.Message);
+                Assert.AreEqual(CountryDescriptionAlreadyExistsException.CountryDescriptionAlreadyExistsMsg, cdaee.Message);
                 throw cdaee;
             }
         }

@@ -1,6 +1,4 @@
-﻿using GTSport_DT.General.KeySequence;
-using Npgsql;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -13,63 +11,31 @@ namespace GTSport_DT.Owners
 
         private Owner workingOwner = new Owner();
 
+        /// <summary>Initializes a new instance of the <see cref="OwnersForm"/> class.</summary>
         public OwnersForm()
         {
             InitializeComponent();
         }
 
+        /// <summary>Initializes a new instance of the <see cref="OwnersForm"/> class.</summary>
+        /// <param name="ownersService">The owners service.</param>
+        /// <exception cref="ArgumentNullException">ownersService</exception>
         public OwnersForm(OwnersService ownersService)
         {
             this.ownersService = ownersService ?? throw new ArgumentNullException(nameof(ownersService));
 
-            // add some data.
-            // AddTestData();
-
-
+            // add some data. AddTestData();
 
             InitializeComponent();
         }
 
+        /// <summary>Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.</summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
             UpdateList();
             SetButtons();
-        }
-
-
-        // ********************************************************************************
-        /// <summary>
-        /// Update the tree list.
-        /// </summary>
-        // ********************************************************************************
-        private void UpdateList()
-        {
-            // make sure there is a default owner set.
-            ownersService.GetDefaultOwner();
-
-            List<Owner> owners = ownersService.GetList(true);
-
-            tvOwners.BeginUpdate();
-            tvOwners.Nodes.Clear();
-
-            foreach (Owner owner in owners)
-            {
-                TreeNode treeNode = new TreeNode();
-                treeNode.Tag = owner;
-                treeNode.Text = owner.OwnerName;
-
-                if (owner.DefaultOwner)
-                {
-                    treeNode.ForeColor = Color.Blue;
-                    Font font = new Font(tvOwners.Font, FontStyle.Bold);
-                    treeNode.NodeFont = font;
-                }
-
-                tvOwners.Nodes.Add(treeNode);
-            }
-
-            tvOwners.EndUpdate();
         }
 
         private void AddTestData()
@@ -95,65 +61,12 @@ namespace GTSport_DT.Owners
             ownersService.Save(ref owner);
         }
 
-        // ********************************************************************************
-        /// <summary>
-        /// Set up the working owner with the selected owner from the list.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        // ********************************************************************************
-        private void tvOwners_AfterSelect(object sender, TreeViewEventArgs e)
+        private void btnCancel_Click(object sender, EventArgs e)
         {
-            workingOwner = (Owner)tvOwners.SelectedNode.Tag;
-
             SetToWorkingOwner();
 
-            SetButtons();
-        }
-
-        // ********************************************************************************
-        /// <summary>
-        /// Set the user entry fields with the data from the working owner object.
-        /// </summary>
-        // ********************************************************************************
-        private void SetToWorkingOwner()
-        {
-            txtOwnerName.Text = workingOwner.OwnerName;
-
-            chkDefaultOwner.Checked = workingOwner.DefaultOwner;
-        }
-
-        // ********************************************************************************
-        /// <summary>
-        /// Set the working owner object with data entered by the user.
-        /// </summary>
-        // ********************************************************************************
-        private void UpdateWorkingOwner()
-        {
-            workingOwner.OwnerName = txtOwnerName.Text;
-            workingOwner.DefaultOwner = chkDefaultOwner.Checked;
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            UpdateWorkingOwner();
-
-            try
-            {
-                ownersService.Save(ref workingOwner);
-
-                UpdateList();
-
-                UpdateCurrentOwnerInParent(workingOwner);
-
-                SetSelectedOwner(workingOwner.PrimaryKey);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error");
-            }
-
             txtOwnerName.Focus();
+
             SetButtons();
         }
 
@@ -198,20 +111,39 @@ namespace GTSport_DT.Owners
             SetButtons();
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            SetToWorkingOwner();
+            UpdateWorkingOwner();
+
+            try
+            {
+                ownersService.Save(ref workingOwner);
+
+                UpdateList();
+
+                UpdateCurrentOwnerInParent(workingOwner);
+
+                SetSelectedOwner(workingOwner.PrimaryKey);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
 
             txtOwnerName.Focus();
-
             SetButtons();
         }
 
-        // ********************************************************************************
-        /// <summary>
-        /// Enabled / Disable the buttons.
-        /// </summary>
-        // ********************************************************************************
+        private void btnSetCurrentOwner_Click(object sender, EventArgs e)
+        {
+            UpdateCurrentOwnerInParent(workingOwner, force: true);
+        }
+
+        private void chkDefaultOwner_CheckedChanged(object sender, EventArgs e)
+        {
+            SetButtons();
+        }
+
         private void SetButtons()
         {
             if (workingOwner.OwnerName != txtOwnerName.Text || workingOwner.DefaultOwner != chkDefaultOwner.Checked)
@@ -237,54 +169,6 @@ namespace GTSport_DT.Owners
             }
         }
 
-        private void txtOwnerName_TextChanged(object sender, EventArgs e)
-        {
-            SetButtons();
-        }
-
-        private void chkDefaultOwner_CheckedChanged(object sender, EventArgs e)
-        {
-            SetButtons();
-        }
-
-        // ********************************************************************************
-        /// <summary>
-        /// Updates the current owner information on the main form if there are changes done to the owner or a new owner is picked.
-        /// <para>If the current owner was deleted the current owner will be set to the default owner.</para>
-        /// </summary>
-        /// <param name="owner">The owner that was updated.</param>
-        /// <param name="deleted">If the owner was deleted.</param>
-        /// <param name="force">Forces the current owner to be changed to the passed owner.</param>
-        // ********************************************************************************
-        private void UpdateCurrentOwnerInParent(Owner owner, Boolean deleted = false, Boolean force = false)
-        {
-            GTSportForm workingParentForm = (GTSportForm)this.ParentForm;
-
-            if (force || workingParentForm.currentOwner.PrimaryKey == owner.PrimaryKey)
-            {
-                if (deleted)
-                {
-                    // get the new default owner.
-                    workingParentForm.SetCurrentOwner(ownersService.GetDefaultOwner());
-                } else
-                {
-                    // update any changes to the current owner.
-                    workingParentForm.SetCurrentOwner(owner);
-                }
-            }
-        }
-
-        private void btnSetCurrentOwner_Click(object sender, EventArgs e)
-        {
-            UpdateCurrentOwnerInParent(workingOwner, force: true);
-        }
-
-        // ********************************************************************************
-        /// <summary>
-        /// Sets the tree views selected owner to the owner with the passed primary key.
-        /// </summary>
-        /// <param name="primaryKey"></param>
-        // ********************************************************************************
         private void SetSelectedOwner(string primaryKey)
         {
             if (!String.IsNullOrWhiteSpace(primaryKey))
@@ -298,6 +182,81 @@ namespace GTSport_DT.Owners
                     }
                 }
             }
+        }
+
+        private void SetToWorkingOwner()
+        {
+            txtOwnerName.Text = workingOwner.OwnerName;
+
+            chkDefaultOwner.Checked = workingOwner.DefaultOwner;
+        }
+
+        private void tvOwners_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            workingOwner = (Owner)tvOwners.SelectedNode.Tag;
+
+            SetToWorkingOwner();
+
+            SetButtons();
+        }
+
+        private void txtOwnerName_TextChanged(object sender, EventArgs e)
+        {
+            SetButtons();
+        }
+
+        private void UpdateCurrentOwnerInParent(Owner owner, Boolean deleted = false, Boolean force = false)
+        {
+            GTSportForm workingParentForm = (GTSportForm)this.ParentForm;
+
+            if (force || workingParentForm.currentOwner.PrimaryKey == owner.PrimaryKey)
+            {
+                if (deleted)
+                {
+                    // get the new default owner.
+                    workingParentForm.SetCurrentOwner(ownersService.GetDefaultOwner());
+                }
+                else
+                {
+                    // update any changes to the current owner.
+                    workingParentForm.SetCurrentOwner(owner);
+                }
+            }
+        }
+
+        private void UpdateList()
+        {
+            // make sure there is a default owner set.
+            ownersService.GetDefaultOwner();
+
+            List<Owner> owners = ownersService.GetList(true);
+
+            tvOwners.BeginUpdate();
+            tvOwners.Nodes.Clear();
+
+            foreach (Owner owner in owners)
+            {
+                TreeNode treeNode = new TreeNode();
+                treeNode.Tag = owner;
+                treeNode.Text = owner.OwnerName;
+
+                if (owner.DefaultOwner)
+                {
+                    treeNode.ForeColor = Color.Blue;
+                    Font font = new Font(tvOwners.Font, FontStyle.Bold);
+                    treeNode.NodeFont = font;
+                }
+
+                tvOwners.Nodes.Add(treeNode);
+            }
+
+            tvOwners.EndUpdate();
+        }
+
+        private void UpdateWorkingOwner()
+        {
+            workingOwner.OwnerName = txtOwnerName.Text;
+            workingOwner.DefaultOwner = chkDefaultOwner.Checked;
         }
     }
 }

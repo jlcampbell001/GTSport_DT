@@ -2,14 +2,15 @@
 using Npgsql;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GTSport_DT.Countries
 {
+    /// <summary>This is the class repository for the countries table.</summary>
+    /// <seealso cref="GTSport_DT.General.SQLRespository{GTSport_DT.Countries.Country}"/>
     public class CountriesRepository : SQLRespository<Country>
     {
+        /// <summary>Initializes a new instance of the <see cref="CountriesRepository"/> class.</summary>
+        /// <param name="npgsqlConnection">The NPGSQL connection.</param>
         public CountriesRepository(NpgsqlConnection npgsqlConnection) : base(npgsqlConnection)
         {
             tableName = "COUNTRIES";
@@ -19,23 +20,9 @@ namespace GTSport_DT.Countries
             insertCommand = "INSERT INTO countries(coukey, coudescription, couregkey) VALUES (@pk, @desc, @regkey)";
         }
 
-        protected override void AddParameters(ref NpgsqlCommand cmd, Country entity)
-        {
-            cmd.Parameters.AddWithValue("pk", entity.PrimaryKey);
-            cmd.Parameters.AddWithValue("desc", entity.Description);
-            cmd.Parameters.AddWithValue("regkey", entity.RegionKey);
-        }
-
-        protected override Country RecordToEntity(NpgsqlDataReader dataReader)
-        {
-            Country country = new Country();
-            country.PrimaryKey = dataReader.GetString(0);
-            country.Description = dataReader.GetString(1);
-            country.RegionKey = dataReader.GetString(2);
-
-            return country;
-        }
-
+        /// <summary>Gets a country entity that matches the passed description.</summary>
+        /// <param name="description">The description to look for.</param>
+        /// <returns>The found country entity or null if one is not found.</returns>
         public Country GetByDescription(string description)
         {
             Country country = null;
@@ -62,6 +49,10 @@ namespace GTSport_DT.Countries
             return country;
         }
 
+        /// <summary>Gets the list of countries that are linked to the passed region key.</summary>
+        /// <param name="regionKey">The region key to match.</param>
+        /// <param name="orderedList">If set to true it will order the list by the description.</param>
+        /// <returns>The list of countries found for the region key.</returns>
         public List<Country> GetListForRegionKey(string regionKey, Boolean orderedList = false)
         {
             List<Country> countries = new List<Country>();
@@ -98,6 +89,29 @@ namespace GTSport_DT.Countries
             cmd.Dispose();
 
             return countries;
+        }
+
+        /// <summary>Adds parameters to a SQL command object based on the passed entity.</summary>
+        /// <param name="cmd">The SQL command object to update.</param>
+        /// <param name="entity">The entity to get data from.</param>
+        protected override void AddParameters(ref NpgsqlCommand cmd, Country entity)
+        {
+            cmd.Parameters.AddWithValue("pk", entity.PrimaryKey);
+            cmd.Parameters.AddWithValue("desc", entity.Description);
+            cmd.Parameters.AddWithValue("regkey", entity.RegionKey);
+        }
+
+        /// <summary>Convert a record retrieved from the database to an entity object.</summary>
+        /// <param name="dataReader">The database reader with the results from a database request.</param>
+        /// <returns>A new entity with the data.</returns>
+        protected override Country RecordToEntity(NpgsqlDataReader dataReader)
+        {
+            Country country = new Country();
+            country.PrimaryKey = dataReader.GetString(0);
+            country.Description = dataReader.GetString(1);
+            country.RegionKey = dataReader.GetString(2);
+
+            return country;
         }
     }
 }

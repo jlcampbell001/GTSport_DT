@@ -2,24 +2,29 @@
 using GTSport_DT.Regions;
 using Npgsql;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GTSport_DT.Countries
 {
+    /// <summary>The validation class for a country record.</summary>
+    /// <seealso cref="GTSport_DT.General.Validation{GTSport_DT.Countries.Country}"/>
     public class CountryValidation : Validation<Country>
     {
         private CountriesRepository countriesRespository;
         private RegionsRepository regionsRepository;
 
+        /// <summary>Initializes a new instance of the <see cref="CountryValidation"/> class.</summary>
+        /// <param name="npgsqlConnection">The NPGSQL connection.</param>
         public CountryValidation(NpgsqlConnection npgsqlConnection) : base(npgsqlConnection)
         {
             countriesRespository = new CountriesRepository(npgsqlConnection);
             regionsRepository = new RegionsRepository(npgsqlConnection);
         }
 
+        /// <summary>Validations done to an country for the passed primary key before it is deleted.</summary>
+        /// <param name="primaryKey">The primary key of the country to delete.</param>
+        /// <exception cref="GTSport_DT.Countries.CountryNotFoundException">
+        /// When the country can not be found to be deleted.
+        /// </exception>
         public override void ValidateDelete(string primaryKey)
         {
             Country country = countriesRespository.GetById(primaryKey);
@@ -30,6 +35,20 @@ namespace GTSport_DT.Countries
             }
         }
 
+        /// <summary>Validations done to a country before it is saved.</summary>
+        /// <param name="validateEntity">The country to validate.</param>
+        /// <exception cref="GTSport_DT.Countries.CountryDescriptionNotSetException">
+        /// If the description is not filled.
+        /// </exception>
+        /// <exception cref="GTSport_DT.Countries.CountryRegionKeyNotSetException">
+        /// If the region key is not filled.
+        /// </exception>
+        /// <exception cref="GTSport_DT.Countries.CountryDescriptionAlreadyExistsException">
+        /// If the description already exists in another country record.
+        /// </exception>
+        /// <exception cref="RegionNotFoundException">
+        /// If the region key is not found in the region table.
+        /// </exception>
         public override void ValidateSave(Country validateEntity)
         {
             if (String.IsNullOrWhiteSpace(validateEntity.Description))
@@ -48,7 +67,7 @@ namespace GTSport_DT.Countries
             {
                 if (String.IsNullOrWhiteSpace(validateEntity.PrimaryKey) || validateEntity.PrimaryKey != country.PrimaryKey)
                 {
-                    throw new CountryDescriptionAlreadyExistsException(CountryDescriptionAlreadyExistsException.CountryDesciprtionAlreadyExistsMsg, validateEntity.Description);
+                    throw new CountryDescriptionAlreadyExistsException(CountryDescriptionAlreadyExistsException.CountryDescriptionAlreadyExistsMsg, validateEntity.Description);
                 }
             }
 

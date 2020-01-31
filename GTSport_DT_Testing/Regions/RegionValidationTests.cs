@@ -70,7 +70,7 @@ namespace GTSport_DT_Testing.Regions
             }
             catch (RegionDescriptionNotSetException rdnse)
             {
-                Assert.AreEqual(RegionDescriptionNotSetException.regionDescriptionNotSet, rdnse.Message);
+                Assert.AreEqual(RegionDescriptionNotSetException.regionDescriptionNotSetMsg, rdnse.Message);
                 throw rdnse;
             }
         }

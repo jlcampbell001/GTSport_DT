@@ -7,20 +7,63 @@ using System.Windows.Forms;
 
 namespace GTSport_DT
 {
+    /// <summary>The main form for the GT sport application.</summary>
+    /// <seealso cref="System.Windows.Forms.Form"/>
     public partial class GTSportForm : Form
     {
-        protected static string cs = "Host=localhost;Port=5433;Username=GTSport;Password=GTSport;Database=GTSport";
-        protected static NpgsqlConnection con;
-
-        protected OwnersService ownersService;
-
+        /// <summary>The current owner the application is working with.</summary>
         public Owner currentOwner = new Owner();
 
+        /// <summary>The connection object to the postgreSQL database.</summary>
+        protected static NpgsqlConnection con;
+
+        /// <summary>The connection string to the database.</summary>
+        protected static string cs = "Host=localhost;Port=5433;Username=GTSport;Password=GTSport;Database=GTSport";
+
+        /// <summary>The owners service.</summary>
+        protected OwnersService ownersService;
+
+        /// <summary>Initializes a new instance of the <see cref="GTSportForm"/> class.</summary>
         public GTSportForm()
         {
             InitializeComponent();
         }
 
+        /// <summary>Sets the current owner.</summary>
+        /// <param name="owner">The owner.</param>
+        public void SetCurrentOwner(Owner owner)
+        {
+            currentOwner = owner;
+
+            tsslCurrentOwner.Text = currentOwner.OwnerName;
+        }
+
+        /// <summary>
+        /// <para>Updates the regions on child forms when a region is changed / added / deleted.</para>
+        /// <para>Called by the regions form.</para>
+        /// </summary>
+        public void UpdateRegionsOnForms()
+        {
+            foreach (Form form in this.MdiChildren)
+            {
+                if (form.Name == "CountriesForm")
+                {
+                    CountriesForm countriesForm = (CountriesForm)form;
+                    countriesForm.UpdateFromOtherForms();
+                }
+            }
+        }
+
+        /// <summary>Raises the <see cref="E:System.Windows.Forms.Form.Closed"/> event.</summary>
+        /// <param name="e">The <see cref="T:System.EventArgs"/> that contains the event data.</param>
+        protected override void OnClosed(EventArgs e)
+        {
+            base.OnClosed(e);
+            con.Close();
+        }
+
+        /// <summary>Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.</summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -33,21 +76,6 @@ namespace GTSport_DT
             SetCurrentOwner(ownersService.GetDefaultOwner());
         }
 
-        protected override void OnClosed(EventArgs e)
-        {
-            base.OnClosed(e);
-            con.Close();
-        }
-
-        private void ownersToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ShowOwnerForm();
-        }
-        private void regionsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            ShowRegionForm();
-        }
-
         private void countriesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowCountryForm();
@@ -58,11 +86,42 @@ namespace GTSport_DT
             this.Close();
         }
 
-        public void SetCurrentOwner(Owner owner)
+        private void ownersToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            currentOwner = owner;
+            ShowOwnerForm();
+        }
 
-            tsslCurrentOwner.Text = currentOwner.OwnerName;
+        private void regionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowRegionForm();
+        }
+
+        private void ShowCountryForm()
+        {
+            Boolean createNewForm = true;
+
+            CountriesForm countryForm = null;
+
+            foreach (Form form in this.MdiChildren)
+            {
+                if (form.Name == "CountriesForm")
+                {
+                    countryForm = (CountriesForm)form;
+                    createNewForm = false;
+                }
+            }
+
+            if (createNewForm)
+            {
+                countryForm = new CountriesForm(con);
+                countryForm.MdiParent = this;
+            }
+
+            if (countryForm != null)
+            {
+                countryForm.Show();
+                countryForm.Activate();
+            }
         }
 
         private void ShowOwnerForm()
@@ -121,49 +180,9 @@ namespace GTSport_DT
             }
         }
 
-        private void ShowCountryForm()
-        {
-            Boolean createNewForm = true;
-
-            CountriesForm countryForm = null;
-
-            foreach (Form form in this.MdiChildren)
-            {
-                if (form.Name == "CountriesForm")
-                {
-                    countryForm = (CountriesForm)form;
-                    createNewForm = false;
-                }
-            }
-
-            if (createNewForm)
-            {
-                countryForm = new CountriesForm(con);
-                countryForm.MdiParent = this;
-            }
-
-            if (countryForm != null)
-            {
-                countryForm.Show();
-                countryForm.Activate();
-            }
-        }
-
         private void tsslCurrentOwner_Click(object sender, EventArgs e)
         {
             ShowOwnerForm();
-        }
-
-        public void UpdateRegionsOnForms()
-        {
-            foreach (Form form in this.MdiChildren)
-            {
-                if (form.Name == "CountriesForm")
-                {
-                    CountriesForm countriesForm = (CountriesForm)form;
-                    countriesForm.UpdateFromOtherForms();
-                }
-            }
         }
     }
 }

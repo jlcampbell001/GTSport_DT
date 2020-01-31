@@ -2,16 +2,12 @@
 using Npgsql;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GTSport_DT.Countries
 {
+    /// <summary>The form that lets a user work with the countries data.</summary>
+    /// <seealso cref="System.Windows.Forms.Form"/>
     public partial class CountriesForm : Form
     {
         private static Regions.Region emptyRegion = new Regions.Region("Empty", "");
@@ -22,11 +18,15 @@ namespace GTSport_DT.Countries
 
         private Country workingCountry = new Country();
 
+        /// <summary>Initializes a new instance of the <see cref="CountriesForm"/> class.</summary>
         public CountriesForm()
         {
             InitializeComponent();
         }
 
+        /// <summary>Initializes a new instance of the <see cref="CountriesForm"/> class.</summary>
+        /// <param name="con">The connection to the postgreSQL database.</param>
+        /// <exception cref="ArgumentNullException">con</exception>
         public CountriesForm(NpgsqlConnection con)
         {
             this.con = con ?? throw new ArgumentNullException(nameof(con));
@@ -34,12 +34,21 @@ namespace GTSport_DT.Countries
             countriesService = new CountriesService(con);
             regionsService = new RegionsService(con);
 
-            // add test data.
-            // AddTestData();
+            // add test data. AddTestData();
 
             InitializeComponent();
         }
 
+        /// <summary>Updates the region drop down list when they are modified in another form.</summary>
+        public void UpdateFromOtherForms()
+        {
+            UpdateRegionList();
+
+            SetToWorkingCountry();
+        }
+
+        /// <summary>Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.</summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -48,33 +57,34 @@ namespace GTSport_DT.Countries
             SetButtons();
         }
 
-        private void tvCountries_AfterSelect(object sender, TreeViewEventArgs e)
+        private void AddTestData()
         {
-            workingCountry = (Country)tvCountries.SelectedNode.Tag;
+            Regions.Region america = regionsService.GetByDescription("AMERICA");
+            Regions.Region eurpoe = regionsService.GetByDescription("EUROPE");
+            Regions.Region asia = regionsService.GetByDescription("ASIA-PACIFIC");
 
-            SetToWorkingCountry();
+            Country country = new Country("", "JAPAN", asia.PrimaryKey);
+            countriesService.Save(ref country);
 
-            SetButtons();
+            country = new Country("", "GERMANY", eurpoe.PrimaryKey);
+            countriesService.Save(ref country);
+
+            country = new Country("", "USA", america.PrimaryKey);
+            countriesService.Save(ref country);
+
+            country = new Country("", "UNITED KINGDOM", eurpoe.PrimaryKey);
+            countriesService.Save(ref country);
+
+            country = new Country("", "FRANCE", eurpoe.PrimaryKey);
+            countriesService.Save(ref country);
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private void btnCancel_Click(object sender, EventArgs e)
         {
-            UpdateWorkingCountry();
-
-            try
-            {
-                countriesService.Save(ref workingCountry);
-
-                UpdateList();
-
-                SetSelected(workingCountry.PrimaryKey);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error");
-            }
+            SetToWorkingCountry();
 
             txtDescription.Focus();
+
             SetButtons();
         }
 
@@ -125,17 +135,24 @@ namespace GTSport_DT.Countries
             SetButtons();
         }
 
-        private void btnCancel_Click(object sender, EventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            SetToWorkingCountry();
+            UpdateWorkingCountry();
+
+            try
+            {
+                countriesService.Save(ref workingCountry);
+
+                UpdateList();
+
+                SetSelected(workingCountry.PrimaryKey);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
 
             txtDescription.Focus();
-
-            SetButtons();
-        }
-        
-        private void txtDescription_TextChanged(object sender, EventArgs e)
-        {
             SetButtons();
         }
 
@@ -144,35 +161,6 @@ namespace GTSport_DT.Countries
             SetButtons();
         }
 
-        // ********************************************************************************
-        /// <summary>
-        /// Update the tree list.
-        /// </summary>
-        // ********************************************************************************
-        private void UpdateList()
-        {
-            List<Country> countries = countriesService.GetList(true);
-
-            tvCountries.BeginUpdate();
-            tvCountries.Nodes.Clear();
-
-            foreach (Country country in countries)
-            {
-                TreeNode treeNode = new TreeNode();
-                treeNode.Tag = country;
-                treeNode.Text = country.Description;
-
-                tvCountries.Nodes.Add(treeNode);
-            }
-
-            tvCountries.EndUpdate();
-        }
-
-        // ********************************************************************************
-        /// <summary>
-        /// Enabled / Disable the buttons.
-        /// </summary>
-        // ********************************************************************************
         private void SetButtons()
         {
             if (workingCountry.Description != txtDescription.Text || workingCountry.RegionKey != (string)cmbRegion.SelectedValue)
@@ -196,52 +184,6 @@ namespace GTSport_DT.Countries
             }
         }
 
-        private void UpdateRegionList()
-        {
-            List<Regions.Region> regions = new List<Regions.Region>();
-
-            regions.Add(emptyRegion);
-            regions.AddRange(regionsService.GetList(orderedList: true));
-
-            cmbRegion.ValueMember = "PrimaryKey";
-            cmbRegion.DisplayMember = "Description";
-            cmbRegion.DataSource = regions;
-        }
-
-        private void AddTestData()
-        {
-            Regions.Region america = regionsService.GetByDescription("AMERICA");
-            Regions.Region eurpoe = regionsService.GetByDescription("EUROPE");
-            Regions.Region asia = regionsService.GetByDescription("ASIA-PACIFIC");
-
-            Country country = new Country("", "JAPAN", asia.PrimaryKey);
-            countriesService.Save(ref country);
-
-            country = new Country("", "GERMANY", eurpoe.PrimaryKey);
-            countriesService.Save(ref country);
-
-            country = new Country("", "USA", america.PrimaryKey);
-            countriesService.Save(ref country);
-
-            country = new Country("", "UNITED KINGDOM", eurpoe.PrimaryKey);
-            countriesService.Save(ref country);
-
-            country = new Country("", "FRANCE", eurpoe.PrimaryKey);
-            countriesService.Save(ref country);
-        }
-
-        private void SetToWorkingCountry()
-        {
-            txtDescription.Text = workingCountry.Description;
-            cmbRegion.SelectedValue = workingCountry.RegionKey;
-        }
-
-        private void UpdateWorkingCountry()
-        {
-            workingCountry.Description = txtDescription.Text;
-            workingCountry.RegionKey = (string)cmbRegion.SelectedValue;
-        }
-
         // ********************************************************************************
         /// <summary>
         /// Sets the tree views selected country to the country with the passed primary key.
@@ -263,11 +205,64 @@ namespace GTSport_DT.Countries
             }
         }
 
-        public void UpdateFromOtherForms()
+        private void SetToWorkingCountry()
         {
-            UpdateRegionList();
+            txtDescription.Text = workingCountry.Description;
+            cmbRegion.SelectedValue = workingCountry.RegionKey;
+        }
+
+        private void tvCountries_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            workingCountry = (Country)tvCountries.SelectedNode.Tag;
 
             SetToWorkingCountry();
+
+            SetButtons();
+        }
+
+        private void txtDescription_TextChanged(object sender, EventArgs e)
+        {
+            SetButtons();
+        }
+
+        // ********************************************************************************
+        /// <summary>Update the tree list.</summary>
+        // ********************************************************************************
+        private void UpdateList()
+        {
+            List<Country> countries = countriesService.GetList(true);
+
+            tvCountries.BeginUpdate();
+            tvCountries.Nodes.Clear();
+
+            foreach (Country country in countries)
+            {
+                TreeNode treeNode = new TreeNode();
+                treeNode.Tag = country;
+                treeNode.Text = country.Description;
+
+                tvCountries.Nodes.Add(treeNode);
+            }
+
+            tvCountries.EndUpdate();
+        }
+
+        private void UpdateRegionList()
+        {
+            List<Regions.Region> regions = new List<Regions.Region>();
+
+            regions.Add(emptyRegion);
+            regions.AddRange(regionsService.GetList(orderedList: true));
+
+            cmbRegion.ValueMember = "PrimaryKey";
+            cmbRegion.DisplayMember = "Description";
+            cmbRegion.DataSource = regions;
+        }
+
+        private void UpdateWorkingCountry()
+        {
+            workingCountry.Description = txtDescription.Text;
+            workingCountry.RegionKey = (string)cmbRegion.SelectedValue;
         }
     }
 }
