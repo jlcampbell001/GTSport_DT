@@ -59,6 +59,12 @@
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.0.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MSTest.TestFramework.2.0.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\MSTest.TestFramework.2.0.0\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
+    </Reference>
     <Reference Include="Npgsql, Version=4.1.2.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
       <HintPath>..\packages\Npgsql.4.1.2\lib\net461\Npgsql.dll</HintPath>
     </Reference>
@@ -129,6 +135,8 @@
     <Compile Include="GTSportForm.Designer.cs">
       <DependentUpon>GTSportForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Manufacturers\Manufacturer.cs" />
+    <Compile Include="Manufacturers\ManufacturersRepository.cs" />
     <Compile Include="Owners\Owner.cs" />
     <Compile Include="Owners\OwnerNameAlreadyExistsException.cs" />
     <Compile Include="Owners\OwnerNameNotSetException.cs" />
