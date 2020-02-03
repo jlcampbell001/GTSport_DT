@@ -110,6 +110,8 @@ namespace GTSport_DT.Countries
                             SetToWorkingCountry();
                         }
 
+                        UpdateOtherForms();
+
                         tvCountries.Focus();
                     }
                     catch (Exception ex)
@@ -146,6 +148,8 @@ namespace GTSport_DT.Countries
                 UpdateList();
 
                 SetSelected(workingCountry.PrimaryKey);
+
+                UpdateOtherForms();
             }
             catch (Exception ex)
             {
@@ -184,12 +188,6 @@ namespace GTSport_DT.Countries
             }
         }
 
-        // ********************************************************************************
-        /// <summary>
-        /// Sets the tree views selected country to the country with the passed primary key.
-        /// </summary>
-        /// <param name="primaryKey"></param>
-        // ********************************************************************************
         private void SetSelected(string primaryKey)
         {
             if (!String.IsNullOrWhiteSpace(primaryKey))
@@ -225,9 +223,6 @@ namespace GTSport_DT.Countries
             SetButtons();
         }
 
-        // ********************************************************************************
-        /// <summary>Update the tree list.</summary>
-        // ********************************************************************************
         private void UpdateList()
         {
             List<Country> countries = countriesService.GetList(true);
@@ -245,6 +240,13 @@ namespace GTSport_DT.Countries
             }
 
             tvCountries.EndUpdate();
+        }
+
+        private void UpdateOtherForms()
+        {
+            GTSportForm workingParentForm = (GTSportForm)this.ParentForm;
+
+            workingParentForm.UpdateCountriesOnForms();
         }
 
         private void UpdateRegionList()

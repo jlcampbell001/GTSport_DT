@@ -1,4 +1,5 @@
 ﻿using GTSport_DT.Countries;
+using GTSport_DT.Manufacturers;
 using GTSport_DT.Regions;
 using GTSport_DT_Testing.General;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using static GTSport_DT_Testing.Countries.CountriesForTesting;
 using static GTSport_DT_Testing.Regions.RegionsForTesting;
+using static GTSport_DT_Testing.Manufacturers.ManufacturersForTesting;
 
 namespace GTSport_DT_Testing.Countries
 {
@@ -17,6 +19,7 @@ namespace GTSport_DT_Testing.Countries
         private static CountryValidation countryValidation;
         private static CountriesRepository countriesRespository;
         private static RegionsRepository regionsRepository;
+        private static ManufacturersRepository manufacturersRepository;
 
         private const string badRegionKey = "X!X900000001";
         private const string badCountryKey = "C!C999999999";
@@ -30,6 +33,7 @@ namespace GTSport_DT_Testing.Countries
             countryValidation = new CountryValidation(con);
             countriesRespository = new CountriesRepository(con);
             regionsRepository = new RegionsRepository(con);
+            manufacturersRepository = new ManufacturersRepository(con);
 
             regionsRepository.Save(Region1);
             regionsRepository.Save(Region2);
@@ -38,6 +42,8 @@ namespace GTSport_DT_Testing.Countries
             countriesRespository.Save(Country1);
             countriesRespository.Save(Country2);
             countriesRespository.Save(Country3);
+
+            manufacturersRepository.Save(Manufacturer1);
         }
 
         [TestMethod]
@@ -45,6 +51,8 @@ namespace GTSport_DT_Testing.Countries
         {
             if (con != null)
             {
+                manufacturersRepository.Delete(Manufacturer1.PrimaryKey);
+
                 countriesRespository.Delete(Country1.PrimaryKey);
                 countriesRespository.Delete(Country2.PrimaryKey);
                 countriesRespository.Delete(Country3.PrimaryKey);
@@ -148,6 +156,19 @@ namespace GTSport_DT_Testing.Countries
             {
                 Assert.AreEqual(CountryNotFoundException.CountryKeyNotFoundMsg, cnfe.Message);
                 throw cnfe;
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(CountryInUseException))]
+        public void A080_ValidationDeleteCountryInUse()
+        {
+            try
+            {
+               countryValidation.ValidateDelete(Manufacturer1.CountryKey);
+            } catch (CountryInUseException ciue) {
+                Assert.AreEqual(CountryInUseException.CountryInUseCanNotBeDeletedManufacturerMsg, ciue.Message);
+                throw ciue;
             }
         }
     }

@@ -1,7 +1,9 @@
 ﻿using GTSport_DT.General;
+using GTSport_DT.Manufacturers;
 using GTSport_DT.Regions;
 using Npgsql;
 using System;
+using System.Collections.Generic;
 
 namespace GTSport_DT.Countries
 {
@@ -11,6 +13,7 @@ namespace GTSport_DT.Countries
     {
         private CountriesRepository countriesRespository;
         private RegionsRepository regionsRepository;
+        private ManufacturersRepository manufacturersRepository;
 
         /// <summary>Initializes a new instance of the <see cref="CountryValidation"/> class.</summary>
         /// <param name="npgsqlConnection">The NPGSQL connection.</param>
@@ -18,13 +21,13 @@ namespace GTSport_DT.Countries
         {
             countriesRespository = new CountriesRepository(npgsqlConnection);
             regionsRepository = new RegionsRepository(npgsqlConnection);
+            manufacturersRepository = new ManufacturersRepository(npgsqlConnection);
         }
 
         /// <summary>Validations done to an country for the passed primary key before it is deleted.</summary>
         /// <param name="primaryKey">The primary key of the country to delete.</param>
-        /// <exception cref="GTSport_DT.Countries.CountryNotFoundException">
-        /// When the country can not be found to be deleted.
-        /// </exception>
+        /// <exception cref="GTSport_DT.Countries.CountryNotFoundException">When the country can not be found to be deleted.</exception>
+        /// <exception cref="GTSport_DT.Countries.CountryInUseException">When the country is used in one or more manufactures and the user tries to delete.</exception>
         public override void ValidateDelete(string primaryKey)
         {
             Country country = countriesRespository.GetById(primaryKey);
@@ -32,6 +35,13 @@ namespace GTSport_DT.Countries
             if (country == null)
             {
                 throw new CountryNotFoundException(CountryNotFoundException.CountryKeyNotFoundMsg, primaryKey);
+            }
+
+            List<Manufacturer> manufacturers = manufacturersRepository.GetListForCountryKey(primaryKey);
+
+            if (manufacturers.Count > 0)
+            {
+                throw new CountryInUseException(CountryInUseException.CountryInUseCanNotBeDeletedManufacturerMsg);
             }
         }
 

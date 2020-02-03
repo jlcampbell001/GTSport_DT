@@ -1,4 +1,5 @@
 ﻿using GTSport_DT.Countries;
+using GTSport_DT.Manufacturers;
 using GTSport_DT.Owners;
 using GTSport_DT.Regions;
 using Npgsql;
@@ -36,6 +37,22 @@ namespace GTSport_DT
             currentOwner = owner;
 
             tsslCurrentOwner.Text = currentOwner.OwnerName;
+        }
+
+        /// <summary>
+        /// <para>Updates the countries on child forms when a country is changed / added / deleted.</para>
+        /// <para>Called by the countries form.</para>
+        /// </summary>
+        public void UpdateCountriesOnForms()
+        {
+            foreach (Form form in this.MdiChildren)
+            {
+                if (form.Name == "ManufacturersForm")
+                {
+                    ManufacturersForm manufacturersForm = (ManufacturersForm)form;
+                    manufacturersForm.UpdateFromOtherForms();
+                }
+            }
         }
 
         /// <summary>
@@ -86,6 +103,11 @@ namespace GTSport_DT
             this.Close();
         }
 
+        private void manufacturersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowManufacturerForm();
+        }
+
         private void ownersToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowOwnerForm();
@@ -121,6 +143,34 @@ namespace GTSport_DT
             {
                 countryForm.Show();
                 countryForm.Activate();
+            }
+        }
+
+        private void ShowManufacturerForm()
+        {
+            Boolean createNewForm = true;
+
+            ManufacturersForm manufacturersForm = null;
+
+            foreach (Form form in this.MdiChildren)
+            {
+                if (form.Name == "ManufacturersForm")
+                {
+                    manufacturersForm = (ManufacturersForm)form;
+                    createNewForm = false;
+                }
+            }
+
+            if (createNewForm)
+            {
+                manufacturersForm = new ManufacturersForm(con);
+                manufacturersForm.MdiParent = this;
+            }
+
+            if (manufacturersForm != null)
+            {
+                manufacturersForm.Show();
+                manufacturersForm.Activate();
             }
         }
 

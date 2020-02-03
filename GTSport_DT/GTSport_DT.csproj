@@ -136,7 +136,20 @@
       <DependentUpon>GTSportForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Manufacturers\Manufacturer.cs" />
+    <Compile Include="Manufacturers\ManufacturerCountryKeyNotSetException.cs" />
+    <Compile Include="Manufacturers\ManufacturerInUseException.cs" />
+    <Compile Include="Manufacturers\ManufacturerNameAlreadyExistsException.cs" />
+    <Compile Include="Manufacturers\ManufacturerNameNotSetException.cs" />
+    <Compile Include="Manufacturers\ManufacturerNotFoundException.cs" />
+    <Compile Include="Manufacturers\ManufacturersForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Manufacturers\ManufacturersForm.Designer.cs">
+      <DependentUpon>ManufacturersForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Manufacturers\ManufacturersRepository.cs" />
+    <Compile Include="Manufacturers\ManufacturersService.cs" />
+    <Compile Include="Manufacturers\ManufacturerValidation.cs" />
     <Compile Include="Owners\Owner.cs" />
     <Compile Include="Owners\OwnerNameAlreadyExistsException.cs" />
     <Compile Include="Owners\OwnerNameNotSetException.cs" />
@@ -171,6 +184,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GTSportForm.resx">
       <DependentUpon>GTSportForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Manufacturers\ManufacturersForm.resx">
+      <DependentUpon>ManufacturersForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Owners\OwnersForm.resx">
       <DependentUpon>OwnersForm.cs</DependentUpon>
