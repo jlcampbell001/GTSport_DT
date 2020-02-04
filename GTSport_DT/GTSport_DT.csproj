@@ -106,6 +106,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Cars\Aspiration.cs" />
+    <Compile Include="Cars\Car.cs" />
+    <Compile Include="Cars\CarCategory.cs" />
+    <Compile Include="Cars\CarSearchCriteria.cs" />
+    <Compile Include="Cars\CarsRepository.cs" />
+    <Compile Include="Cars\CarStatistic.cs" />
+    <Compile Include="Cars\DriveTrain.cs" />
     <Compile Include="Countries\CountriesForm.cs">
       <SubType>Form</SubType>
     </Compile>
