@@ -56,7 +56,7 @@ namespace GTSport_DT.General
             // validate
             validation.ValidateDelete(primaryKey);
 
-            repository.Delete(primaryKey);
+            repository.DeleteAndFlush(primaryKey);
         }
 
         /// <summary>Retrieves an entity from the table with the passed primary key.</summary>
@@ -124,7 +124,7 @@ namespace GTSport_DT.General
                 entity.PrimaryKey = keySequenceService.GetNextKey(repository.tableName, primaryKeyPrefix);
             }
 
-            repository.Save(entity);
+            repository.SaveAndFlush(entity);
         }
     }
 }

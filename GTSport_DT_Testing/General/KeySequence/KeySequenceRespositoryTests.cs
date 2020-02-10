@@ -40,7 +40,7 @@ namespace GTSport_DT_Testing
             keySequence.TableName = testTableName;
             keySequence.LastKeyValue = testInitalValue;
 
-            keySequenceRepository.Save(keySequence);
+            keySequenceRepository.SaveAndFlush(keySequence);
 
             KeySequence keySequenceCheck = keySequenceRepository.GetById(testTableName);
 
@@ -59,7 +59,7 @@ namespace GTSport_DT_Testing
             keySequence.TableName = testTableName;
             keySequence.LastKeyValue = updateValue;
 
-            keySequenceRepository.Save(keySequence);
+            keySequenceRepository.SaveAndFlush(keySequence);
 
             KeySequence keySequenceCheck = keySequenceRepository.GetById(testTableName);
 
@@ -72,7 +72,7 @@ namespace GTSport_DT_Testing
         [TestMethod]
         public void A030_DeleteTest()
         {
-            keySequenceRepository.Delete(testTableName);
+            keySequenceRepository.DeleteAndFlush(testTableName);
 
             KeySequence keySequenceCheck = keySequenceRepository.GetById(testTableName);
 

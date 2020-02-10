@@ -2,6 +2,7 @@
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,135 +17,73 @@ namespace GTSport_DT.Cars
             tableName = "CARS";
             idField = "carkey";
             getListOrderByField = "carname";
-            updateCommand = "UPDATE cars SET carname = @name, carmankey = @mankey, caryear = @year, carcategory = @category, "
-                + "carprice = @price, cardisplacementcc = @displacement, carmaxpower = @maxpower, carpowerrpm = @powerrpm, "
-                + "cartorqueftlb = @torqueftlb, cartorquerpm = @torquerpm, cardrivetrain = @drivetrain, caraspiration = @aspiration, "
-                + "carlength = @length, carwidth = @width, carheight = @height, carweight = @weight, carmaxspeed = @maxspeed, "
-                + "caracceleration = @acceleration, carbraking = @braking, carcornering = @cornering, carstability = @stability "
-                + "WHERE carkey = @pk";
-            insertCommand = "INSERT INTO cars(carkey, carname, carmankey, caryear, carcategory, carprice, cardisplacementcc, "
-                +"carmaxpower, carpowerrpm, cartorqueftlb, cartorquerpm, cardrivetrain, caraspiration, carlength, carwidth, "
-                + "carheight, carweight, carmaxspeed, caracceleration, carbraking, carcornering, carstability) "
-                + "VALUES (@pk, @name, @mankey, @year, @category, @price, @displacement, @maxpower, @powerrpm, @torqueftlb, " 
-                + "@torquerpm, @drivetrain, @aspiration, @length, @width, @height, @weight, @maxspeed, @acceleration, @braking, "
-                + "@cornering, @stability)";
-        }
-
-        protected override void AddParameters(ref NpgsqlCommand cmd, Car entity)
-        {
-            cmd.Parameters.AddWithValue("pk", entity.PrimaryKey);
-            cmd.Parameters.AddWithValue("name", entity.Name);
-            cmd.Parameters.AddWithValue("mankey", entity.ManufacturerKey);
-            cmd.Parameters.AddWithValue("year", entity.Year);
-            cmd.Parameters.AddWithValue("category", entity.Category.DBValue);
-            cmd.Parameters.AddWithValue("price", entity.Price);
-            cmd.Parameters.AddWithValue("displacement", entity.DisplacementCC);
-            cmd.Parameters.AddWithValue("maxpower", entity.MaxPower);
-            cmd.Parameters.AddWithValue("powerrpm", entity.PowerRPM);
-            cmd.Parameters.AddWithValue("torqueftlb", entity.TorqueFTLB);
-            cmd.Parameters.AddWithValue("torquerpm", entity.TorqueRPM);
-            cmd.Parameters.AddWithValue("drivetrain", entity.DriveTrain);
-            cmd.Parameters.AddWithValue("aspiration", entity.Aspiration);
-            cmd.Parameters.AddWithValue("length", entity.Length);
-            cmd.Parameters.AddWithValue("width", entity.Width);
-            cmd.Parameters.AddWithValue("height", entity.Height);
-            cmd.Parameters.AddWithValue("weight", entity.Weight);
-            cmd.Parameters.AddWithValue("maxspeed", entity.MaxSpeed);
-            cmd.Parameters.AddWithValue("acceleration", entity.Acceleration);
-            cmd.Parameters.AddWithValue("braking", entity.Braking);
-            cmd.Parameters.AddWithValue("cornering", entity.Cornering);
-            cmd.Parameters.AddWithValue("stability", entity.Stability);
         }
 
         protected override Car RecordToEntity(NpgsqlDataReader dataReader)
         {
             Car car = new Car();
-            car.PrimaryKey = dataReader.GetString(0);
-            car.Acceleration = dataReader.GetDouble(1);
-            car.Aspiration = dataReader.GetString(2);
-            car.Braking = dataReader.GetDouble(3);
-            car.Category = GetCategoryByDBValue(dataReader.GetString(4));
-            car.Cornering = dataReader.GetDouble(5);
-            car.DisplacementCC = dataReader.GetString(6);
-            car.DriveTrain = dataReader.GetString(7);
-            car.Height = dataReader.GetDouble(8);
-            car.Length = dataReader.GetDouble(9);
-            car.ManufacturerKey = dataReader.GetString(10);
-            car.MaxPower = dataReader.GetInt32(11);
-            car.MaxSpeed = dataReader.GetDouble(12);
-            car.Name = dataReader.GetString(13);
-            car.PowerRPM = dataReader.GetString(14);
-            car.Price = dataReader.GetDouble(15);
-            car.Stability = dataReader.GetDouble(16);
-            car.TorqueFTLB = dataReader.GetDouble(17);
-            car.TorqueRPM = dataReader.GetString(18);
-            car.Weight = dataReader.GetDouble(19);
-            car.Width = dataReader.GetDouble(20);
-            car.Year = dataReader.GetInt32(21);
+            car.PrimaryKey = dataReader.GetString(dataReader.GetOrdinal("carkey"));
+            car.Acceleration = dataReader.GetDouble(dataReader.GetOrdinal("caracceleration"));
+            car.Aspiration = dataReader.GetString(dataReader.GetOrdinal("caraspiration"));
+            car.Braking = dataReader.GetDouble(dataReader.GetOrdinal("carbraking"));
+            car.Category = GetCategoryByDBValue(dataReader.GetString(dataReader.GetOrdinal("carcategory")));
+            car.Cornering = dataReader.GetDouble(dataReader.GetOrdinal("carcornering"));
+            car.DisplacementCC = dataReader.GetString(dataReader.GetOrdinal("cardisplacementcc"));
+            car.DriveTrain = dataReader.GetString(dataReader.GetOrdinal("cardrivetrain"));
+            car.Height = dataReader.GetDouble(dataReader.GetOrdinal("carheight"));
+            car.Length = dataReader.GetDouble(dataReader.GetOrdinal("carlength"));
+            car.ManufacturerKey = dataReader.GetString(dataReader.GetOrdinal("carmankey"));
+            car.MaxPower = dataReader.GetInt32(dataReader.GetOrdinal("carmaxpower"));
+            car.MaxSpeed = dataReader.GetDouble(dataReader.GetOrdinal("carmaxspeed"));
+            car.Name = dataReader.GetString(dataReader.GetOrdinal("carname"));
+            car.PowerRPM = dataReader.GetString(dataReader.GetOrdinal("carpowerrpm"));
+            car.Price = dataReader.GetDouble(dataReader.GetOrdinal("carprice"));
+            car.Stability = dataReader.GetDouble(dataReader.GetOrdinal("carstability"));
+            car.TorqueFTLB = dataReader.GetDouble(dataReader.GetOrdinal("cartorqueftlb"));
+            car.TorqueRPM = dataReader.GetString(dataReader.GetOrdinal("cartorquerpm"));
+            car.Weight = dataReader.GetDouble(dataReader.GetOrdinal("carweight"));
+            car.Width = dataReader.GetDouble(dataReader.GetOrdinal("carwidth"));
+            car.Year = dataReader.GetInt32(dataReader.GetOrdinal("caryear"));
 
             return car;
         }
 
+        protected override void UpdateRow(ref DataRow dataRow, Car entity)
+        {
+            dataRow["carkey"] = entity.PrimaryKey;
+            dataRow["caracceleration"] = entity.Acceleration;
+            dataRow["caraspiration"] = entity.Aspiration;
+            dataRow["carbraking"] = entity.Braking;
+            dataRow["carcategory"] = entity.Category.DBValue;
+            dataRow["carcornering"] = entity.Cornering;
+            dataRow["cardisplacementcc"] = entity.DisplacementCC;
+            dataRow["cardrivetrain"] = entity.DriveTrain;
+            dataRow["carheight"] = entity.Height;
+            dataRow["carlength"] = entity.Length;
+            dataRow["carmankey"] = entity.ManufacturerKey;
+            dataRow["carmaxpower"] = entity.MaxPower;
+            dataRow["carmaxspeed"] = entity.MaxSpeed;
+            dataRow["carname"] = entity.Name;
+            dataRow["carpowerrpm"] = entity.PowerRPM;
+            dataRow["carprice"] = entity.Price;
+            dataRow["carstability"] = entity.Stability;
+            dataRow["cartorqueftlb"] = entity.TorqueFTLB;
+            dataRow["cartorquerpm"] = entity.TorqueRPM;
+            dataRow["carweight"] = entity.Weight;
+            dataRow["carwidth"] = entity.Width;
+            dataRow["caryear"] = entity.Year;
+        }
+
         public Car GetByName(string name)
         {
-            Car car = null;
-
-            var cmd = new NpgsqlCommand();
-
-            cmd.Connection = npgsqlConnection;
-            cmd.CommandText = "SELECT * FROM cars WHERE carname = @name";
-
-            cmd.Parameters.AddWithValue("name", name);
-            cmd.Prepare();
-
-            NpgsqlDataReader dataReader = cmd.ExecuteReader();
-
-            if (dataReader.Read())
-            {
-                car = RecordToEntity(dataReader);
-            }
-
-            dataReader.Close();
-
-            cmd.Dispose();
+            Car car = GetByFieldString(name, "carname");
 
             return car;
         }
 
         public List<Car> GetListForManufacturerKey(string manufacturerKey, Boolean orderedList = false)
         {
-            List<Car> cars = new List<Car>();
-
-            var cmd = new NpgsqlCommand();
-
-            cmd.Connection = npgsqlConnection;
-            cmd.CommandText = "SELECT * FROM cars WHERE carmankey = @mankey";
-
-            if (orderedList)
-            {
-                if (String.IsNullOrWhiteSpace(getListOrderByField))
-                {
-                    getListOrderByField = idField;
-                }
-
-                cmd.CommandText = cmd.CommandText + " ORDER BY " + getListOrderByField;
-            }
-
-            cmd.Parameters.AddWithValue("mankey", manufacturerKey);
-            cmd.Prepare();
-
-            NpgsqlDataReader dataReader = cmd.ExecuteReader();
-
-            while (dataReader.Read())
-            {
-                Car car = RecordToEntity(dataReader);
-
-                cars.Add(car);
-            }
-
-            dataReader.Close();
-
-            cmd.Dispose();
+            List<Car> cars = GetListForFieldString(manufacturerKey, "carmankey", orderedList: orderedList);
 
             return cars;
         }
@@ -205,9 +144,103 @@ namespace GTSport_DT.Cars
             cmd.Connection = npgsqlConnection;
             cmd.CommandText = "SELECT * FROM cars ";
 
+            cmd.CommandText += AddJoins(carSearchCriteria);
+
+            whereClause += SetCategoryRange(ref cmd, carSearchCriteria);
+
+            whereClause += AddWhereAnd(whereClause.Length, SetYearRange(ref cmd, carSearchCriteria));
+
+            whereClause += AddWhereAnd(whereClause.Length, SetMaxPowerRange(ref cmd, carSearchCriteria));
+
+            whereClause += AddWhereAnd(whereClause.Length, SetDriveTrainCondition(ref cmd, carSearchCriteria));
+
+            whereClause += AddWhereAnd(whereClause.Length, SetManufacturerCondition(ref cmd, carSearchCriteria));
+
+            whereClause += AddWhereAnd(whereClause.Length, SetCountryCondition(ref cmd, carSearchCriteria));
+
+            whereClause += AddWhereAnd(whereClause.Length, SetRegionCondition(ref cmd, carSearchCriteria));
+
+            if (!String.IsNullOrWhiteSpace(whereClause))
+            {
+                cmd.CommandText += " WHERE " + whereClause;
+            }
+
+            if (orderedList)
+            {
+                if (String.IsNullOrWhiteSpace(getListOrderByField))
+                {
+                    getListOrderByField = idField;
+                }
+
+                cmd.CommandText +=  " ORDER BY " + getListOrderByField;
+            }
+            else
+            {
+                cmd.CommandText +=  " ORDER BY " + idField;
+            }
+
+            cmd.Prepare();
+
+            NpgsqlDataReader dataReader = cmd.ExecuteReader();
+
+            while (dataReader.Read())
+            {
+                Car car = RecordToEntity(dataReader);
+
+                cars.Add(car);
+            }
+
+            dataReader.Close();
+
+            cmd.Dispose();
+
+            return cars;
+        }
+
+        private string AddJoins(CarSearchCriteria carSearchCriteria)
+        {
+            string joinClause = "";
+
+            if (carSearchCriteria.ManufacturerName != null 
+                || carSearchCriteria.CountryDescription != null
+                || carSearchCriteria.RegionDescription != null)
+            {
+                joinClause += " INNER JOIN manufacturers on cars.carmankey = manufacturers.mankey ";
+            }
+
+            if (carSearchCriteria.CountryDescription != null
+                || carSearchCriteria.RegionDescription != null)
+            {
+                joinClause += " INNER JOIN countries on manufacturers.mancoukey = countries.coukey ";
+            }
+
+            if (carSearchCriteria.RegionDescription != null)
+            {
+                joinClause += " INNER JOIN regions on countries.couregkey = regions.regkey ";
+            }
+
+            return joinClause;
+        }
+
+        private string AddWhereAnd(int whereLength, string additionalWhere)
+        {
+            string whereClause = additionalWhere;
+
+            if (whereLength > 0 && additionalWhere.Length > 0)
+            {
+                whereClause = " AND " + additionalWhere;
+            }
+
+            return whereClause;
+        }
+
+        private string SetCategoryRange(ref NpgsqlCommand cmd, CarSearchCriteria carSearchCriteria)
+        {
+            string whereClause = "";
+
             if (carSearchCriteria.CategoryFrom != null || carSearchCriteria.CategoryTo != null)
             {
-                whereClause = whereClause + " carcategory BETWEEN @mincategory AND @maxcategory ";
+                whereClause = " carcategory BETWEEN @mincategory AND @maxcategory ";
 
                 string minCategory = CarCategory.Empty.DBValue;
                 string maxCategory = CarCategory.Max.DBValue;
@@ -226,38 +259,119 @@ namespace GTSport_DT.Cars
                 cmd.Parameters.AddWithValue("maxcategory", maxCategory);
             }
 
-            if (!String.IsNullOrWhiteSpace(whereClause))
-            {
-                cmd.CommandText = cmd.CommandText + " WHERE " + whereClause;
-            }
+            return whereClause;
+        }
 
-            if (orderedList)
+        private string SetYearRange(ref NpgsqlCommand cmd, CarSearchCriteria carSearchCriteria)
+        {
+            string whereClause = "";
+
+            if (carSearchCriteria.YearFrom >= 0 || carSearchCriteria.YearTo >= 0)
             {
-                if (String.IsNullOrWhiteSpace(getListOrderByField))
+                whereClause = " caryear BETWEEN @minyear AND @maxyear ";
+
+                int minYear = 0;
+                int maxYear = int.MaxValue;
+
+                if (carSearchCriteria.YearFrom >= 0)
                 {
-                    getListOrderByField = idField;
+                    minYear = carSearchCriteria.YearFrom;
                 }
 
-                cmd.CommandText = cmd.CommandText + " ORDER BY " + getListOrderByField;
+                if (carSearchCriteria.YearTo >= 0)
+                {
+                    maxYear = carSearchCriteria.YearTo;
+                }
+
+                cmd.Parameters.AddWithValue("minyear", minYear);
+                cmd.Parameters.AddWithValue("maxyear", maxYear);
             }
 
-//            cmd.Parameters.AddWithValue("mankey", manufacturerKey);
-            cmd.Prepare();
+            return whereClause;
+        }
 
-            NpgsqlDataReader dataReader = cmd.ExecuteReader();
+        private string SetMaxPowerRange(ref NpgsqlCommand cmd, CarSearchCriteria carSearchCriteria)
+        {
+            string whereClause = "";
 
-            while (dataReader.Read())
+            if (carSearchCriteria.MaxPowerFrom >= 0 || carSearchCriteria.MaxPowerTo >= 0)
             {
-                Car car = RecordToEntity(dataReader);
+                whereClause = " carmaxpower BETWEEN @minmaxpower AND @maxmaxpower ";
 
-                cars.Add(car);
+                int minMaxPower = 0;
+                int maxMaxPower = int.MaxValue;
+
+                if (carSearchCriteria.MaxPowerFrom >= 0)
+                {
+                    minMaxPower = carSearchCriteria.MaxPowerFrom;
+                }
+
+                if (carSearchCriteria.MaxPowerTo >= 0)
+                {
+                    maxMaxPower = carSearchCriteria.MaxPowerTo;
+                }
+
+                cmd.Parameters.AddWithValue("minmaxpower", minMaxPower);
+                cmd.Parameters.AddWithValue("maxmaxpower", maxMaxPower);
             }
 
-            dataReader.Close();
+            return whereClause;
+        }
 
-            cmd.Dispose();
+        private string SetDriveTrainCondition(ref NpgsqlCommand cmd, CarSearchCriteria carSearchCriteria)
+        {
+            string whereClause = "";
 
-            return cars;
+            if (carSearchCriteria.DriveTrain != null)
+            {
+                whereClause = " cardrivetrain = @drivetrain ";
+
+                cmd.Parameters.AddWithValue("drivetrain", carSearchCriteria.DriveTrain);
+            }
+
+            return whereClause;
+        }
+
+        private string SetManufacturerCondition(ref NpgsqlCommand cmd, CarSearchCriteria carSearchCriteria)
+        {
+            string whereClause = "";
+
+            if (carSearchCriteria.ManufacturerName != null)
+            {
+                whereClause = " manname = @manufacturername ";
+
+                cmd.Parameters.AddWithValue("manufacturername", carSearchCriteria.ManufacturerName);
+            }
+
+            return whereClause;
+        }
+
+        private string SetCountryCondition(ref NpgsqlCommand cmd, CarSearchCriteria carSearchCriteria)
+        {
+            string whereClause = "";
+
+            if (carSearchCriteria.CountryDescription != null)
+            {
+                whereClause = " coudescription = @countrydescription ";
+
+                cmd.Parameters.AddWithValue("countrydescription", carSearchCriteria.CountryDescription);
+            }
+
+            return whereClause;
+        }
+
+        private string SetRegionCondition(ref NpgsqlCommand cmd, CarSearchCriteria carSearchCriteria)
+        {
+            string whereClause = "";
+
+            if (carSearchCriteria.RegionDescription != null)
+            {
+                whereClause = " regdescription = @regiondescription ";
+
+                cmd.Parameters.AddWithValue("regiondescription", carSearchCriteria.RegionDescription);
+            }
+
+            return whereClause;
         }
     }
 }

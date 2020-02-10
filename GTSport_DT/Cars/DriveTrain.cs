@@ -13,7 +13,7 @@ namespace GTSport_DT.Cars
         public const string FR = "FR";
         public const string MR = "MR";
         public const string RR = "RR";
-        public const string Empty = "";
+        public const string Empty = " ";
 
         public static readonly string[] DriveTrains = { Empty, FourWD, FF, FR, MR, RR };
     }

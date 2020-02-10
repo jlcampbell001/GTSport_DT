@@ -38,12 +38,14 @@ namespace GTSport_DT_Testing.Countries
             regionsRepository.Save(Region1);
             regionsRepository.Save(Region2);
             regionsRepository.Save(Region3);
+            regionsRepository.Flush();
 
             countriesRespository.Save(Country1);
             countriesRespository.Save(Country2);
             countriesRespository.Save(Country3);
+            countriesRespository.Flush();
 
-            manufacturersRepository.Save(Manufacturer1);
+            manufacturersRepository.SaveAndFlush(Manufacturer1);
         }
 
         [TestMethod]
@@ -51,15 +53,19 @@ namespace GTSport_DT_Testing.Countries
         {
             if (con != null)
             {
-                manufacturersRepository.Delete(Manufacturer1.PrimaryKey);
+                manufacturersRepository.DeleteAndFlush(Manufacturer1.PrimaryKey);
 
+                countriesRespository.Refresh();
                 countriesRespository.Delete(Country1.PrimaryKey);
                 countriesRespository.Delete(Country2.PrimaryKey);
                 countriesRespository.Delete(Country3.PrimaryKey);
+                countriesRespository.Flush();
 
+                regionsRepository.Refresh();
                 regionsRepository.Delete(Region1.PrimaryKey);
                 regionsRepository.Delete(Region2.PrimaryKey);
                 regionsRepository.Delete(Region3.PrimaryKey);
+                regionsRepository.Flush();
 
                 con.Close();
             }

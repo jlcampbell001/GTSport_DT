@@ -108,10 +108,19 @@
   <ItemGroup>
     <Compile Include="Cars\Aspiration.cs" />
     <Compile Include="Cars\Car.cs" />
+    <Compile Include="Cars\CarAspirationNotValidException.cs" />
     <Compile Include="Cars\CarCategory.cs" />
+    <Compile Include="Cars\CarCategoryNotValidException.cs" />
+    <Compile Include="Cars\CarDriveTrainNotValidException.cs" />
+    <Compile Include="Cars\CarInUseException.cs" />
+    <Compile Include="Cars\CarManufacturerKeyNotSetException.cs" />
+    <Compile Include="Cars\CarNameAlreadyExistsException.cs" />
+    <Compile Include="Cars\CarNameNotSetException.cs" />
+    <Compile Include="Cars\CarNotFoundExcpetion.cs" />
     <Compile Include="Cars\CarSearchCriteria.cs" />
     <Compile Include="Cars\CarsRepository.cs" />
     <Compile Include="Cars\CarStatistic.cs" />
+    <Compile Include="Cars\CarValidation.cs" />
     <Compile Include="Cars\DriveTrain.cs" />
     <Compile Include="Countries\CountriesForm.cs">
       <SubType>Form</SubType>

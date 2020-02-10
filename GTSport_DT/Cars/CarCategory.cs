@@ -72,7 +72,7 @@ namespace GTSport_DT.Cars
             return foundCategory;
         }
 
-        public class Category
+        public class Category : IComparable
         {
             public string DBValue = "";
             public string Description = "";
@@ -85,6 +85,27 @@ namespace GTSport_DT.Cars
             {
                 Description = description ?? throw new ArgumentNullException(nameof(description));
                 DBValue = dBValue ?? throw new ArgumentNullException(nameof(dBValue));
+            }
+
+            public int CompareTo(object obj)
+            {
+                int compareResult = 1;
+                if (obj != null)
+                {
+
+                    Category otherCategory = obj as Category;
+
+                    if (otherCategory != null)
+                    {
+                        compareResult = this.DBValue.CompareTo(otherCategory.DBValue);
+                    }
+                    else
+                    {
+                        throw new ArgumentException("Object is not a car category.");
+                    }
+                }
+
+                return compareResult;
             }
 
             public override string ToString()

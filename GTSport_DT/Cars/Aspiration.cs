@@ -14,6 +14,6 @@ namespace GTSport_DT.Cars
         public const string EV = "EV";
         public const string Empty = "";
 
-        public static readonly string[] Aspirations = {Empty, NA, TB, SC, EV };
+        public static readonly string[] Aspirations = {Empty, EV, NA, SC, TB };
     }
 }

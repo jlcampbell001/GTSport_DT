@@ -31,6 +31,7 @@ namespace GTSport_DT_Testing.Owners
             ownersRepository.Save(Owner1);
             ownersRepository.Save(Owner2);
             ownersRepository.Save(Owner3);
+            ownersRepository.Flush();
         }
 
         [TestMethod]
@@ -38,9 +39,11 @@ namespace GTSport_DT_Testing.Owners
         {
             if (con != null)
             {
+                ownersRepository.Refresh();
                 ownersRepository.Delete(Owner1.PrimaryKey);
                 ownersRepository.Delete(Owner2.PrimaryKey);
                 ownersRepository.Delete(Owner3.PrimaryKey);
+                ownersRepository.Flush();
 
                 con.Close();
             }

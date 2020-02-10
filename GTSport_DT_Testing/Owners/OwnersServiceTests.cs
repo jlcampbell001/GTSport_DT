@@ -40,6 +40,8 @@ namespace GTSport_DT_Testing.Owners
             ownersRepository.Save(Owner1);
             ownersRepository.Save(Owner2);
             ownersRepository.Save(Owner3);
+            ownersRepository.Flush();
+
         }
 
         [TestMethod]
@@ -47,10 +49,14 @@ namespace GTSport_DT_Testing.Owners
         {
             if (con != null)
             {
+                DeleteDefaultOwner();
+
+                ownersRepository.Refresh();
                 ownersRepository.Delete(Owner1.PrimaryKey);
                 ownersRepository.Delete(Owner2.PrimaryKey);
                 ownersRepository.Delete(Owner3.PrimaryKey);
                 ownersRepository.Delete(Owner4PrimaryKey);
+                ownersRepository.Flush();
 
                 con.Close();
             }
@@ -206,7 +212,7 @@ namespace GTSport_DT_Testing.Owners
             ClearDefaultOwners();
 
             Owner ownerNo3 = new Owner(Owner3.PrimaryKey, Owner3.OwnerName, true);
-            ownersRepository.Save(ownerNo3);
+            ownersRepository.SaveAndFlush(ownerNo3);
 
             Owner ownerNo2 = new Owner(Owner2.PrimaryKey, Owner2.OwnerName, true);
 
@@ -223,7 +229,8 @@ namespace GTSport_DT_Testing.Owners
 
             if (owner != null)
             {
-                ownersRepository.Delete(owner.PrimaryKey);
+                ownersRepository.Refresh();
+                ownersRepository.DeleteAndFlush(owner.PrimaryKey);
             }
         }
 
@@ -231,12 +238,14 @@ namespace GTSport_DT_Testing.Owners
         {
             List<Owner> defaultOwners = ownersRepository.GetAllDefaultOwners();
 
+            ownersRepository.Refresh();
             foreach(Owner owner in defaultOwners)
             {
                 owner.DefaultOwner = false;
 
                 ownersRepository.Save(owner);
             }
+            ownersRepository.Flush();
         }
     }
 }

@@ -99,7 +99,7 @@ namespace GTSport_DT.Owners
                 owner.PrimaryKey = keySequenceService.GetNextKey(repository.tableName, primaryKeyPrefix);
             }
 
-            repository.Save(owner);
+            repository.SaveAndFlush(owner);
 
             // make sure there is only one default
             if (owner.DefaultOwner)
@@ -121,6 +121,8 @@ namespace GTSport_DT.Owners
                     repository.Save(owner);
                 }
             }
+
+            repository.Flush();
         }
     }
 }

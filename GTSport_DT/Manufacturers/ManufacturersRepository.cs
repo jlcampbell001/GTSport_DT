@@ -2,6 +2,7 @@
 using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace GTSport_DT.Manufacturers
 {
@@ -18,8 +19,8 @@ namespace GTSport_DT.Manufacturers
             tableName = "MANUFACTURERS";
             idField = "mankey";
             getListOrderByField = "manname";
-            updateCommand = "UPDATE manufacturers SET manname = @name, mancoukey = @coukey WHERE mankey = @pk";
-            insertCommand = "INSERT INTO manufacturers(mankey, manname, mancoukey) VALUES (@pk, @name, @coukey)";
+
+            FillDataSet();
         }
 
         /// <summary>Gets the manufacturer with the passed name.</summary>
@@ -27,26 +28,7 @@ namespace GTSport_DT.Manufacturers
         /// <returns>The manufacture found or null if one is not found.</returns>
         public Manufacturer GetByName(string name)
         {
-            Manufacturer manufacturer = null;
-
-            var cmd = new NpgsqlCommand();
-
-            cmd.Connection = npgsqlConnection;
-            cmd.CommandText = "SELECT * FROM manufacturers WHERE manname = @name";
-
-            cmd.Parameters.AddWithValue("name", name);
-            cmd.Prepare();
-
-            NpgsqlDataReader dataReader = cmd.ExecuteReader();
-
-            if (dataReader.Read())
-            {
-                manufacturer = RecordToEntity(dataReader);
-            }
-
-            dataReader.Close();
-
-            cmd.Dispose();
+            Manufacturer manufacturer = GetByFieldString(name, "manname");
 
             return manufacturer;
         }
@@ -59,50 +41,9 @@ namespace GTSport_DT.Manufacturers
         /// <returns>The list of manufacturers for the country key.</returns>
         public List<Manufacturer> GetListForCountryKey(string countryKey, Boolean orderedList = false)
         {
-            List<Manufacturer> manufacturers = new List<Manufacturer>();
-
-            var cmd = new NpgsqlCommand();
-
-            cmd.Connection = npgsqlConnection;
-            cmd.CommandText = "SELECT * FROM manufacturers WHERE mancoukey = @coukey";
-
-            if (orderedList)
-            {
-                if (String.IsNullOrWhiteSpace(getListOrderByField))
-                {
-                    getListOrderByField = idField;
-                }
-
-                cmd.CommandText = cmd.CommandText + " ORDER BY " + getListOrderByField;
-            }
-
-            cmd.Parameters.AddWithValue("coukey", countryKey);
-            cmd.Prepare();
-
-            NpgsqlDataReader dataReader = cmd.ExecuteReader();
-
-            while (dataReader.Read())
-            {
-                Manufacturer manufacturer = RecordToEntity(dataReader);
-
-                manufacturers.Add(manufacturer);
-            }
-
-            dataReader.Close();
-
-            cmd.Dispose();
+            List<Manufacturer> manufacturers = GetListForFieldString(countryKey, "mancoukey", orderedList: orderedList);
 
             return manufacturers;
-        }
-
-        /// <summary>Adds parameters to a SQL command object based on the passed entity.</summary>
-        /// <param name="cmd">The SQL command object to update.</param>
-        /// <param name="entity">The entity to get data from.</param>
-        protected override void AddParameters(ref NpgsqlCommand cmd, Manufacturer entity)
-        {
-            cmd.Parameters.AddWithValue("pk", entity.PrimaryKey);
-            cmd.Parameters.AddWithValue("name", entity.Name);
-            cmd.Parameters.AddWithValue("coukey", entity.CountryKey);
         }
 
         /// <summary>Convert a record retrieved from the database to an entity object.</summary>
@@ -111,11 +52,18 @@ namespace GTSport_DT.Manufacturers
         protected override Manufacturer RecordToEntity(NpgsqlDataReader dataReader)
         {
             Manufacturer manufacturer = new Manufacturer();
-            manufacturer.PrimaryKey = dataReader.GetString(0);
-            manufacturer.Name = dataReader.GetString(2);
-            manufacturer.CountryKey = dataReader.GetString(1);
+            manufacturer.PrimaryKey = dataReader.GetString(dataReader.GetOrdinal("mankey"));
+            manufacturer.Name = dataReader.GetString(dataReader.GetOrdinal("manname"));
+            manufacturer.CountryKey = dataReader.GetString(dataReader.GetOrdinal("mancoukey"));
 
             return manufacturer;
+        }
+
+        protected override void UpdateRow(ref DataRow dataRow, Manufacturer entity)
+        {
+            dataRow["mankey"] = entity.PrimaryKey;
+            dataRow["manname"] = entity.Name;
+            dataRow["mancoukey"] = entity.CountryKey;
         }
     }
 }

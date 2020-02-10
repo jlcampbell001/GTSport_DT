@@ -1,6 +1,7 @@
 ﻿using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Reflection;
 
 namespace GTSport_DT.General
@@ -18,27 +19,14 @@ namespace GTSport_DT.General
         /// <summary>The primary key field for the table.</summary>
         protected string idField = "";
 
-        /// <summary>
-        /// <para>The insert command to add a record to the table.</para>
-        /// <para>Should be setup as follows:</para>
-        /// <para>INSERT INTO table name(field list) VALUES (@param list)</para>
-        /// </summary>
-        protected string insertCommand = "";
-
         /// <summary>The NPGSQL connection to the database.</summary>
         protected NpgsqlConnection npgsqlConnection;
+        protected NpgsqlDataAdapter dataAdapter;
 
-        /// <summary>The name of the the field in the entity for the primary key.</summary>
+        /// <summary>The name of the field in the entity for the primary key.</summary>
         protected string primaryKeyObject = "PrimaryKey";
 
-        /// <summary>
-        /// <para>The update command to update a record in the table.</para>
-        /// <para>Should be setup as follows:</para>
-        /// <para>
-        /// "UPDATE table name SET field1 = @param1, field2 = @param2 WHERE primary key = @pk"
-        /// </para>
-        /// </summary>
-        protected string updateCommand = "";
+        private DataSet dataSet = new DataSet();
 
         /// <summary>
         /// <para>Initializes a new instance of the <see cref="SQLRespository{T}"/> class.</para>
@@ -57,36 +45,94 @@ namespace GTSport_DT.General
             this.npgsqlConnection = npgsqlConnection ?? throw new ArgumentNullException(nameof(npgsqlConnection));
         }
 
+        protected void SetupAdapter()
+        {
+            dataAdapter = new NpgsqlDataAdapter("Select * FROM " + tableName + " ORDER BY " + idField, npgsqlConnection);
+
+            NpgsqlCommandBuilder builder = new NpgsqlCommandBuilder(dataAdapter);
+
+            var insertCmd = builder.GetInsertCommand(true);
+            insertCmd.Connection = npgsqlConnection;
+            //insertCmd.CommandText = insertCommand;
+            dataAdapter.InsertCommand = insertCmd;
+
+            var updateCmd = builder.GetUpdateCommand(true);
+            updateCmd.Connection = npgsqlConnection;
+            //updateCmd.CommandText = updateCommand;
+            dataAdapter.UpdateCommand = updateCmd;
+
+            var deleteCmd = builder.GetDeleteCommand(true);
+            deleteCmd.Connection = npgsqlConnection;
+            //deleteCmd.CommandText = "DELETE FROM " + tableName + " WHERE " + idField + " = @pk";
+            //deleteCmd.Parameters.Add("pk", NpgsqlTypes.NpgsqlDbType.Varchar, 255, sourceColumn: idField);
+            dataAdapter.DeleteCommand = deleteCmd;
+        }
+
         /// <summary>Will delete the record from the table with the related id.</summary>
         /// <param name="id">The primary key to delete.</param>
         public virtual void Delete(string id)
         {
-            var cmd = new NpgsqlCommand();
-            cmd.Connection = npgsqlConnection;
+            if (dataSet.Tables[tableName] == null) 
+            {
+                FillDataSet();
+            }
 
-            cmd.CommandText = "DELETE FROM " + tableName + " where " + idField + " = @pk";
+            DataTable dataTable = dataSet.Tables[tableName];
 
-            cmd.Parameters.AddWithValue("pk", id);
-            cmd.Prepare();
+            DataRow foundRow = dataTable.Rows.Find(id);
 
-            cmd.ExecuteNonQuery();
-
-            cmd.Dispose();
+            if (foundRow != null)
+            {
+                foundRow.Delete();
+            }            
         }
 
-        /// <summary>Retrieves an record from the table that is related to the passed id.</summary>
+        public virtual void Flush()
+        {
+            if (dataAdapter == null)
+            {
+                SetupAdapter();
+            }
+
+            dataAdapter.Update(dataSet, tableName);
+
+            FillDataSet();
+        }
+
+        public virtual void Refresh()
+        {
+            FillDataSet();
+        }
+
+        public virtual void DeleteAndFlush(string id)
+        {
+            Delete(id);
+
+            Flush();
+        }
+
+        /// <summary>Retrieves a record from the table that is related to the passed id.</summary>
         /// <param name="id">The primary key to look up.</param>
         /// <returns>The entity for the found record or null if it was not found.</returns>
         public virtual T GetById(string id)
+        {
+            return GetByFieldString(id, idField);
+        }
+
+        /// <summary>  Retrieves a record from the table that has a match with the  passed string value in the field name passed.</summary>
+        /// <param name="searchValue">The search value.</param>
+        /// <param name="fieldName">Name of the field to match.</param>
+        /// <returns>The entity record found or null if not found.</returns>
+        public virtual T GetByFieldString(string searchValue, string fieldName)
         {
             T dataEntity = default;
 
             var cmd = new NpgsqlCommand();
 
             cmd.Connection = npgsqlConnection;
-            cmd.CommandText = "SELECT * FROM " + tableName + " WHERE " + idField + " = @pk";
+            cmd.CommandText = "SELECT * FROM " + tableName + " WHERE " + fieldName + " = @searchValue";
 
-            cmd.Parameters.AddWithValue("pk", id);
+            cmd.Parameters.AddWithValue("searchValue", searchValue);
             cmd.Prepare();
 
             NpgsqlDataReader dataReader = cmd.ExecuteReader();
@@ -107,6 +153,29 @@ namespace GTSport_DT.General
         /// <returns>A list of entities from the table.</returns>
         public virtual List<T> GetList(Boolean orderedList = false)
         {
+            List<T> records = GetListForFieldString(orderedList: orderedList);
+
+            return records;
+        }
+
+        /// <summary>
+        ///   <para>
+        ///  The a list of entities where the value of the field name matches the search value.</para>
+        ///   <para>If fieldName is not passed it will get all of the entities in the table instead.</para>
+        ///   <para>If the orderByField is not passed it will default to the classes getListOrderByField if filled or the idField.</para>
+        /// </summary>
+        /// <param name="fieldName">Name of the field to search.</param>
+        /// <param name="searchValue">The search value.</param>
+        /// <param name="orderByField">The order by field.</param>
+        /// <param name="orderedList">if set to <c>true</c> [ordered list].</param>
+        /// <returns>A list of entities found in the table that matches the choices made.</returns>
+        public virtual List<T> GetListForFieldString(string searchValue = "", string fieldName = "", string orderByField = "", Boolean orderedList = false)
+        {
+            if (String.IsNullOrWhiteSpace(orderByField))
+            {
+                orderByField = getListOrderByField;
+            }
+
             List<T> records = new List<T>();
 
             var cmd = new NpgsqlCommand();
@@ -114,14 +183,25 @@ namespace GTSport_DT.General
             cmd.Connection = npgsqlConnection;
             cmd.CommandText = "SELECT * FROM " + tableName;
 
+            if (!String.IsNullOrWhiteSpace(fieldName))
+            {
+                cmd.CommandText += " WHERE " + fieldName + " = @searchValue ";
+                cmd.Parameters.AddWithValue("searchValue", searchValue);
+                cmd.Prepare();
+            }
+
             if (orderedList)
             {
-                if (String.IsNullOrWhiteSpace(getListOrderByField))
+                if (String.IsNullOrWhiteSpace(orderByField))
                 {
-                    getListOrderByField = idField;
+                    orderByField = idField;
                 }
 
-                cmd.CommandText = cmd.CommandText + " ORDER BY " + getListOrderByField;
+                cmd.CommandText += " ORDER BY " + orderByField;
+            }
+            else
+            {
+                cmd.CommandText += " ORDER BY " + idField;
             }
 
             NpgsqlDataReader dataReader = cmd.ExecuteReader();
@@ -137,6 +217,7 @@ namespace GTSport_DT.General
             cmd.Dispose();
 
             return records;
+
         }
 
         /// <summary>Gets the highest key value from the table.</summary>
@@ -176,38 +257,52 @@ namespace GTSport_DT.General
         /// <param name="saveEntity">The entity to record to the table.</param>
         public virtual void Save(T saveEntity)
         {
-            var cmd = new NpgsqlCommand();
+            if (dataSet.Tables[tableName] == null)
+            {
+                FillDataSet();
+            }
 
-            cmd.Connection = npgsqlConnection;
-            AddParameters(ref cmd, saveEntity);
+            DataTable dataTable = dataSet.Tables[tableName];
 
             PropertyInfo propertyInfo = saveEntity.GetType().GetProperty(primaryKeyObject);
             string id = propertyInfo.GetValue(saveEntity).ToString();
 
-            var findKey = GetById(id);
+            DataRow saveRow = dataTable.Rows.Find(id);
 
-            if (findKey != null)
+            if (saveRow == null)
             {
-                cmd.CommandText = updateCommand;
-            }
-            else
+                saveRow = dataTable.NewRow();
+                UpdateRow(ref saveRow, saveEntity);
+                dataTable.Rows.Add(saveRow);
+            } else
             {
-                cmd.CommandText = insertCommand;
+                UpdateRow(ref saveRow, saveEntity);
             }
-
-            cmd.Prepare();
-
-            cmd.ExecuteNonQuery();
         }
 
-        /// <summary>Adds parameters to a SQL command object based on the passed entity.</summary>
-        /// <param name="cmd">The SQL command object to update.</param>
-        /// <param name="entity">The entity to get data from.</param>
-        protected abstract void AddParameters(ref NpgsqlCommand cmd, T entity);
+        public virtual void SaveAndFlush(T saveEntity)
+        {
+            Save(saveEntity);
+
+            Flush();
+        }
 
         /// <summary>Convert a record retrieved from the database to an entity object.</summary>
         /// <param name="dataReader">The database reader with the results from a database request.</param>
         /// <returns>A new entity with the data.</returns>
         protected abstract T RecordToEntity(NpgsqlDataReader dataReader);
+
+        protected abstract void UpdateRow(ref DataRow dataRow, T entity);
+
+        protected void FillDataSet()
+        {
+            if (dataAdapter == null)
+            {
+                SetupAdapter();
+            }
+
+            dataAdapter.FillSchema(dataSet, SchemaType.Source, tableName);
+            dataAdapter.Fill(dataSet, tableName);
+        }
     }
 }

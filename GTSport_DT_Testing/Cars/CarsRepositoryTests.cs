@@ -26,15 +26,42 @@ namespace GTSport_DT_Testing.Cars
         private static readonly string expectedMaxKey = Car15.PrimaryKey;
         private static readonly CarCategory.Category categoryMinRange = CarCategory.N500;
         private static readonly CarCategory.Category categoryMaxRange = CarCategory.N700;
+        private static readonly string driveTrainTest = DriveTrain.FR;
+        private static readonly string manufacturerName = Manufacturer2.Name;
+        private static readonly string countryDescription = Country2.Description;
+        private static readonly string regionDescription = Region2.Description;
+        private static readonly CarCategory.Category multipuleCriteriaCategoryMinRange = CarCategory.N100;
+        private static readonly string multipuleCriteriaDriveTrainTest = DriveTrain.FF;
 
         private const string nameChange = "Name Changed";
         private const string badName = "BAD!Name";
-
+        
         private const int numberOfCars = 15;
         private const int numberOfCarsForManufacturer = 2;
         private const int numberOfCarsCategoryStatRows = 14;
         private const int expectedN400Row = 3;
         private const int N400NumberOfCars = 2;
+        private const int numberOfCategoryRangeRecords = 3;
+        private const int numberOfCategoryMinRecords = 10;
+        private const int numberOfCategoryMaxRecords = 8;
+        private const int yearMinRange = 1972;
+        private const int yearMaxRange = 2013;
+        private const int numberOfYearRangeRecords = 4;
+        private const int numberOfYearMinRecords = 11;
+        private const int numberOfYearMaxRecords = 8;
+        private const int maxPowerMinRange = 500;
+        private const int maxPowerMaxRange = 900;
+        private const int numberOfMaxPowerRangeRecords = 7;
+        private const int numberOfMaxPowerMinRecords = 8;
+        private const int numberOfMaxPowerMaxRecords = 14;
+        private const int numberOfDriveTrainRecords = 3;
+        private const int numberOfManufacturerRecords = 1;
+        private const int numberOfCountryRecords = 3;
+        private const int numberOfRegionRecords = 10;
+        private const int numberOfMultipuleCriteriaRecords = 1;
+        private const int multipuleCriteriaYearMaxRange = 2020;
+        private const int multipuleCriteriaMaxPowerMinRange = 100;
+
         private const double N400AvgMaxPower = 394.5;
         private const double N400AvgPrice = 54155.00;
         private const double N400AvgMaxSpeed = 6.85;
@@ -42,9 +69,6 @@ namespace GTSport_DT_Testing.Cars
         private const double N400AvgBraking = 1.75;
         private const double N400AvgCornering = 1.5499999999999998;
         private const double N400AvgStability = 4.85;
-        private const int numberOfCategoryRangeRecords = 3;
-        private const int numberOfCategoryMinRecords = 10;
-        private const int numberOfCategoryMaxRecords = 8;
 
 
 
@@ -62,12 +86,14 @@ namespace GTSport_DT_Testing.Cars
             regionsRepository.Save(Region1);
             regionsRepository.Save(Region2);
             regionsRepository.Save(Region3);
+            regionsRepository.Flush();
 
             countriesRepository.Save(Country1);
             countriesRepository.Save(Country2);
             countriesRepository.Save(Country3);
             countriesRepository.Save(Country4);
             countriesRepository.Save(Country5);
+            countriesRepository.Flush();
 
             manufacturersRepository.Save(Manufacturer1);
             manufacturersRepository.Save(Manufacturer2);
@@ -78,6 +104,7 @@ namespace GTSport_DT_Testing.Cars
             manufacturersRepository.Save(Manufacturer7);
             manufacturersRepository.Save(Manufacturer8);
             manufacturersRepository.Save(Manufacturer9);
+            manufacturersRepository.Flush();
         }
 
         [TestMethod]
@@ -85,6 +112,7 @@ namespace GTSport_DT_Testing.Cars
         {
             if (con != null)
             {
+                manufacturersRepository.Refresh();
                 manufacturersRepository.Delete(Manufacturer1.PrimaryKey);
                 manufacturersRepository.Delete(Manufacturer2.PrimaryKey);
                 manufacturersRepository.Delete(Manufacturer3.PrimaryKey);
@@ -94,16 +122,21 @@ namespace GTSport_DT_Testing.Cars
                 manufacturersRepository.Delete(Manufacturer7.PrimaryKey);
                 manufacturersRepository.Delete(Manufacturer8.PrimaryKey);
                 manufacturersRepository.Delete(Manufacturer9.PrimaryKey);
+                manufacturersRepository.Flush();
 
+                countriesRepository.Refresh();
                 countriesRepository.Delete(Country1.PrimaryKey);
                 countriesRepository.Delete(Country2.PrimaryKey);
                 countriesRepository.Delete(Country3.PrimaryKey);
                 countriesRepository.Delete(Country4.PrimaryKey);
                 countriesRepository.Delete(Country5.PrimaryKey);
+                countriesRepository.Flush();
 
+                regionsRepository.Refresh();
                 regionsRepository.Delete(Region1.PrimaryKey);
                 regionsRepository.Delete(Region2.PrimaryKey);
                 regionsRepository.Delete(Region3.PrimaryKey);
+                regionsRepository.Flush();
 
                 con.Close();
             }
@@ -112,7 +145,7 @@ namespace GTSport_DT_Testing.Cars
         [TestMethod]
         public void A010_SaveNewTest()
         {
-            carsRepository.Save(Car1);
+            carsRepository.SaveAndFlush(Car1);
 
             Car carCheck = carsRepository.GetById(Car1.PrimaryKey);
 
@@ -148,7 +181,7 @@ namespace GTSport_DT_Testing.Cars
             Car1.MaxPower, Car1.PowerRPM, Car1.TorqueFTLB, Car1.TorqueRPM, Car1.DriveTrain, Car1.Aspiration, Car1.Length, Car1.Width,
             Car1.Height, Car1.Weight, Car1.MaxSpeed, Car1.Acceleration, Car1.Braking, Car1.Cornering, Car1.Stability);
 
-            carsRepository.Save(car);
+            carsRepository.SaveAndFlush(car);
 
             Car carCheck = carsRepository.GetById(Car1.PrimaryKey);
 
@@ -180,7 +213,7 @@ namespace GTSport_DT_Testing.Cars
         [TestMethod]
         public void A030_Delete()
         {
-            carsRepository.Delete(Car1.PrimaryKey);
+            carsRepository.DeleteAndFlush(Car1.PrimaryKey);
 
             Car carCheck = carsRepository.GetById(Car1.PrimaryKey);
 
@@ -205,6 +238,7 @@ namespace GTSport_DT_Testing.Cars
             carsRepository.Save(Car13);
             carsRepository.Save(Car14);
             carsRepository.Save(Car15);
+            carsRepository.Flush();
         }
 
         [TestMethod]
@@ -379,7 +413,293 @@ namespace GTSport_DT_Testing.Cars
         }
 
         [TestMethod]
-        public void Azzz_Delete15Cars()
+        public void A210_GetListByCriteriaYearRange()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.YearFrom = yearMinRange;
+            carSearchCriteria.YearTo = yearMaxRange;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria);
+
+            Assert.AreEqual(numberOfYearRangeRecords, cars.Count);
+            Assert.AreEqual(Car3.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A220_GetListByCriteriaYearRangeOrdered()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.YearFrom = yearMinRange;
+            carSearchCriteria.YearTo = yearMaxRange;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria, orderedList: true);
+
+            Assert.AreEqual(numberOfYearRangeRecords, cars.Count);
+            Assert.AreEqual(Car4.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A230_GetListByCriteriaYearMin()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.YearFrom = yearMinRange;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria);
+
+            Assert.AreEqual(numberOfYearMinRecords, cars.Count);
+            Assert.AreEqual(Car1.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A240_GetListByCriteriaYearMinOrdered()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.YearFrom = yearMinRange;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria, orderedList: true);
+
+            Assert.AreEqual(numberOfYearMinRecords, cars.Count);
+            Assert.AreEqual(Car7.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A250_GetListByCriteriaYearMax()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.YearTo = yearMaxRange;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria);
+
+            Assert.AreEqual(numberOfYearMaxRecords, cars.Count);
+            Assert.AreEqual(Car3.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A260_GetListByCriteriaYearMaxOrdered()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.YearTo = yearMaxRange;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria, orderedList: true);
+
+            Assert.AreEqual(numberOfYearMaxRecords, cars.Count);
+            Assert.AreEqual(Car12.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A270_GetListByCriteriaMaxPowerRange()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.MaxPowerFrom = maxPowerMinRange;
+            carSearchCriteria.MaxPowerTo = maxPowerMaxRange;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria);
+
+            Assert.AreEqual(numberOfMaxPowerRangeRecords, cars.Count);
+            Assert.AreEqual(Car6.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A280_GetListByCriteriaMaxPowerRangeOrdered()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.MaxPowerFrom = maxPowerMinRange;
+            carSearchCriteria.MaxPowerTo = maxPowerMaxRange;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria, orderedList: true);
+
+            Assert.AreEqual(numberOfMaxPowerRangeRecords, cars.Count);
+            Assert.AreEqual(Car7.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A290_GetListByCriteriaMaxPowerMin()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.MaxPowerFrom = maxPowerMinRange;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria);
+
+            Assert.AreEqual(numberOfMaxPowerMinRecords, cars.Count);
+            Assert.AreEqual(Car6.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A300_GetListByCriteriaMaxPowerMinOrdered()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.MaxPowerFrom = maxPowerMinRange;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria, orderedList: true);
+
+            Assert.AreEqual(numberOfMaxPowerMinRecords, cars.Count);
+            Assert.AreEqual(Car7.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A310_GetListByCriteriaMaxPowerMax()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.MaxPowerTo = maxPowerMaxRange;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria);
+
+            Assert.AreEqual(numberOfMaxPowerMaxRecords, cars.Count);
+            Assert.AreEqual(Car1.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A320_GetListByCriteriaMaxPowerMaxOrdered()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.MaxPowerTo = maxPowerMaxRange;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria, orderedList: true);
+
+            Assert.AreEqual(numberOfMaxPowerMaxRecords, cars.Count);
+            Assert.AreEqual(Car7.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A330_GetListByCriteriaDriveTrain()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.DriveTrain = driveTrainTest;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria);
+
+            Assert.AreEqual(numberOfDriveTrainRecords, cars.Count);
+            Assert.AreEqual(Car1.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A340_GetListByCriteriaDriveTrainOrdered()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.DriveTrain = driveTrainTest;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria, orderedList: true);
+
+            Assert.AreEqual(numberOfDriveTrainRecords, cars.Count);
+            Assert.AreEqual(Car6.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A350_GetListByCriteriaManufacturer()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.ManufacturerName = manufacturerName;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria);
+
+            Assert.AreEqual(numberOfManufacturerRecords, cars.Count);
+            Assert.AreEqual(Car2.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A360_GetListByCriteriaManufacturerOrdered()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.ManufacturerName = manufacturerName;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria, orderedList: true);
+
+            Assert.AreEqual(numberOfManufacturerRecords, cars.Count);
+            Assert.AreEqual(Car2.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A370_GetListByCriteriaCountry()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.CountryDescription = countryDescription;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria);
+
+            Assert.AreEqual(numberOfCountryRecords, cars.Count);
+            Assert.AreEqual(Car2.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A380_GetListByCriteriaCountryOrdered()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.CountryDescription = countryDescription;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria, orderedList: true);
+
+            Assert.AreEqual(numberOfCountryRecords, cars.Count);
+            Assert.AreEqual(Car5.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A390_GetListByCriteriaRegion()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.RegionDescription = regionDescription;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria);
+
+            Assert.AreEqual(numberOfRegionRecords, cars.Count);
+            Assert.AreEqual(Car2.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A400_GetListByCriteriaRegionOrdered()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.RegionDescription = regionDescription;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria, orderedList: true);
+
+            Assert.AreEqual(numberOfRegionRecords, cars.Count);
+            Assert.AreEqual(Car7.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A410_GetListByCriteriaMultipuleCriteria()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.CategoryFrom = multipuleCriteriaCategoryMinRange;
+            carSearchCriteria.CategoryTo = categoryMaxRange;
+            carSearchCriteria.YearFrom = yearMinRange;
+            carSearchCriteria.YearTo = multipuleCriteriaYearMaxRange;
+            carSearchCriteria.MaxPowerFrom = multipuleCriteriaMaxPowerMinRange;
+            carSearchCriteria.MaxPowerTo = maxPowerMaxRange;
+            carSearchCriteria.DriveTrain = multipuleCriteriaDriveTrainTest;
+            carSearchCriteria.ManufacturerName = manufacturerName;
+            carSearchCriteria.CountryDescription = countryDescription;
+            carSearchCriteria.RegionDescription = regionDescription;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria);
+
+            Assert.AreEqual(numberOfMultipuleCriteriaRecords, cars.Count);
+            Assert.AreEqual(Car2.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A420_GetListByCriteriaMultipuleCriteriaOrdered()
+        {
+            CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
+            carSearchCriteria.CategoryFrom = multipuleCriteriaCategoryMinRange;
+            carSearchCriteria.CategoryTo = categoryMaxRange;
+            carSearchCriteria.YearFrom = yearMinRange;
+            carSearchCriteria.YearTo = multipuleCriteriaYearMaxRange;
+            carSearchCriteria.MaxPowerFrom = multipuleCriteriaMaxPowerMinRange;
+            carSearchCriteria.MaxPowerTo = maxPowerMaxRange;
+            carSearchCriteria.DriveTrain = multipuleCriteriaDriveTrainTest;
+            carSearchCriteria.ManufacturerName = manufacturerName;
+            carSearchCriteria.CountryDescription = countryDescription;
+            carSearchCriteria.RegionDescription = regionDescription;
+
+            List<Car> cars = carsRepository.GetListByCriteria(carSearchCriteria, orderedList: true);
+
+            Assert.AreEqual(numberOfMultipuleCriteriaRecords, cars.Count);
+            Assert.AreEqual(Car2.PrimaryKey, cars[0].PrimaryKey);
+        }
+
+        [TestMethod]
+        public void A430_Delete15Cars()
         {
             carsRepository.Delete(Car1.PrimaryKey);
             carsRepository.Delete(Car2.PrimaryKey);
@@ -396,6 +716,7 @@ namespace GTSport_DT_Testing.Cars
             carsRepository.Delete(Car13.PrimaryKey);
             carsRepository.Delete(Car14.PrimaryKey);
             carsRepository.Delete(Car15.PrimaryKey);
+            carsRepository.Flush();
         }
     }
 }

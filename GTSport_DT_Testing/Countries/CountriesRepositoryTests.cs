@@ -37,6 +37,7 @@ namespace GTSport_DT_Testing.Countries
             regionsRepository.Save(Region1);
             regionsRepository.Save(Region2);
             regionsRepository.Save(Region3);
+            regionsRepository.Flush();
         }
 
         [TestMethod]
@@ -44,9 +45,11 @@ namespace GTSport_DT_Testing.Countries
         {
             if (con != null)
             {
+                regionsRepository.Refresh();
                 regionsRepository.Delete(Region1.PrimaryKey);
                 regionsRepository.Delete(Region2.PrimaryKey);
                 regionsRepository.Delete(Region3.PrimaryKey);
+                regionsRepository.Flush();
 
                 con.Close();
             }
@@ -55,7 +58,7 @@ namespace GTSport_DT_Testing.Countries
         [TestMethod]
         public void A010_SaveNewTest()
         {
-            countriesRepository.Save(Country1);
+            countriesRepository.SaveAndFlush(Country1);
 
             Country countryCheck = countriesRepository.GetById(Country1.PrimaryKey);
 
@@ -72,7 +75,7 @@ namespace GTSport_DT_Testing.Countries
 
             country.Description = descriptionChange;
 
-            countriesRepository.Save(country);
+            countriesRepository.SaveAndFlush(country);
 
             Country countryCheck = countriesRepository.GetById(Country1.PrimaryKey);
 
@@ -84,7 +87,7 @@ namespace GTSport_DT_Testing.Countries
         [TestMethod]
         public void A030_Delete()
         {
-            countriesRepository.Delete(Country1.PrimaryKey);
+            countriesRepository.DeleteAndFlush(Country1.PrimaryKey);
 
             Country countryCheck = countriesRepository.GetById(Country1.PrimaryKey);
 
@@ -99,6 +102,7 @@ namespace GTSport_DT_Testing.Countries
             countriesRepository.Save(Country3);
             countriesRepository.Save(Country4);
             countriesRepository.Save(Country5);
+            countriesRepository.Flush();
         }
 
         [TestMethod]
@@ -168,6 +172,7 @@ namespace GTSport_DT_Testing.Countries
             countriesRepository.Delete(Country3.PrimaryKey);
             countriesRepository.Delete(Country4.PrimaryKey);
             countriesRepository.Delete(Country5.PrimaryKey);
+            countriesRepository.Flush();
         }
     }
 }

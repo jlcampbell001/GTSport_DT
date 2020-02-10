@@ -42,12 +42,14 @@ namespace GTSport_DT.Manufacturers
             regionsRepository.Save(Region1);
             regionsRepository.Save(Region2);
             regionsRepository.Save(Region3);
+            regionsRepository.Flush();
 
             countriesRepository.Save(Country1);
             countriesRepository.Save(Country2);
             countriesRepository.Save(Country3);
             countriesRepository.Save(Country4);
             countriesRepository.Save(Country5);
+            countriesRepository.Flush();
         }
 
         [TestMethod]
@@ -55,15 +57,19 @@ namespace GTSport_DT.Manufacturers
         {
             if (con != null)
             {
+                countriesRepository.Refresh();
                 countriesRepository.Delete(Country1.PrimaryKey);
                 countriesRepository.Delete(Country2.PrimaryKey);
                 countriesRepository.Delete(Country3.PrimaryKey);
                 countriesRepository.Delete(Country4.PrimaryKey);
                 countriesRepository.Delete(Country5.PrimaryKey);
+                countriesRepository.Flush();
 
+                regionsRepository.Refresh();
                 regionsRepository.Delete(Region1.PrimaryKey);
                 regionsRepository.Delete(Region2.PrimaryKey);
                 regionsRepository.Delete(Region3.PrimaryKey);
+                regionsRepository.Flush();
 
                 con.Close();
             }
@@ -72,7 +78,7 @@ namespace GTSport_DT.Manufacturers
         [TestMethod]
         public void A010_SaveNewTest()
         {
-            manufacturersRepository.Save(Manufacturer1);
+            manufacturersRepository.SaveAndFlush(Manufacturer1);
 
             Manufacturer manufacturerCheck = manufacturersRepository.GetById(Manufacturer1.PrimaryKey);
 
@@ -89,7 +95,7 @@ namespace GTSport_DT.Manufacturers
 
             manufacturer.Name = nameChange;
 
-            manufacturersRepository.Save(manufacturer);
+            manufacturersRepository.SaveAndFlush(manufacturer);
 
             Manufacturer manufacturerCheck = manufacturersRepository.GetById(Manufacturer1.PrimaryKey);
 
@@ -102,7 +108,7 @@ namespace GTSport_DT.Manufacturers
         [TestMethod]
         public void A030_Delete()
         {
-            manufacturersRepository.Delete(Manufacturer1.PrimaryKey);
+            manufacturersRepository.DeleteAndFlush(Manufacturer1.PrimaryKey);
 
             Manufacturer manufacturerCheck = manufacturersRepository.GetById(Manufacturer1.PrimaryKey);
 
@@ -121,6 +127,8 @@ namespace GTSport_DT.Manufacturers
             manufacturersRepository.Save(Manufacturer7);
             manufacturersRepository.Save(Manufacturer8);
             manufacturersRepository.Save(Manufacturer9);
+            manufacturersRepository.Flush();
+
         }
 
         [TestMethod]
@@ -194,6 +202,7 @@ namespace GTSport_DT.Manufacturers
             manufacturersRepository.Delete(Manufacturer7.PrimaryKey);
             manufacturersRepository.Delete(Manufacturer8.PrimaryKey);
             manufacturersRepository.Delete(Manufacturer9.PrimaryKey);
+            manufacturersRepository.Flush();
         }
     }
 }

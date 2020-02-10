@@ -38,6 +38,7 @@ namespace GTSport_DT_Testing.Regions
             regionsRepository.Save(Region1);
             regionsRepository.Save(Region2);
             regionsRepository.Save(Region3);
+            regionsRepository.Flush();
         }
 
         [TestMethod]
@@ -45,10 +46,13 @@ namespace GTSport_DT_Testing.Regions
         {
             if (con != null)
             {
+                regionsRepository.Refresh();
                 regionsRepository.Delete(Region1.PrimaryKey);
                 regionsRepository.Delete(Region2.PrimaryKey);
                 regionsRepository.Delete(Region3.PrimaryKey);
                 regionsRepository.Delete(region4Key);
+                regionsRepository.Flush();
+
                 con.Close();
             }
         }

@@ -78,7 +78,8 @@ namespace GTSport_DT_Testing
 
             if (keySequence != null)
             {
-                keySequenceRepository.Delete(testingTableName);
+                keySequenceRepository.Refresh();
+                keySequenceRepository.DeleteAndFlush(testingTableName);
             }
         }
     }

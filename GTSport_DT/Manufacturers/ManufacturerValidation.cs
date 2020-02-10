@@ -1,7 +1,9 @@
-﻿using GTSport_DT.Countries;
+﻿using GTSport_DT.Cars;
+using GTSport_DT.Countries;
 using GTSport_DT.General;
 using Npgsql;
 using System;
+using System.Collections.Generic;
 
 namespace GTSport_DT.Manufacturers
 {
@@ -11,6 +13,7 @@ namespace GTSport_DT.Manufacturers
     {
         private CountriesRepository countriesRepository;
         private ManufacturersRepository manufacturersRepository;
+        private CarsRepository carsRepository;
 
         /// <summary>Initializes a new instance of the <see cref="ManufacturerValidation"/> class.</summary>
         /// <param name="npgsqlConnection">The NPGSQL connection.</param>
@@ -18,6 +21,7 @@ namespace GTSport_DT.Manufacturers
         {
             manufacturersRepository = new ManufacturersRepository(npgsqlConnection);
             countriesRepository = new CountriesRepository(npgsqlConnection);
+            carsRepository = new CarsRepository(npgsqlConnection);
         }
 
         /// <summary>Validations done to an entity for the passed primary key before it is deleted.</summary>
@@ -37,7 +41,9 @@ namespace GTSport_DT.Manufacturers
                 throw new ManufacturerNotFoundException(ManufacturerNotFoundException.ManufacturerKeyNotFoundMsg, primaryKey);
             }
 
-            if (false)
+            List<Car> cars = carsRepository.GetListForManufacturerKey(primaryKey);
+
+            if (cars.Count > 0)
             {
                 throw new ManufacturerInUseException(ManufacturerInUseException.ManufacturerInUseCanNotBeDeletedCarMsg);
             }

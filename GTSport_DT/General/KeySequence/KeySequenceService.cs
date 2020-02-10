@@ -44,7 +44,7 @@ namespace GTSport_DT.General.KeySequence
 
             keySequence.LastKeyValue = keyValue;
 
-            keySequenceRepository.Save(keySequence);
+            keySequenceRepository.SaveAndFlush(keySequence);
         }
 
         private KeySequence GetCreateKeySequence(string tableName)
@@ -67,7 +67,7 @@ namespace GTSport_DT.General.KeySequence
 
             keySequence.LastKeyValue++;
 
-            keySequenceRepository.Save(keySequence);
+            keySequenceRepository.SaveAndFlush(keySequence);
 
             return keySequence.LastKeyValue;
         }

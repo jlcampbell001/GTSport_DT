@@ -1,6 +1,7 @@
 ﻿using GTSport_DT.General;
 using Npgsql;
 using System.Collections.Generic;
+using System.Data;
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("GTSport_DT_Testing")]
@@ -17,8 +18,8 @@ namespace GTSport_DT.Owners
             tableName = "OWNERS";
             idField = "ownkey";
             getListOrderByField = "ownname";
-            updateCommand = "UPDATE owners SET ownname = @name, owndefault = @default WHERE ownkey = @pk";
-            insertCommand = "INSERT INTO owners(ownkey, ownname, owndefault) VALUES (@pk, @name, @default)";
+
+            FillDataSet();
         }
 
         /// <summary>Gets a list of all the owners set to be the default owner.</summary>
@@ -53,26 +54,7 @@ namespace GTSport_DT.Owners
         /// <returns>An owner entity if found or null if not found.</returns>
         public Owner GetByName(string name)
         {
-            Owner owner = null;
-
-            var cmd = new NpgsqlCommand();
-
-            cmd.Connection = npgsqlConnection;
-            cmd.CommandText = "SELECT * FROM owners WHERE ownname = @name";
-
-            cmd.Parameters.AddWithValue("name", name);
-            cmd.Prepare();
-
-            NpgsqlDataReader dataReader = cmd.ExecuteReader();
-
-            if (dataReader.Read())
-            {
-                owner = RecordToEntity(dataReader);
-            }
-
-            dataReader.Close();
-
-            cmd.Dispose();
+            Owner owner = GetByFieldString(name, "ownname");
 
             return owner;
         }
@@ -101,27 +83,24 @@ namespace GTSport_DT.Owners
             return owner;
         }
 
-        /// <summary>Adds the parameters.</summary>
-        /// <param name="cmd">The command.</param>
-        /// <param name="saveRecord">The save record.</param>
-        protected override void AddParameters(ref NpgsqlCommand cmd, Owner saveRecord)
-        {
-            cmd.Parameters.AddWithValue("pk", saveRecord.PrimaryKey);
-            cmd.Parameters.AddWithValue("name", saveRecord.OwnerName);
-            cmd.Parameters.AddWithValue("default", saveRecord.DefaultOwner);
-        }
-
         /// <summary>Convert a record retrieved from the database to an entity object.</summary>
         /// <param name="dataReader">The database reader with the results from a database request.</param>
         /// <returns>A new entity with the data.</returns>
         protected override Owner RecordToEntity(NpgsqlDataReader dataReader)
         {
             Owner owner = new Owner();
-            owner.PrimaryKey = dataReader.GetString(0);
-            owner.OwnerName = dataReader.GetString(1);
-            owner.DefaultOwner = dataReader.GetBoolean(2);
+            owner.PrimaryKey = dataReader.GetString(dataReader.GetOrdinal("ownkey"));
+            owner.OwnerName = dataReader.GetString(dataReader.GetOrdinal("ownname"));
+            owner.DefaultOwner = dataReader.GetBoolean(dataReader.GetOrdinal("owndefault"));
 
             return owner;
+        }
+
+        protected override void UpdateRow(ref DataRow dataRow, Owner entity)
+        {
+            dataRow["ownkey"] = entity.PrimaryKey;
+            dataRow["ownname"] = entity.OwnerName;
+            dataRow["owndefault"] = entity.DefaultOwner;
         }
     }
 }

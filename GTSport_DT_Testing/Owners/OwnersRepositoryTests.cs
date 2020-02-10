@@ -43,7 +43,7 @@ namespace GTSport_DT_Testing.Owners
         [TestMethod]
         public void A010_SaveNewTest()
         {
-            ownersRepository.Save(Owner1);
+            ownersRepository.SaveAndFlush(Owner1);
 
             Owner ownerCheck = ownersRepository.GetById(Owner1.PrimaryKey);
 
@@ -60,7 +60,7 @@ namespace GTSport_DT_Testing.Owners
             
             owner.OwnerName = ownerNameChange;
 
-            ownersRepository.Save(owner);
+            ownersRepository.SaveAndFlush(owner);
 
             Owner ownerCheck = ownersRepository.GetById(Owner1.PrimaryKey);
 
@@ -74,7 +74,7 @@ namespace GTSport_DT_Testing.Owners
         {
             string pk = Owner1.PrimaryKey;
 
-            ownersRepository.Delete(pk);
+            ownersRepository.DeleteAndFlush(pk);
 
             Owner ownerCheck = ownersRepository.GetById(pk);
 
@@ -87,6 +87,8 @@ namespace GTSport_DT_Testing.Owners
             ownersRepository.Save(Owner1);
             ownersRepository.Save(Owner2);
             ownersRepository.Save(Owner3);
+            ownersRepository.Flush();
+
         }
 
         [TestMethod]
@@ -152,6 +154,7 @@ namespace GTSport_DT_Testing.Owners
             ownersRepository.Delete(Owner1.PrimaryKey);
             ownersRepository.Delete(Owner2.PrimaryKey);
             ownersRepository.Delete(Owner3.PrimaryKey);
+            ownersRepository.Flush();
         }
     }
 }

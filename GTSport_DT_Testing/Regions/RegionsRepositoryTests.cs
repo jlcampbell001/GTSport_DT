@@ -39,7 +39,7 @@ namespace GTSport_DT_Testing.Regions
         [TestMethod]
         public void A010_SaveNewTest()
         {
-            regionsRepository.Save(Region1);
+            regionsRepository.SaveAndFlush(Region1);
 
             Region regionCheck = regionsRepository.GetById(Region1.PrimaryKey);
 
@@ -55,7 +55,7 @@ namespace GTSport_DT_Testing.Regions
 
             region.Description = descriptionChange;
 
-            regionsRepository.Save(region);
+            regionsRepository.SaveAndFlush(region);
 
             Region regionCheck = regionsRepository.GetById(Region1.PrimaryKey);
 
@@ -67,7 +67,7 @@ namespace GTSport_DT_Testing.Regions
         [TestMethod]
         public void A030_Delete()
         {
-            regionsRepository.Delete(Region1.PrimaryKey);
+            regionsRepository.DeleteAndFlush(Region1.PrimaryKey);
 
             Region regionCheck = regionsRepository.GetById(Region1.PrimaryKey);
 
@@ -80,6 +80,7 @@ namespace GTSport_DT_Testing.Regions
             regionsRepository.Save(Region1);
             regionsRepository.Save(Region2);
             regionsRepository.Save(Region3);
+            regionsRepository.Flush();
         }
 
         [TestMethod]
@@ -129,6 +130,7 @@ namespace GTSport_DT_Testing.Regions
             regionsRepository.Delete(Region1.PrimaryKey);
             regionsRepository.Delete(Region2.PrimaryKey);
             regionsRepository.Delete(Region3.PrimaryKey);
+            regionsRepository.Flush();
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using GTSport_DT.General;
 using Npgsql;
+using System.Data;
 
 namespace GTSport_DT.Regions
 {
@@ -13,8 +14,6 @@ namespace GTSport_DT.Regions
             tableName = "REGIONS";
             idField = "regkey";
             getListOrderByField = "regdescription";
-            updateCommand = "UPDATE regions SET regdescription = @desc WHERE regkey = @pk";
-            insertCommand = "INSERT INTO regions(regkey, regdescription) VALUES (@pk, @desc)";
         }
 
         /// <summary>Gets a region that matches the passed description.</summary>
@@ -22,37 +21,9 @@ namespace GTSport_DT.Regions
         /// <returns>A region that was found or null if it was not found.</returns>
         public Region GetByDescription(string description)
         {
-            Region region = null;
-
-            var cmd = new NpgsqlCommand();
-
-            cmd.Connection = npgsqlConnection;
-            cmd.CommandText = "SELECT * FROM regions WHERE regdescription = @desc";
-
-            cmd.Parameters.AddWithValue("desc", description);
-            cmd.Prepare();
-
-            NpgsqlDataReader dataReader = cmd.ExecuteReader();
-
-            if (dataReader.Read())
-            {
-                region = RecordToEntity(dataReader);
-            }
-
-            dataReader.Close();
-
-            cmd.Dispose();
+            Region region = GetByFieldString(description, "regdescription");
 
             return region;
-        }
-
-        /// <summary>Adds parameters to a SQL command object based on the passed entity.</summary>
-        /// <param name="cmd">The SQL command object to update.</param>
-        /// <param name="entity">The entity to get data from.</param>
-        protected override void AddParameters(ref NpgsqlCommand cmd, Region entity)
-        {
-            cmd.Parameters.AddWithValue("pk", entity.PrimaryKey);
-            cmd.Parameters.AddWithValue("desc", entity.Description);
         }
 
         /// <summary>Convert a record retrieved from the database to an entity object.</summary>
@@ -61,10 +32,16 @@ namespace GTSport_DT.Regions
         protected override Region RecordToEntity(NpgsqlDataReader dataReader)
         {
             Region region = new Region();
-            region.PrimaryKey = dataReader.GetString(0);
-            region.Description = dataReader.GetString(1);
+            region.PrimaryKey = dataReader.GetString(dataReader.GetOrdinal("regkey"));
+            region.Description = dataReader.GetString(dataReader.GetOrdinal("regdescription"));
 
             return region;
+        }
+
+        protected override void UpdateRow(ref DataRow dataRow, Region entity)
+        {
+            dataRow["regkey"] = entity.PrimaryKey;
+            dataRow["regdescription"] = entity.Description;
         }
     }
 }

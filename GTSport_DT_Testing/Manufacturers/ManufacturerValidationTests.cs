@@ -10,6 +10,8 @@ using System.Text;
 using static GTSport_DT_Testing.Manufacturers.ManufacturersForTesting;
 using static GTSport_DT_Testing.Countries.CountriesForTesting;
 using static GTSport_DT_Testing.Regions.RegionsForTesting;
+using GTSport_DT.Cars;
+using static GTSport_DT_Testing.Cars.CarsForTesting;
 
 namespace GTSport_DT_Testing.Manufacturers
 {
@@ -20,6 +22,7 @@ namespace GTSport_DT_Testing.Manufacturers
         private static ManufacturersRepository manufacturersRepository;
         private static CountriesRepository countriesRepository;
         private static RegionsRepository regionsRepository;
+        private static CarsRepository carsRepository;
 
         private const string badCountryKey = "C!X999999999";
         private const string badManufactureKey = "D!X999999999";
@@ -34,18 +37,24 @@ namespace GTSport_DT_Testing.Manufacturers
             countriesRepository = new CountriesRepository(con);
             manufacturersRepository = new ManufacturersRepository(con);
             manufacturerValidation = new ManufacturerValidation(con);
+            carsRepository = new CarsRepository(con);
 
             regionsRepository.Save(Region1);
             regionsRepository.Save(Region2);
             regionsRepository.Save(Region3);
+            regionsRepository.Flush();
 
             countriesRepository.Save(Country1);
             countriesRepository.Save(Country2);
             countriesRepository.Save(Country3);
+            countriesRepository.Flush();
 
             manufacturersRepository.Save(Manufacturer1);
             manufacturersRepository.Save(Manufacturer2);
             manufacturersRepository.Save(Manufacturer3);
+            manufacturersRepository.Flush();
+
+            carsRepository.SaveAndFlush(Car2);
         }
 
         [TestMethod]
@@ -53,17 +62,25 @@ namespace GTSport_DT_Testing.Manufacturers
         {
             if (con != null)
             {
+                carsRepository.DeleteAndFlush(Car2.PrimaryKey);
+
+                manufacturersRepository.Refresh();
                 manufacturersRepository.Delete(Manufacturer1.PrimaryKey);
                 manufacturersRepository.Delete(Manufacturer2.PrimaryKey);
                 manufacturersRepository.Delete(Manufacturer3.PrimaryKey);
+                manufacturersRepository.Flush();
 
+                countriesRepository.Refresh();
                 countriesRepository.Delete(Country1.PrimaryKey);
                 countriesRepository.Delete(Country2.PrimaryKey);
                 countriesRepository.Delete(Country3.PrimaryKey);
+                countriesRepository.Flush();
 
+                regionsRepository.Refresh();
                 regionsRepository.Delete(Region1.PrimaryKey);
                 regionsRepository.Delete(Region2.PrimaryKey);
                 regionsRepository.Delete(Region3.PrimaryKey);
+                regionsRepository.Flush();
 
                 con.Close();
             }
@@ -156,6 +173,20 @@ namespace GTSport_DT_Testing.Manufacturers
             {
                 Assert.AreEqual(ManufacturerNotFoundException.ManufacturerKeyNotFoundMsg, mnfe.Message);
                 throw mnfe;
+            }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ManufacturerInUseException))]
+        public void A070_ValidateDeleteInUse()
+        {
+            try
+            {
+                manufacturerValidation.ValidateDelete(Manufacturer2.PrimaryKey);
+            } catch (ManufacturerInUseException miue)
+            {
+                Assert.AreEqual(ManufacturerInUseException.ManufacturerInUseCanNotBeDeletedCarMsg, miue.Message);
+                throw miue;
             }
         }
     }
