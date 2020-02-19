@@ -119,6 +119,7 @@
     <Compile Include="Cars\CarNotFoundExcpetion.cs" />
     <Compile Include="Cars\CarSearchCriteria.cs" />
     <Compile Include="Cars\CarsRepository.cs" />
+    <Compile Include="Cars\CarsService.cs" />
     <Compile Include="Cars\CarStatistic.cs" />
     <Compile Include="Cars\CarValidation.cs" />
     <Compile Include="Cars\DriveTrain.cs" />

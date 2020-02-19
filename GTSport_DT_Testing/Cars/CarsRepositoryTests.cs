@@ -701,6 +701,7 @@ namespace GTSport_DT_Testing.Cars
         [TestMethod]
         public void A430_Delete15Cars()
         {
+            carsRepository.Refresh();
             carsRepository.Delete(Car1.PrimaryKey);
             carsRepository.Delete(Car2.PrimaryKey);
             carsRepository.Delete(Car3.PrimaryKey);

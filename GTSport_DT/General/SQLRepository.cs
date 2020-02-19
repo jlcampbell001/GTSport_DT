@@ -94,7 +94,10 @@ namespace GTSport_DT.General
                 SetupAdapter();
             }
 
-            dataAdapter.Update(dataSet, tableName);
+            if (dataSet.HasChanges())
+            {
+                dataAdapter.Update(dataSet, tableName);
+            }
 
             FillDataSet();
         }
