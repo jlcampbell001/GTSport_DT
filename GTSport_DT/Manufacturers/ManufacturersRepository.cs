@@ -59,6 +59,9 @@ namespace GTSport_DT.Manufacturers
             return manufacturer;
         }
 
+        /// <summary>Updates the passed data row.</summary>
+        /// <param name="dataRow">The data row to update.</param>
+        /// <param name="entity">The entity to update from.</param>
         protected override void UpdateRow(ref DataRow dataRow, Manufacturer entity)
         {
             dataRow["mankey"] = entity.PrimaryKey;

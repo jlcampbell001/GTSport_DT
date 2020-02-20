@@ -5,6 +5,8 @@ using System.Windows.Forms;
 
 namespace GTSport_DT.Regions
 {
+    /// <summary>The form for the regions.</summary>
+    /// <seealso cref="System.Windows.Forms.Form"/>
     public partial class RegionsForm : Form
     {
         private NpgsqlConnection con;

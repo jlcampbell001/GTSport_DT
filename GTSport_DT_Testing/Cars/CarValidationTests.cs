@@ -380,15 +380,15 @@ namespace GTSport_DT_Testing.Cars
         }
 
         [TestMethod]
-        [ExpectedException(typeof(CarNotFoundExcpetion))]
+        [ExpectedException(typeof(CarNotFoundException))]
         public void A160_ValidateDeleteBadCarKey()
         {
             try
             {
                 carValidation.ValidateDelete(badCarKey);
-            } catch (CarNotFoundExcpetion cnfe)
+            } catch (CarNotFoundException cnfe)
             {
-                Assert.AreEqual(CarNotFoundExcpetion.CarKeyNotFoundMsg, cnfe.Message);
+                Assert.AreEqual(CarNotFoundException.CarKeyNotFoundMsg, cnfe.Message);
                 throw cnfe;
             }
         }

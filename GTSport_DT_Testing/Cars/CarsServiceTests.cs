@@ -183,15 +183,15 @@ namespace GTSport_DT_Testing.Cars
         }
 
         [TestMethod]
-        [ExpectedException(typeof(CarNotFoundExcpetion))]
+        [ExpectedException(typeof(CarNotFoundException))]
         public void A020_GetByKeyBadKey()
         {
             try
             {
                 Car car = carsService.GetByKey(badCarKey);
-            } catch (CarNotFoundExcpetion cnfe)
+            } catch (CarNotFoundException cnfe)
             {
-                Assert.AreEqual(CarNotFoundExcpetion.CarKeyNotFoundMsg, cnfe.Message);
+                Assert.AreEqual(CarNotFoundException.CarKeyNotFoundMsg, cnfe.Message);
                 throw cnfe;
             }
         }
@@ -205,16 +205,16 @@ namespace GTSport_DT_Testing.Cars
         }
 
         [TestMethod]
-        [ExpectedException(typeof(CarNotFoundExcpetion))]
+        [ExpectedException(typeof(CarNotFoundException))]
         public void A040_GetByNameBadName()
         {
             try
             {
                 Car car = carsService.GetByName(badCarName);
             }
-            catch (CarNotFoundExcpetion cnfe)
+            catch (CarNotFoundException cnfe)
             {
-                Assert.AreEqual(CarNotFoundExcpetion.CarNameNotFoundMsg, cnfe.Message);
+                Assert.AreEqual(CarNotFoundException.CarNameNotFoundMsg, cnfe.Message);
                 throw cnfe;
             }
         }

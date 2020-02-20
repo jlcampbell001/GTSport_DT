@@ -38,6 +38,9 @@ namespace GTSport_DT.Regions
             return region;
         }
 
+        /// <summary>Updates the passed data row.</summary>
+        /// <param name="dataRow">The data row to update.</param>
+        /// <param name="entity">The entity to update from.</param>
         protected override void UpdateRow(ref DataRow dataRow, Region entity)
         {
             dataRow["regkey"] = entity.PrimaryKey;

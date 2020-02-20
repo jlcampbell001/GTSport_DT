@@ -38,6 +38,7 @@ namespace GTSport_DT.Manufacturers
             InitializeComponent();
         }
 
+        /// <summary>Updates the data on this form from changes on other forms.</summary>
         public void UpdateFromOtherForms()
         {
             UpdateCountryList();
@@ -122,6 +123,8 @@ namespace GTSport_DT.Manufacturers
                             SetToWorkingManufacturer();
                         }
 
+                        UpdateOtherForms();
+
                         tvManufacturers.Focus();
                     }
                     catch (Exception ex)
@@ -158,6 +161,8 @@ namespace GTSport_DT.Manufacturers
                 UpdateList();
 
                 SetSelected(workingManufacturer.PrimaryKey);
+
+                UpdateOtherForms();
             }
             catch (Exception ex)
             {
@@ -260,6 +265,13 @@ namespace GTSport_DT.Manufacturers
             }
 
             tvManufacturers.EndUpdate();
+        }
+
+        private void UpdateOtherForms()
+        {
+            GTSportForm workingParentForm = (GTSportForm)this.ParentForm;
+
+            workingParentForm.UpdateManufacturersOnForms();
         }
 
         private void UpdateWorkingManufacturer()

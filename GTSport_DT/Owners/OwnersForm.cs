@@ -5,6 +5,8 @@ using System.Windows.Forms;
 
 namespace GTSport_DT.Owners
 {
+    /// <summary>The form for the owners.</summary>
+    /// <seealso cref="System.Windows.Forms.Form"/>
     public partial class OwnersForm : Form
     {
         private OwnersService ownersService;

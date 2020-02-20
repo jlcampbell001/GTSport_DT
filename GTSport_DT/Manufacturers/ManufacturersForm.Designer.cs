@@ -49,20 +49,23 @@
             this.tvManufacturers.Location = new System.Drawing.Point(0, 0);
             this.tvManufacturers.Name = "tvManufacturers";
             this.tvManufacturers.Size = new System.Drawing.Size(225, 450);
-            this.tvManufacturers.TabIndex = 3;
+            this.tvManufacturers.TabIndex = 0;
             this.tvManufacturers.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvManufacturers_AfterSelect);
             // 
             // toolStrip1
             // 
+            this.toolStrip1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnSave,
             this.btnDelete,
             this.btnNew,
             this.btnCancel,
             this.toolStripSeparator1});
-            this.toolStrip1.Location = new System.Drawing.Point(225, 0);
+            this.toolStrip1.Location = new System.Drawing.Point(228, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(575, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(110, 25);
             this.toolStrip1.TabIndex = 12;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -73,7 +76,7 @@
             this.btnSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(23, 22);
-            this.btnSave.Text = "Save Region";
+            this.btnSave.Text = "Save Manufacturer";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnDelete
@@ -83,7 +86,7 @@
             this.btnDelete.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(23, 22);
-            this.btnDelete.Text = "Delete Region";
+            this.btnDelete.Text = "Delete Manufacturer";
             this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnNew
@@ -93,7 +96,7 @@
             this.btnNew.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(23, 22);
-            this.btnNew.Text = "Add New Region";
+            this.btnNew.Text = "Add New Manfuacturer";
             this.btnNew.Click += new System.EventHandler(this.btnNew_Click);
             // 
             // btnCancel
@@ -102,7 +105,7 @@
             this.btnCancel.Image = ((System.Drawing.Image)(resources.GetObject("btnCancel.Image")));
             this.btnCancel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(23, 22);
+            this.btnCancel.Size = new System.Drawing.Size(23, 20);
             this.btnCancel.Text = "Cancel Changes";
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
@@ -113,12 +116,14 @@
             // 
             // cmbCountry
             // 
+            this.cmbCountry.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbCountry.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCountry.FormattingEnabled = true;
             this.cmbCountry.Location = new System.Drawing.Point(300, 59);
             this.cmbCountry.Name = "cmbCountry";
             this.cmbCountry.Size = new System.Drawing.Size(488, 21);
-            this.cmbCountry.TabIndex = 20;
+            this.cmbCountry.TabIndex = 2;
             this.cmbCountry.SelectedIndexChanged += new System.EventHandler(this.cmbCountry_SelectedIndexChanged);
             // 
             // label2
@@ -132,14 +137,18 @@
             // 
             // txtName
             // 
+            this.txtName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtName.Location = new System.Drawing.Point(284, 28);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(504, 20);
-            this.txtName.TabIndex = 18;
+            this.txtName.TabIndex = 1;
             this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(240, 28);
             this.label1.Name = "label1";

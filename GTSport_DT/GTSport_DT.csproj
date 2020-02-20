@@ -116,7 +116,7 @@
     <Compile Include="Cars\CarManufacturerKeyNotSetException.cs" />
     <Compile Include="Cars\CarNameAlreadyExistsException.cs" />
     <Compile Include="Cars\CarNameNotSetException.cs" />
-    <Compile Include="Cars\CarNotFoundExcpetion.cs" />
+    <Compile Include="Cars\CarNotFoundException.cs" />
     <Compile Include="Cars\CarSearchCriteria.cs" />
     <Compile Include="Cars\CarsRepository.cs" />
     <Compile Include="Cars\CarsService.cs" />
@@ -167,6 +167,12 @@
     <Compile Include="Manufacturers\ManufacturersRepository.cs" />
     <Compile Include="Manufacturers\ManufacturersService.cs" />
     <Compile Include="Manufacturers\ManufacturerValidation.cs" />
+    <Compile Include="OwnerCars\OwnerCarsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OwnerCars\OwnerCarsForm.Designer.cs">
+      <DependentUpon>OwnerCarsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Owners\Owner.cs" />
     <Compile Include="Owners\OwnerNameAlreadyExistsException.cs" />
     <Compile Include="Owners\OwnerNameNotSetException.cs" />
@@ -204,6 +210,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Manufacturers\ManufacturersForm.resx">
       <DependentUpon>ManufacturersForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OwnerCars\OwnerCarsForm.resx">
+      <DependentUpon>OwnerCarsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Owners\OwnersForm.resx">
       <DependentUpon>OwnersForm.cs</DependentUpon>

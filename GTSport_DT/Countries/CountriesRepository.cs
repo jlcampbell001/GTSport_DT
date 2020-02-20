@@ -53,6 +53,9 @@ namespace GTSport_DT.Countries
             return country;
         }
 
+        /// <summary>Updates the passed data row.</summary>
+        /// <param name="dataRow">The data row to update.</param>
+        /// <param name="entity">The entity.</param>
         protected override void UpdateRow(ref DataRow dataRow, Country entity)
         {
             dataRow["coukey"] = entity.PrimaryKey;

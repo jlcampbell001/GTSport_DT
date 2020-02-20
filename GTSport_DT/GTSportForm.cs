@@ -1,5 +1,6 @@
 ﻿using GTSport_DT.Countries;
 using GTSport_DT.Manufacturers;
+using GTSport_DT.OwnerCars;
 using GTSport_DT.Owners;
 using GTSport_DT.Regions;
 using Npgsql;
@@ -56,6 +57,24 @@ namespace GTSport_DT
         }
 
         /// <summary>
+        /// <para>
+        /// Updates the manufacturers on child forms when a manufacture is changed / added / deleted.
+        /// </para>
+        /// <para>Called the manufacturers form.</para>
+        /// </summary>
+        public void UpdateManufacturersOnForms()
+        {
+            foreach (Form form in this.MdiChildren)
+            {
+                if (form.Name == "OwnerCarsForm")
+                {
+                    OwnerCarsForm ownerCarsForm = (OwnerCarsForm)form;
+                    ownerCarsForm.UpdateFromOtherForms();
+                }
+            }
+        }
+
+        /// <summary>
         /// <para>Updates the regions on child forms when a region is changed / added / deleted.</para>
         /// <para>Called by the regions form.</para>
         /// </summary>
@@ -91,6 +110,11 @@ namespace GTSport_DT
             ownersService = new OwnersService(con);
 
             SetCurrentOwner(ownersService.GetDefaultOwner());
+        }
+
+        private void carsOwnedCarsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ShowOwnedCarsForm();
         }
 
         private void countriesToolStripMenuItem_Click(object sender, EventArgs e)
@@ -171,6 +195,34 @@ namespace GTSport_DT
             {
                 manufacturersForm.Show();
                 manufacturersForm.Activate();
+            }
+        }
+
+        private void ShowOwnedCarsForm()
+        {
+            Boolean createNewForm = true;
+
+            OwnerCarsForm ownerCarsForm = null;
+
+            foreach (Form form in this.MdiChildren)
+            {
+                if (form.Name == "OwnerCarsForm")
+                {
+                    ownerCarsForm = (OwnerCarsForm)form;
+                    createNewForm = false;
+                }
+            }
+
+            if (createNewForm)
+            {
+                ownerCarsForm = new OwnerCarsForm(con);
+                ownerCarsForm.MdiParent = this;
+            }
+
+            if (ownerCarsForm != null)
+            {
+                ownerCarsForm.Show();
+                ownerCarsForm.Activate();
             }
         }
 

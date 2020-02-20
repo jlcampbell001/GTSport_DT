@@ -1,19 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GTSport_DT.Cars
+﻿namespace GTSport_DT.Cars
 {
-    public static class Aspiration 
+    /// <summary>Values allowed for aspiration stat on a car.</summary>
+    public static class Aspiration
     {
-        public const string NA = "NA";
-        public const string TB = "TB";
-        public const string SC = "SC";
-        public const string EV = "EV";
+        /// <summary>An empty aspiration.</summary>
         public const string Empty = "";
 
-        public static readonly string[] Aspirations = {Empty, EV, NA, SC, TB };
+        /// <summary>The EV aspiration.</summary>
+        public const string EV = "EV";
+
+        /// <summary>The NA aspiration.</summary>
+        public const string NA = "NA";
+
+        /// <summary>The SC aspiration.</summary>
+        public const string SC = "SC";
+
+        /// <summary>The TB aspiration.</summary>
+        public const string TB = "TB";
+
+        /// <summary>The list of aspirations for drop down lists.</summary>
+        public static readonly string[] Aspirations = { Empty, EV, NA, SC, TB };
     }
 }

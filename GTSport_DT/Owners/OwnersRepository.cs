@@ -96,6 +96,9 @@ namespace GTSport_DT.Owners
             return owner;
         }
 
+        /// <summary>Updates the passed data row.</summary>
+        /// <param name="dataRow">The data row to be updated.</param>
+        /// <param name="entity">The entity to update from.</param>
         protected override void UpdateRow(ref DataRow dataRow, Owner entity)
         {
             dataRow["ownkey"] = entity.PrimaryKey;
