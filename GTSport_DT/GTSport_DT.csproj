@@ -72,6 +72,7 @@
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Buffers.4.5.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
@@ -83,6 +84,7 @@
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.6.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
     </Reference>
+    <Reference Include="System.Security" />
     <Reference Include="System.Text.Encodings.Web, Version=4.0.4.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encodings.Web.4.6.0\lib\netstandard2.0\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
@@ -139,6 +141,14 @@
     <Compile Include="Countries\CountryRegionKeyNotSetException.cs" />
     <Compile Include="Countries\CountryValidation.cs" />
     <Compile Include="General\BackEndService.cs" />
+    <Compile Include="General\ConfigurationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="General\ConfigurationForm.Designer.cs">
+      <DependentUpon>ConfigurationForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="General\ConnectionConfiguration.cs" />
+    <Compile Include="General\EncryptStrings.cs" />
     <Compile Include="General\Entity.cs" />
     <Compile Include="General\KeySequence\KeySequence.cs" />
     <Compile Include="General\KeySequence\KeySequenceRepository.cs" />
@@ -167,12 +177,14 @@
     <Compile Include="Manufacturers\ManufacturersRepository.cs" />
     <Compile Include="Manufacturers\ManufacturersService.cs" />
     <Compile Include="Manufacturers\ManufacturerValidation.cs" />
+    <Compile Include="OwnerCars\OwnerCar.cs" />
     <Compile Include="OwnerCars\OwnerCarsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="OwnerCars\OwnerCarsForm.Designer.cs">
       <DependentUpon>OwnerCarsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="OwnerCars\OwnerCarsRepository.cs" />
     <Compile Include="Owners\Owner.cs" />
     <Compile Include="Owners\OwnerNameAlreadyExistsException.cs" />
     <Compile Include="Owners\OwnerNameNotSetException.cs" />
@@ -204,6 +216,9 @@
     <Compile Include="Regions\RegionValidation.cs" />
     <EmbeddedResource Include="Countries\CountriesForm.resx">
       <DependentUpon>CountriesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="General\ConfigurationForm.resx">
+      <DependentUpon>ConfigurationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GTSportForm.resx">
       <DependentUpon>GTSportForm.cs</DependentUpon>

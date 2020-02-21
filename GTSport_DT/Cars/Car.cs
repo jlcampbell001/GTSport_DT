@@ -153,5 +153,17 @@ namespace GTSport_DT.Cars
             Cornering = cornering;
             Stability = stability;
         }
+
+        public override string ToString()
+        {
+            string line = "{Primary Key = '" + PrimaryKey + "', Name = '" + Name + "', Manufacturer Key = '" + ManufacturerKey 
+                + "', Year = " + Year + ", Category = " + Category.ToString() + ", Price = " + Price + ", Displacement CC = '" + DisplacementCC
+                + "', MaxPower = " + MaxPower + ", Power RPM = '" + PowerRPM + "', Torque FTLB = " + TorqueRPM + ", Torque RPM = '" + TorqueRPM
+                + "', Drive Train = '" + DriveTrain + "', Aspiration = '" + Aspiration + "', Length = " + Length + ", Width = " + Width
+                + ", Height = " + Height + ", Weight = " + Weight + ", Max Speed = " + MaxSpeed + ", Acceleration = " + Acceleration
+                + ", Braking = " + Braking + ", Cornering = " + Cornering + ", Stability = " + Stability + "}";
+            return line;
+
+        }
     }
 }

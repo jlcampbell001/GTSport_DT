@@ -35,10 +35,11 @@
             this.regionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.countriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manufacturersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.carsOwnedCarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.tsslCurrentOwner = new System.Windows.Forms.ToolStripStatusLabel();
-            this.carsOwnedCarsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.configToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -61,6 +62,7 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.configToolStripMenuItem,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -69,7 +71,7 @@
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(92, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -101,6 +103,13 @@
             this.manufacturersToolStripMenuItem.Text = "Manufacturers";
             this.manufacturersToolStripMenuItem.Click += new System.EventHandler(this.manufacturersToolStripMenuItem_Click);
             // 
+            // carsOwnedCarsToolStripMenuItem
+            // 
+            this.carsOwnedCarsToolStripMenuItem.Name = "carsOwnedCarsToolStripMenuItem";
+            this.carsOwnedCarsToolStripMenuItem.Size = new System.Drawing.Size(117, 20);
+            this.carsOwnedCarsToolStripMenuItem.Text = "Cars / Owned Cars";
+            this.carsOwnedCarsToolStripMenuItem.Click += new System.EventHandler(this.carsOwnedCarsToolStripMenuItem_Click);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -127,12 +136,12 @@
             this.tsslCurrentOwner.Text = "Owner";
             this.tsslCurrentOwner.Click += new System.EventHandler(this.tsslCurrentOwner_Click);
             // 
-            // carsOwnedCarsToolStripMenuItem
+            // configToolStripMenuItem
             // 
-            this.carsOwnedCarsToolStripMenuItem.Name = "carsOwnedCarsToolStripMenuItem";
-            this.carsOwnedCarsToolStripMenuItem.Size = new System.Drawing.Size(117, 20);
-            this.carsOwnedCarsToolStripMenuItem.Text = "Cars / Owned Cars";
-            this.carsOwnedCarsToolStripMenuItem.Click += new System.EventHandler(this.carsOwnedCarsToolStripMenuItem_Click);
+            this.configToolStripMenuItem.Name = "configToolStripMenuItem";
+            this.configToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.configToolStripMenuItem.Text = "Config";
+            this.configToolStripMenuItem.Click += new System.EventHandler(this.configToolStripMenuItem_Click);
             // 
             // GTSportForm
             // 
@@ -168,6 +177,7 @@
         private System.Windows.Forms.ToolStripMenuItem countriesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem manufacturersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem carsOwnedCarsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem configToolStripMenuItem;
     }
 }
 

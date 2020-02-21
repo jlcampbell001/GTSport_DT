@@ -1,11 +1,14 @@
 ﻿using GTSport_DT.Countries;
+using GTSport_DT.General;
 using GTSport_DT.Manufacturers;
 using GTSport_DT.OwnerCars;
 using GTSport_DT.Owners;
 using GTSport_DT.Regions;
 using Npgsql;
 using System;
+using System.Security;
 using System.Windows.Forms;
+using static GTSport_DT.General.EncryptStrings;
 
 namespace GTSport_DT
 {
@@ -20,7 +23,7 @@ namespace GTSport_DT
         protected static NpgsqlConnection con;
 
         /// <summary>The connection string to the database.</summary>
-        protected static string cs = "Host=localhost;Port=5433;Username=GTSport;Password=GTSport;Database=GTSport";
+        protected ConnectionConfiguration cs = new ConnectionConfiguration();
 
         /// <summary>The owners service.</summary>
         protected OwnersService ownersService;
@@ -95,7 +98,10 @@ namespace GTSport_DT
         protected override void OnClosed(EventArgs e)
         {
             base.OnClosed(e);
-            con.Close();
+            if (con != null)
+            {
+                con.Close();
+            }
         }
 
         /// <summary>Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.</summary>
@@ -104,12 +110,41 @@ namespace GTSport_DT
         {
             base.OnLoad(e);
 
-            con = new NpgsqlConnection(cs);
-            con.Open();
+            ConnectToDatabase();
+        }
 
-            ownersService = new OwnersService(con);
+        private void ConnectToDatabase()
+        {
+            cs.LoadConnectionConfig();
 
-            SetCurrentOwner(ownersService.GetDefaultOwner());
+            if (con != null && con.State == System.Data.ConnectionState.Open)
+            {
+                foreach (Form form in this.MdiChildren)
+                {
+                    form.Close();
+                    form.Dispose();
+                }
+
+                con.Close();
+            }
+
+            if (!cs.IsEmpty())
+            {
+                con = new NpgsqlConnection(cs.GetConnectionString());
+
+                try
+                {
+                    con.Open();
+                    ownersService = new OwnersService(con);
+
+                    SetCurrentOwner(ownersService.GetDefaultOwner());
+                } catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error");
+                }
+            }
+
+            SetMenuChoices();
         }
 
         private void carsOwnedCarsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -285,6 +320,37 @@ namespace GTSport_DT
         private void tsslCurrentOwner_Click(object sender, EventArgs e)
         {
             ShowOwnerForm();
+        }
+
+        private void configToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ConfigurationForm configurationForm = new ConfigurationForm();
+
+            if (configurationForm.ShowDialog(this) == DialogResult.OK)
+            {
+                ConnectToDatabase();
+            }
+
+            configurationForm.Dispose();
+        }
+
+        private void SetMenuChoices()
+        {
+            if (con == null || con.State != System.Data.ConnectionState.Open)
+            {
+                ownersToolStripMenuItem.Enabled = false;
+                regionsToolStripMenuItem.Enabled = false;
+                countriesToolStripMenuItem.Enabled = false;
+                manufacturersToolStripMenuItem.Enabled = false;
+                carsOwnedCarsToolStripMenuItem.Enabled = false;
+            } else
+            {
+                ownersToolStripMenuItem.Enabled = true;
+                regionsToolStripMenuItem.Enabled = true;
+                countriesToolStripMenuItem.Enabled = true;
+                manufacturersToolStripMenuItem.Enabled = true;
+                carsOwnedCarsToolStripMenuItem.Enabled = true;
+            }
         }
     }
 }
