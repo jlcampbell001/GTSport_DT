@@ -343,6 +343,5 @@ namespace GTSport_DT_Testing.Cars
 
             Assert.AreEqual(expectedMaxKey, carXXKey);
         }
-
     }
 }

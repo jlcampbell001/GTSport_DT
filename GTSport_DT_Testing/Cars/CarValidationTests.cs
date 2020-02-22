@@ -12,7 +12,10 @@ using static GTSport_DT_Testing.Regions.RegionsForTesting;
 using static GTSport_DT_Testing.Countries.CountriesForTesting;
 using static GTSport_DT_Testing.Manufacturers.ManufacturersForTesting;
 using static GTSport_DT_Testing.Cars.CarsForTesting;
-
+using static GTSport_DT_Testing.OwnerCars.OwnerCarsForTesting;
+using static GTSport_DT_Testing.Owners.OwnersForTesting;
+using GTSport_DT.OwnerCars;
+using GTSport_DT.Owners;
 
 namespace GTSport_DT_Testing.Cars
 {
@@ -24,6 +27,8 @@ namespace GTSport_DT_Testing.Cars
         private static ManufacturersRepository manufacturersRepository;
         private static CarsRepository carsRepository;
         private static CarValidation carValidation;
+        private static OwnerCarsRepository ownerCarsRepository;
+        private static OwnersRepository ownersRepository;
 
         private static readonly string carXXName = Car9.Name;
         private static readonly string carXXManufacturerKey = Manufacturer1.PrimaryKey;
@@ -46,6 +51,8 @@ namespace GTSport_DT_Testing.Cars
             manufacturersRepository = new ManufacturersRepository(con);
             carsRepository = new CarsRepository(con);
             carValidation = new CarValidation(con);
+            ownerCarsRepository = new OwnerCarsRepository(con);
+            ownersRepository = new OwnersRepository(con);
 
             regionsRepository.Save(Region1);
             regionsRepository.Save(Region2);
@@ -86,6 +93,10 @@ namespace GTSport_DT_Testing.Cars
             carsRepository.Save(Car14);
             carsRepository.Save(Car15);
             carsRepository.Flush();
+
+            ownersRepository.SaveAndFlush(Owner2);
+
+            ownerCarsRepository.SaveAndFlush(OwnerCar2);
         }
 
         [TestMethod]
@@ -93,6 +104,10 @@ namespace GTSport_DT_Testing.Cars
         {
             if (con != null)
             {
+                ownerCarsRepository.DeleteAndFlush(OwnerCar2.PrimaryKey);
+
+                ownersRepository.DeleteAndFlush(Owner2.PrimaryKey);
+
                 carsRepository.Refresh();
                 carsRepository.Delete(Car1.PrimaryKey);
                 carsRepository.Delete(Car2.PrimaryKey);
@@ -394,9 +409,17 @@ namespace GTSport_DT_Testing.Cars
         }
 
         [TestMethod]
+        [ExpectedException(typeof(CarInUseException))]
         public void A170_ValidateDeleteCarkeyInUse()
         {
-
+            try
+            {
+                carValidation.ValidateDelete(Car2.PrimaryKey);
+            } catch (CarInUseException ciue)
+            {
+                Assert.AreEqual(CarInUseException.CarInUseOwnedCarMsg, ciue.Message);
+                throw ciue;
+            }
         }
 
         [TestMethod]
@@ -468,6 +491,5 @@ namespace GTSport_DT_Testing.Cars
                 throw cdtnve;
             }
         }
-
     }
 }

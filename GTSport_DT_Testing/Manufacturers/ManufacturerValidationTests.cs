@@ -178,7 +178,7 @@ namespace GTSport_DT_Testing.Manufacturers
 
         [TestMethod]
         [ExpectedException(typeof(ManufacturerInUseException))]
-        public void A070_ValidateDeleteInUse()
+        public void A080_ValidateDeleteInUse()
         {
             try
             {

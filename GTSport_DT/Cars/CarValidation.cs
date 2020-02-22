@@ -1,7 +1,9 @@
 ﻿using GTSport_DT.General;
 using GTSport_DT.Manufacturers;
+using GTSport_DT.OwnerCars;
 using Npgsql;
 using System;
+using System.Collections.Generic;
 
 namespace GTSport_DT.Cars
 {
@@ -11,6 +13,7 @@ namespace GTSport_DT.Cars
     {
         private CarsRepository carsRepository;
         private ManufacturersRepository manufacturersRepository;
+        private OwnerCarsRepository ownerCarsRepository;
 
         /// <summary>Initializes a new instance of the <see cref="CarValidation"/> class.</summary>
         /// <param name="npgsqlConnection">The NPGSQL connection.</param>
@@ -18,6 +21,7 @@ namespace GTSport_DT.Cars
         {
             carsRepository = new CarsRepository(npgsqlConnection);
             manufacturersRepository = new ManufacturersRepository(npgsqlConnection);
+            ownerCarsRepository = new OwnerCarsRepository(npgsqlConnection);
         }
 
         /// <summary>Validates the aspiration.</summary>
@@ -63,7 +67,9 @@ namespace GTSport_DT.Cars
                 throw new CarNotFoundException(CarNotFoundException.CarKeyNotFoundMsg, primaryKey);
             }
 
-            if (false)
+            List<OwnerCar> ownerCars = ownerCarsRepository.GetListForForCarKey(primaryKey);
+
+            if (ownerCars.Count > 0)
             {
                 throw new CarInUseException(CarInUseException.CarInUseOwnedCarMsg);
             }

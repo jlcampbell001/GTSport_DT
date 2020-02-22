@@ -178,6 +178,10 @@
     <Compile Include="Manufacturers\ManufacturersService.cs" />
     <Compile Include="Manufacturers\ManufacturerValidation.cs" />
     <Compile Include="OwnerCars\OwnerCar.cs" />
+    <Compile Include="OwnerCars\OwnerCarCarKeyNotSetException.cs" />
+    <Compile Include="OwnerCars\OwnerCarIDNotSetException.cs" />
+    <Compile Include="OwnerCars\OwnerCarNotFoundException.cs" />
+    <Compile Include="OwnerCars\OwnerCarOwnerKeyNotSetException.cs" />
     <Compile Include="OwnerCars\OwnerCarsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -185,6 +189,8 @@
       <DependentUpon>OwnerCarsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="OwnerCars\OwnerCarsRepository.cs" />
+    <Compile Include="OwnerCars\OwnerCarsService.cs" />
+    <Compile Include="OwnerCars\OwnerCarValidation.cs" />
     <Compile Include="Owners\Owner.cs" />
     <Compile Include="Owners\OwnerNameAlreadyExistsException.cs" />
     <Compile Include="Owners\OwnerNameNotSetException.cs" />
