@@ -13,9 +13,11 @@ namespace GTSport_DT.OwnerCars
     {
         private static Manufacturer emptyManufacturer = new Manufacturer("Empty", "", "");
         private CarsService carsService;
+        private OwnerCarsService ownerCarsService;
         private NpgsqlConnection con;
         private ManufacturersService manufacturersService;
         private Car workingCar = new Car();
+        private OwnerCar workingOwnerCar = new OwnerCar("", "", "", "", "", 0, 0, 0, DateTime.Today);
 
         /// <summary>Initializes a new instance of the <see cref="OwnerCarsForm"/> class.</summary>
         public OwnerCarsForm()
@@ -32,9 +34,10 @@ namespace GTSport_DT.OwnerCars
 
             manufacturersService = new ManufacturersService(con);
             carsService = new CarsService(con);
+            ownerCarsService = new OwnerCarsService(con);
 
-            //AddTestData();
-
+            //AddCarTestData();
+            
             InitializeComponent();
         }
 
@@ -43,7 +46,10 @@ namespace GTSport_DT.OwnerCars
         {
             UpdateManufacturerList();
 
+            UpdateList();
+
             SetToWorkingCar();
+            SetToWorkingOwnerCar();
         }
 
         /// <summary>Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.</summary>
@@ -59,7 +65,7 @@ namespace GTSport_DT.OwnerCars
             SetButtons();
         }
 
-        private void AddTestData()
+        private void AddCarTestData()
         {
             Manufacturer mazada = manufacturersService.GetByName("MAZDA");
             Manufacturer volkswagen = manufacturersService.GetByName("VOLKSWAGEN");
@@ -79,6 +85,26 @@ namespace GTSport_DT.OwnerCars
                 29250.00, "1999", 250, "5500", 669.70, "2500", DriveTrain.FF, Aspiration.Empty, 171.70,
                 71.70, 58.40, 3223, 5.7, 2.5, 1.7, 1.4, 5.2);
             carsService.Save(ref car);
+        }
+
+        private void AddOwnerCarTestData()
+        {
+            Car roadster = carsService.GetByName("Roadster S (ND) '15");
+            Car Focus = carsService.GetByName("Focus ST '15");
+
+            string ownerKey = GetCurrentOwnerKey();
+
+            OwnerCar ownerCar = new OwnerCar("", ownerKey, roadster.PrimaryKey, roadster.Name + "_02", "Red", roadster.MaxPower,
+                2, 1, DateTime.Today);
+            ownerCarsService.Save(ref ownerCar);
+
+            ownerCar = new OwnerCar("", ownerKey, Focus.PrimaryKey, Focus.Name + "_xx", "Blue", Focus.MaxPower,
+                1, 0, DateTime.Today.AddDays(-45));
+            ownerCarsService.Save(ref ownerCar);
+
+            ownerCar = new OwnerCar("", ownerKey, roadster.PrimaryKey, roadster.Name + "_01", "Silver", roadster.MaxPower,
+                0, 0, DateTime.Today.AddDays(-400));
+            ownerCarsService.Save(ref ownerCar);
         }
 
         private void btnCancelCar_Click(object sender, EventArgs e)
@@ -112,6 +138,9 @@ namespace GTSport_DT.OwnerCars
                                 0.00, "", 0, "", 0.00, "", DriveTrain.Empty, Aspiration.Empty, 0.00, 0.00, 0.00,
                                 0.00, 0.00, 0.0, 0.0, 0.0, 0.0);
                             SetToWorkingCar();
+
+                            workingOwnerCar = new OwnerCar("", GetCurrentOwnerKey(), "", "", "", 0, 0, 0, DateTime.Today);
+                            SetToWorkingOwnerCar();
                         }
 
                         tvOwnedCars.Focus();
@@ -136,6 +165,10 @@ namespace GTSport_DT.OwnerCars
 
             SetToWorkingCar();
 
+            workingOwnerCar = new OwnerCar("", GetCurrentOwnerKey(), "", "", "", 0, 0, 0, DateTime.Today);
+
+            SetToWorkingOwnerCar();
+
             txtNameCar.Focus();
 
             SetButtons();
@@ -151,7 +184,7 @@ namespace GTSport_DT.OwnerCars
 
                 UpdateList();
 
-                SetSelected(workingCar.PrimaryKey);
+                SetSelected(workingCar.PrimaryKey, "");
             }
             catch (Exception ex)
             {
@@ -309,6 +342,9 @@ namespace GTSport_DT.OwnerCars
 
         private void SetButtons()
         {
+            Boolean editingCar = false;
+            Boolean editingOwnerCar = false;
+
             if (workingCar.Name != txtNameCar.Text
                 || workingCar.ManufacturerKey != (string)cmbManufacturer.SelectedValue
                 || workingCar.Year != nudYear.Value
@@ -333,14 +369,41 @@ namespace GTSport_DT.OwnerCars
             {
                 btnSaveCar.Enabled = true;
                 btnCancelCar.Enabled = true;
+                btnNewCar.Enabled = true;
+                btnSaveOwnerCar.Enabled = false;
+                btnCancelOwnedCar.Enabled = false;
+                btnNewOwnerCar.Enabled = false;
+
+                editingCar = true;
+            }
+            else if (workingOwnerCar.CarID != txtCarID.Text
+                || workingOwnerCar.PaintJob != txtPaintJob.Text
+                || workingOwnerCar.AcquiredDate != dtpAcquired.Value
+                || workingOwnerCar.MaxPower != nudOwnerCarMaxPower.Value
+                || workingOwnerCar.PowerLevel != nudPowerLevel.Value
+                || workingOwnerCar.WeightReductionLevel != nudWeightReductionLevel.Value)
+            {
+                btnSaveCar.Enabled = false;
+                btnCancelCar.Enabled = false;
+                btnNewCar.Enabled = false;
+                btnSaveOwnerCar.Enabled = true;
+                btnCancelOwnedCar.Enabled = true;
+                btnNewOwnerCar.Enabled = true;
+
+                editingOwnerCar = true;
+
             }
             else
             {
                 btnSaveCar.Enabled = false;
                 btnCancelCar.Enabled = false;
+                btnNewCar.Enabled = true;
+                btnSaveOwnerCar.Enabled = false;
+                btnCancelOwnedCar.Enabled = false;
+                btnNewOwnerCar.Enabled = true;
             }
 
-            if (String.IsNullOrWhiteSpace(workingCar.PrimaryKey))
+            if (String.IsNullOrWhiteSpace(workingCar.PrimaryKey) || editingOwnerCar)
             {
                 btnDeleteCar.Enabled = false;
             }
@@ -348,18 +411,39 @@ namespace GTSport_DT.OwnerCars
             {
                 btnDeleteCar.Enabled = true;
             }
+
+            if (String.IsNullOrWhiteSpace(workingOwnerCar.PrimaryKey) || editingCar)
+            {
+                btnDeleteOwnerCar.Enabled = false;
+            }
+            else
+            {
+                btnDeleteOwnerCar.Enabled = true;
+            }
         }
 
-        private void SetSelected(string primaryKey)
+        private void SetSelected(string carKey, string ownerCarKey)
         {
-            if (!String.IsNullOrWhiteSpace(primaryKey))
+            if (!String.IsNullOrWhiteSpace(carKey) || !String.IsNullOrWhiteSpace(ownerCarKey))
             {
                 for (int i = 0; i < tvOwnedCars.Nodes.Count; i++)
                 {
-                    Car car = (Car)tvOwnedCars.Nodes[i].Tag;
-                    if (car.PrimaryKey == primaryKey)
+                    if (String.IsNullOrWhiteSpace(ownerCarKey))
                     {
-                        tvOwnedCars.SelectedNode = tvOwnedCars.Nodes[i];
+                        Car car = (Car)tvOwnedCars.Nodes[i].Tag;
+                        if (car.PrimaryKey == carKey)
+                        {
+                            tvOwnedCars.SelectedNode = tvOwnedCars.Nodes[i];
+                        }
+
+                        foreach(TreeNode treeNode in tvOwnedCars.Nodes[i].Nodes)
+                        {
+                            OwnerCar ownerCar = (OwnerCar)treeNode.Tag;
+                            if (ownerCar.PrimaryKey == ownerCarKey)
+                            {
+                                tvOwnedCars.SelectedNode = treeNode;
+                            }
+                        }
                     }
                 }
             }
@@ -392,9 +476,18 @@ namespace GTSport_DT.OwnerCars
 
         private void tvOwnedCars_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            workingCar = (Car)tvOwnedCars.SelectedNode.Tag;
+            if (tvOwnedCars.SelectedNode.Parent == null)
+            {
+                workingCar = (Car)tvOwnedCars.SelectedNode.Tag;
+                workingOwnerCar = new OwnerCar("", GetCurrentOwnerKey(), workingCar.PrimaryKey, "", "", 0, 0, 0, DateTime.Today);
+            } else
+            {
+                workingCar = (Car)tvOwnedCars.SelectedNode.Parent.Tag;
+                workingOwnerCar = (OwnerCar)tvOwnedCars.SelectedNode.Tag;
+            }
 
             SetToWorkingCar();
+            SetToWorkingOwnerCar();
 
             SetButtons();
         }
@@ -437,7 +530,12 @@ namespace GTSport_DT.OwnerCars
 
         private void UpdateList()
         {
+            // Put it here so the owner key can be grabbed from the parent form.
+            //AddOwnerCarTestData();
+
             List<Car> cars = carsService.GetList(true);
+
+            List<OwnerCar> ownerCars = ownerCarsService.GetListForOwnerKey(GetCurrentOwnerKey(), true);
 
             tvOwnedCars.BeginUpdate();
             tvOwnedCars.Nodes.Clear();
@@ -448,10 +546,38 @@ namespace GTSport_DT.OwnerCars
                 treeNode.Tag = car;
                 treeNode.Text = car.Name;
 
+                AddOwnerCarsToList(ref treeNode, ownerCars);
+
                 tvOwnedCars.Nodes.Add(treeNode);
             }
 
             tvOwnedCars.EndUpdate();
+        }
+
+        private void AddOwnerCarsToList(ref TreeNode carNode, List<OwnerCar> ownerCars)
+        {
+            Car car = (Car)carNode.Tag;
+
+            int ownerCarCount = 0;
+
+            foreach (OwnerCar ownerCar in ownerCars)
+            {
+                if (ownerCar.CarKey == car.PrimaryKey)
+                {
+                    TreeNode treeNode = new TreeNode();
+                    treeNode.Tag = ownerCar;
+                    treeNode.Text = ownerCar.CarID;
+
+                    carNode.Nodes.Add(treeNode);
+                    ownerCarCount++;
+                }
+            }
+
+            if (ownerCarCount > 0)
+            {
+                carNode.Text = "(" + ownerCarCount + ") - " + carNode.Text;
+                
+            }
         }
 
         private void UpdateManufacturerList()
@@ -489,6 +615,167 @@ namespace GTSport_DT.OwnerCars
             workingCar.Braking = Decimal.ToDouble(nudBraking.Value);
             workingCar.Cornering = Decimal.ToDouble(nudCornering.Value);
             workingCar.Stability = Decimal.ToDouble(nudStability.Value);
+        }
+
+        private string GetCurrentOwnerKey()
+        {
+            GTSportForm workingParentForm = (GTSportForm)this.ParentForm;
+
+            return workingParentForm.currentOwner.PrimaryKey;
+        }
+
+        private void txtCarID_TextChanged(object sender, EventArgs e)
+        {
+            SetButtons();
+        }
+
+        private void SetToWorkingOwnerCar()
+        {
+            txtCarID.Text = workingOwnerCar.CarID;
+            txtPaintJob.Text = workingOwnerCar.PaintJob;
+            dtpAcquired.Value = workingOwnerCar.AcquiredDate;
+            nudOwnerCarMaxPower.Value = workingOwnerCar.MaxPower;
+            nudPowerLevel.Value = workingOwnerCar.PowerLevel;
+            nudWeightReductionLevel.Value = workingOwnerCar.WeightReductionLevel;
+        }
+
+        private void UpdateWokringOwnerCar()
+        {
+            workingOwnerCar.CarID = txtCarID.Text;
+            workingOwnerCar.PaintJob = txtPaintJob.Text;
+            workingOwnerCar.AcquiredDate = dtpAcquired.Value;
+            workingOwnerCar.MaxPower = Decimal.ToInt32(nudOwnerCarMaxPower.Value);
+            workingOwnerCar.PowerLevel = Decimal.ToInt32(nudPowerLevel.Value);
+            workingOwnerCar.WeightReductionLevel = Decimal.ToInt32(nudWeightReductionLevel.Value);
+        }
+
+        private void txtPaintJob_TextChanged(object sender, EventArgs e)
+        {
+            SetButtons();
+        }
+
+        private void dtpAcquired_ValueChanged(object sender, EventArgs e)
+        {
+            SetButtons();
+        }
+
+        private void nudOwnerCarMaxPower_ValueChanged(object sender, EventArgs e)
+        {
+            SetButtons();
+        }
+
+        private void nudWeightReductionLevel_ValueChanged(object sender, EventArgs e)
+        {
+            SetButtons();
+        }
+
+        private void nudPowerLevel_ValueChanged(object sender, EventArgs e)
+        {
+            SetButtons();
+        }
+
+        private void btnSaveOwnerCar_Click(object sender, EventArgs e)
+        {
+            UpdateWokringOwnerCar();
+
+            try
+            {
+                ownerCarsService.Save(ref workingOwnerCar);
+
+                UpdateList();
+
+                SetSelected(workingCar.PrimaryKey, workingOwnerCar.PrimaryKey);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+
+            txtCarID.Focus();
+            SetButtons();
+        }
+
+        private void nudMaxPower_Enter(object sender, EventArgs e)
+        {
+            nudMaxPower.Select(0, nudMaxPower.Text.Length);
+        }
+
+        private void nudOwnerCarMaxPower_Enter(object sender, EventArgs e)
+        {
+            nudOwnerCarMaxPower.Select(0, nudOwnerCarMaxPower.Text.Length);
+        }
+
+        private void nudPowerLevel_Enter(object sender, EventArgs e)
+        {
+            nudPowerLevel.Select(0, nudPowerLevel.Text.Length);
+        }
+
+        private void nudWeightReductionLevel_Enter(object sender, EventArgs e)
+        {
+            nudWeightReductionLevel.Select(0, nudWeightReductionLevel.Text.Length);
+        }
+
+        private void btnDeleteOwnerCar_Click(object sender, EventArgs e)
+        {
+            if (workingOwnerCar.PrimaryKey != null)
+            {
+                if (MessageBox.Show("Do you wish to delete owned car ID " + workingOwnerCar.CarID + "?", "Delete Owned Car", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    try
+                    {
+                        ownerCarsService.Delete(workingOwnerCar.PrimaryKey);
+
+                        UpdateList();
+
+                        if (tvOwnedCars.Nodes.Count > 0)
+                        {
+                            tvOwnedCars.SelectedNode = tvOwnedCars.Nodes[0];
+                        }
+                        else
+                        {
+                            workingCar = new Car("", "", emptyManufacturer.PrimaryKey, 1900, CarCategory.Empty,
+                                0.00, "", 0, "", 0.00, "", DriveTrain.Empty, Aspiration.Empty, 0.00, 0.00, 0.00,
+                                0.00, 0.00, 0.0, 0.0, 0.0, 0.0);
+                            SetToWorkingCar();
+
+                            workingOwnerCar = new OwnerCar("", GetCurrentOwnerKey(), "", "", "", 0, 0, 0, DateTime.Today);
+                            SetToWorkingOwnerCar();
+                        }
+
+                        tvOwnedCars.Focus();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Error");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Select an owned car to delete first.", "Error");
+            }
+        }
+
+        private void btnNewOwnerCar_Click(object sender, EventArgs e)
+        {
+            workingOwnerCar = new OwnerCar("", GetCurrentOwnerKey(), workingCar.PrimaryKey, workingCar.Name, "",
+                workingCar.MaxPower, 0, 0, DateTime.Today);
+
+            SetToWorkingOwnerCar();
+
+            txtCarID.Focus();
+
+            SetButtons();
+        }
+
+        private void btnCancelOwnedCar_Click(object sender, EventArgs e)
+        {
+            SetToWorkingOwnerCar();
+
+            txtCarID.Focus();
+
+            SetButtons();
+
         }
     }
 }

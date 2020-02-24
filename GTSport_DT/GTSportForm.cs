@@ -41,6 +41,15 @@ namespace GTSport_DT
             currentOwner = owner;
 
             tsslCurrentOwner.Text = currentOwner.OwnerName;
+
+            foreach (Form form in this.MdiChildren)
+            {
+                if (form.Name == "OwnerCarsForm")
+                {
+                    OwnerCarsForm ownerCarsForm = (OwnerCarsForm)form;
+                    ownerCarsForm.UpdateFromOtherForms();
+                }
+            }
         }
 
         /// <summary>

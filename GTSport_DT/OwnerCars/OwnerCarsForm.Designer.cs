@@ -79,6 +79,25 @@
             this.btnNewCar = new System.Windows.Forms.ToolStripButton();
             this.btnCancelCar = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.txtCarID = new System.Windows.Forms.TextBox();
+            this.label42 = new System.Windows.Forms.Label();
+            this.toolStrip2 = new System.Windows.Forms.ToolStrip();
+            this.btnSaveOwnerCar = new System.Windows.Forms.ToolStripButton();
+            this.btnDeleteOwnerCar = new System.Windows.Forms.ToolStripButton();
+            this.btnNewOwnerCar = new System.Windows.Forms.ToolStripButton();
+            this.btnCancelOwnedCar = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.txtPaintJob = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.dtpAcquired = new System.Windows.Forms.DateTimePicker();
+            this.label23 = new System.Windows.Forms.Label();
+            this.nudOwnerCarMaxPower = new System.Windows.Forms.NumericUpDown();
+            this.label24 = new System.Windows.Forms.Label();
+            this.nudPowerLevel = new System.Windows.Forms.NumericUpDown();
+            this.label25 = new System.Windows.Forms.Label();
+            this.nudWeightReductionLevel = new System.Windows.Forms.NumericUpDown();
+            this.label26 = new System.Windows.Forms.Label();
             this.pnlCars.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudStability)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCornering)).BeginInit();
@@ -94,6 +113,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudPrice)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudYear)).BeginInit();
             this.toolStrip1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.toolStrip2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudOwnerCarMaxPower)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPowerLevel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudWeightReductionLevel)).BeginInit();
             this.SuspendLayout();
             // 
             // tvOwnedCars
@@ -532,6 +556,7 @@
             this.nudMaxPower.Size = new System.Drawing.Size(50, 20);
             this.nudMaxPower.TabIndex = 32;
             this.nudMaxPower.ValueChanged += new System.EventHandler(this.nudMaxPower_ValueChanged);
+            this.nudMaxPower.Enter += new System.EventHandler(this.nudMaxPower_Enter);
             // 
             // label7
             // 
@@ -745,11 +770,221 @@
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.nudWeightReductionLevel);
+            this.panel1.Controls.Add(this.label26);
+            this.panel1.Controls.Add(this.nudPowerLevel);
+            this.panel1.Controls.Add(this.label25);
+            this.panel1.Controls.Add(this.nudOwnerCarMaxPower);
+            this.panel1.Controls.Add(this.label24);
+            this.panel1.Controls.Add(this.label23);
+            this.panel1.Controls.Add(this.dtpAcquired);
+            this.panel1.Controls.Add(this.txtPaintJob);
+            this.panel1.Controls.Add(this.label22);
+            this.panel1.Controls.Add(this.txtCarID);
+            this.panel1.Controls.Add(this.label42);
+            this.panel1.Controls.Add(this.toolStrip2);
+            this.panel1.Location = new System.Drawing.Point(305, 211);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(807, 153);
+            this.panel1.TabIndex = 61;
+            // 
+            // txtCarID
+            // 
+            this.txtCarID.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtCarID.Location = new System.Drawing.Point(48, 42);
+            this.txtCarID.Name = "txtCarID";
+            this.txtCarID.Size = new System.Drawing.Size(745, 20);
+            this.txtCarID.TabIndex = 0;
+            this.txtCarID.TextChanged += new System.EventHandler(this.txtCarID_TextChanged);
+            // 
+            // label42
+            // 
+            this.label42.AutoSize = true;
+            this.label42.Location = new System.Drawing.Point(4, 46);
+            this.label42.Name = "label42";
+            this.label42.Size = new System.Drawing.Size(40, 13);
+            this.label42.TabIndex = 20;
+            this.label42.Text = "Car ID:";
+            // 
+            // toolStrip2
+            // 
+            this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.btnSaveOwnerCar,
+            this.btnDeleteOwnerCar,
+            this.btnNewOwnerCar,
+            this.btnCancelOwnedCar,
+            this.toolStripSeparator2});
+            this.toolStrip2.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip2.Name = "toolStrip2";
+            this.toolStrip2.Size = new System.Drawing.Size(805, 25);
+            this.toolStrip2.TabIndex = 19;
+            this.toolStrip2.Text = "toolStrip2";
+            // 
+            // btnSaveOwnerCar
+            // 
+            this.btnSaveOwnerCar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnSaveOwnerCar.Image = ((System.Drawing.Image)(resources.GetObject("btnSaveOwnerCar.Image")));
+            this.btnSaveOwnerCar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSaveOwnerCar.Name = "btnSaveOwnerCar";
+            this.btnSaveOwnerCar.Size = new System.Drawing.Size(23, 22);
+            this.btnSaveOwnerCar.Text = "Save Owned Car";
+            this.btnSaveOwnerCar.Click += new System.EventHandler(this.btnSaveOwnerCar_Click);
+            // 
+            // btnDeleteOwnerCar
+            // 
+            this.btnDeleteOwnerCar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDeleteOwnerCar.Image = ((System.Drawing.Image)(resources.GetObject("btnDeleteOwnerCar.Image")));
+            this.btnDeleteOwnerCar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDeleteOwnerCar.Name = "btnDeleteOwnerCar";
+            this.btnDeleteOwnerCar.Size = new System.Drawing.Size(23, 22);
+            this.btnDeleteOwnerCar.Text = "Delete Owned Car";
+            this.btnDeleteOwnerCar.Click += new System.EventHandler(this.btnDeleteOwnerCar_Click);
+            // 
+            // btnNewOwnerCar
+            // 
+            this.btnNewOwnerCar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnNewOwnerCar.Image = ((System.Drawing.Image)(resources.GetObject("btnNewOwnerCar.Image")));
+            this.btnNewOwnerCar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnNewOwnerCar.Name = "btnNewOwnerCar";
+            this.btnNewOwnerCar.Size = new System.Drawing.Size(23, 22);
+            this.btnNewOwnerCar.Text = "Add New Owned  Car";
+            this.btnNewOwnerCar.Click += new System.EventHandler(this.btnNewOwnerCar_Click);
+            // 
+            // btnCancelOwnedCar
+            // 
+            this.btnCancelOwnedCar.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnCancelOwnedCar.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelOwnedCar.Image")));
+            this.btnCancelOwnedCar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCancelOwnedCar.Name = "btnCancelOwnedCar";
+            this.btnCancelOwnedCar.Size = new System.Drawing.Size(23, 22);
+            this.btnCancelOwnedCar.Text = "Cancel Owned Car Changes";
+            this.btnCancelOwnedCar.Click += new System.EventHandler(this.btnCancelOwnedCar_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // txtPaintJob
+            // 
+            this.txtPaintJob.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPaintJob.Location = new System.Drawing.Point(64, 68);
+            this.txtPaintJob.Multiline = true;
+            this.txtPaintJob.Name = "txtPaintJob";
+            this.txtPaintJob.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.txtPaintJob.Size = new System.Drawing.Size(729, 47);
+            this.txtPaintJob.TabIndex = 21;
+            this.txtPaintJob.TextChanged += new System.EventHandler(this.txtPaintJob_TextChanged);
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(4, 72);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(54, 13);
+            this.label22.TabIndex = 22;
+            this.label22.Text = "Paint Job:";
+            // 
+            // dtpAcquired
+            // 
+            this.dtpAcquired.Location = new System.Drawing.Point(60, 121);
+            this.dtpAcquired.Name = "dtpAcquired";
+            this.dtpAcquired.Size = new System.Drawing.Size(200, 20);
+            this.dtpAcquired.TabIndex = 23;
+            this.dtpAcquired.Value = new System.DateTime(2020, 2, 24, 0, 0, 0, 0);
+            this.dtpAcquired.ValueChanged += new System.EventHandler(this.dtpAcquired_ValueChanged);
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(0, 125);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(52, 13);
+            this.label23.TabIndex = 24;
+            this.label23.Text = "Acquired:";
+            // 
+            // nudOwnerCarMaxPower
+            // 
+            this.nudOwnerCarMaxPower.Location = new System.Drawing.Point(339, 121);
+            this.nudOwnerCarMaxPower.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.nudOwnerCarMaxPower.Name = "nudOwnerCarMaxPower";
+            this.nudOwnerCarMaxPower.Size = new System.Drawing.Size(50, 20);
+            this.nudOwnerCarMaxPower.TabIndex = 34;
+            this.nudOwnerCarMaxPower.ValueChanged += new System.EventHandler(this.nudOwnerCarMaxPower_ValueChanged);
+            this.nudOwnerCarMaxPower.Enter += new System.EventHandler(this.nudOwnerCarMaxPower_Enter);
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(268, 125);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(66, 13);
+            this.label24.TabIndex = 33;
+            this.label24.Text = "Power: Max:";
+            // 
+            // nudPowerLevel
+            // 
+            this.nudPowerLevel.Location = new System.Drawing.Point(466, 121);
+            this.nudPowerLevel.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nudPowerLevel.Name = "nudPowerLevel";
+            this.nudPowerLevel.Size = new System.Drawing.Size(33, 20);
+            this.nudPowerLevel.TabIndex = 36;
+            this.nudPowerLevel.ValueChanged += new System.EventHandler(this.nudPowerLevel_ValueChanged);
+            this.nudPowerLevel.Enter += new System.EventHandler(this.nudPowerLevel_Enter);
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(395, 125);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(69, 13);
+            this.label25.TabIndex = 35;
+            this.label25.Text = "Power Level:";
+            // 
+            // nudWeightReductionLevel
+            // 
+            this.nudWeightReductionLevel.Location = new System.Drawing.Point(637, 121);
+            this.nudWeightReductionLevel.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.nudWeightReductionLevel.Name = "nudWeightReductionLevel";
+            this.nudWeightReductionLevel.Size = new System.Drawing.Size(33, 20);
+            this.nudWeightReductionLevel.TabIndex = 38;
+            this.nudWeightReductionLevel.ValueChanged += new System.EventHandler(this.nudWeightReductionLevel_ValueChanged);
+            this.nudWeightReductionLevel.Enter += new System.EventHandler(this.nudWeightReductionLevel_Enter);
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(506, 125);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(125, 13);
+            this.label26.TabIndex = 37;
+            this.label26.Text = "Weight Reduction Level:";
+            // 
             // OwnerCarsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1113, 729);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.pnlCars);
             this.Controls.Add(this.tvOwnedCars);
             this.Name = "OwnerCarsForm";
@@ -772,6 +1007,13 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudYear)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.toolStrip2.ResumeLayout(false);
+            this.toolStrip2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudOwnerCarMaxPower)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudPowerLevel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudWeightReductionLevel)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -828,5 +1070,24 @@
         private System.Windows.Forms.Label label20;
         private System.Windows.Forms.NumericUpDown nudStability;
         private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TextBox txtCarID;
+        private System.Windows.Forms.Label label42;
+        private System.Windows.Forms.ToolStrip toolStrip2;
+        private System.Windows.Forms.ToolStripButton btnSaveOwnerCar;
+        private System.Windows.Forms.ToolStripButton btnDeleteOwnerCar;
+        private System.Windows.Forms.ToolStripButton btnNewOwnerCar;
+        private System.Windows.Forms.ToolStripButton btnCancelOwnedCar;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.TextBox txtPaintJob;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.DateTimePicker dtpAcquired;
+        private System.Windows.Forms.NumericUpDown nudOwnerCarMaxPower;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.NumericUpDown nudWeightReductionLevel;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.NumericUpDown nudPowerLevel;
+        private System.Windows.Forms.Label label25;
     }
 }
