@@ -5,34 +5,40 @@ using GTSport_DT.Regions;
 using Npgsql;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace GTSport_DT.OwnerCars
 {
+    /// <summary>Allows the user to enter the values to filter the cars.</summary>
+    /// <seealso cref="System.Windows.Forms.Form"/>
     public partial class FilterCarsForm : Form
     {
-        private static Manufacturer emptyManufacturer = new Manufacturer("Empty", "", "");
         private static Country emptyCountry = new Country("Empty", "", "");
+        private static Manufacturer emptyManufacturer = new Manufacturer("Empty", "", "");
         private static Regions.Region emptyRegion = new Regions.Region("Empty", "");
 
         private NpgsqlConnection con;
-        private ManufacturersService manufacturersService;
         private CountriesService countiresService;
+        private ManufacturersService manufacturersService;
         private RegionsService regionsService;
 
+        /// <summary>
+        /// <para>Gets or sets the return criteria.</para>
+        /// <para>The parent from will get the data from this after the this form is closed.</para>
+        /// </summary>
+        /// <value>The return criteria.</value>
         public CarSearchCriteria returnCriteria { get; set; }
 
+        /// <summary>Initializes a new instance of the <see cref="FilterCarsForm"/> class.</summary>
         public FilterCarsForm()
         {
             InitializeComponent();
         }
 
+        /// <summary>Initializes a new instance of the <see cref="FilterCarsForm"/> class.</summary>
+        /// <param name="returnCriteria">The return criteria the parent form is currently set to.</param>
+        /// <param name="con">The database connection.</param>
+        /// <exception cref="ArgumentNullException">returnCriteria or con</exception>
         public FilterCarsForm(CarSearchCriteria returnCriteria, NpgsqlConnection con)
         {
             this.returnCriteria = returnCriteria ?? throw new ArgumentNullException(nameof(returnCriteria));
@@ -45,25 +51,8 @@ namespace GTSport_DT.OwnerCars
             InitializeComponent();
         }
 
-        private void UpdateCategoryLists()
-        {
-            cmbCategoryTo.DisplayMember = "Description";
-            cmbCategoryTo.DataSource = CarCategory.categories;
-
-            var fromCategories = CarCategory.categories.Clone();
-
-            cmbCategoryFrom.DisplayMember = "Description";
-            cmbCategoryFrom.DataSource = fromCategories;
-        }
-
-        private void btnOK_Click(object sender, EventArgs e)
-        {
-            UpdateReturnCriteria();
-
-            this.DialogResult = DialogResult.OK;
-            this.Close();
-        }
-
+        /// <summary>Raises the <see cref="E:System.Windows.Forms.Form.Load"/> event.</summary>
+        /// <param name="e">An <see cref="T:System.EventArgs"/> that contains the event data.</param>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -74,6 +63,40 @@ namespace GTSport_DT.OwnerCars
             UpdateRegionList();
 
             SetToSearchCriteria();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            UpdateReturnCriteria();
+
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void nudMaxPower_Enter(object sender, EventArgs e)
+        {
+            nudMaxPowerFrom.Select(0, nudMaxPowerFrom.Text.Length);
+        }
+
+        private void nudMaxPowerTo_Enter(object sender, EventArgs e)
+        {
+            nudMaxPowerTo.Select(0, nudMaxPowerTo.Text.Length);
+        }
+
+        private void nudYearFrom_Enter(object sender, EventArgs e)
+        {
+            nudYearFrom.Select(0, nudYearFrom.Text.Length);
+        }
+
+        private void nudYearTo_Enter(object sender, EventArgs e)
+        {
+            nudYearTo.Select(0, nudYearTo.Text.Length);
         }
 
         private void SetToSearchCriteria()
@@ -113,7 +136,8 @@ namespace GTSport_DT.OwnerCars
             if (returnCriteria.ManufacturerName == null)
             {
                 cmbManufacturer.SelectedItem = emptyManufacturer;
-            } else
+            }
+            else
             {
                 cmbManufacturer.SelectedValue = returnCriteria.ManufacturerName;
             }
@@ -135,6 +159,58 @@ namespace GTSport_DT.OwnerCars
             {
                 cmbRegion.SelectedValue = returnCriteria.RegionDescription;
             }
+        }
+
+        private void UpdateCategoryLists()
+        {
+            cmbCategoryTo.DisplayMember = "Description";
+            cmbCategoryTo.DataSource = CarCategory.categories;
+
+            var fromCategories = CarCategory.categories.Clone();
+
+            cmbCategoryFrom.DisplayMember = "Description";
+            cmbCategoryFrom.DataSource = fromCategories;
+        }
+
+        private void UpdateCountryList()
+        {
+            List<Country> countries = new List<Country>();
+
+            countries.Add(emptyCountry);
+            countries.AddRange(countiresService.GetList(orderedList: true));
+
+            cmbCountry.ValueMember = "Description";
+            cmbCountry.DisplayMember = "Description";
+            cmbCountry.DataSource = countries;
+        }
+
+        private void UpdateDrivetrainList()
+        {
+            cmbDrivetrain.DataSource = DriveTrain.DriveTrains;
+        }
+
+        private void UpdateManufacturerList()
+        {
+            List<Manufacturer> manufacturers = new List<Manufacturer>();
+
+            manufacturers.Add(emptyManufacturer);
+            manufacturers.AddRange(manufacturersService.GetList(orderedList: true));
+
+            cmbManufacturer.ValueMember = "Name";
+            cmbManufacturer.DisplayMember = "Name";
+            cmbManufacturer.DataSource = manufacturers;
+        }
+
+        private void UpdateRegionList()
+        {
+            List<Regions.Region> regions = new List<Regions.Region>();
+
+            regions.Add(emptyRegion);
+            regions.AddRange(regionsService.GetList(orderedList: true));
+
+            cmbRegion.ValueMember = "Description";
+            cmbRegion.DisplayMember = "Description";
+            cmbRegion.DataSource = regions;
         }
 
         private void UpdateReturnCriteria()
@@ -165,7 +241,8 @@ namespace GTSport_DT.OwnerCars
             if (cmbDrivetrain.SelectedItem == DriveTrain.Empty)
             {
                 returnCriteria.DriveTrain = null;
-            } else
+            }
+            else
             {
                 returnCriteria.DriveTrain = cmbDrivetrain.SelectedItem.ToString();
             }
@@ -173,7 +250,8 @@ namespace GTSport_DT.OwnerCars
             if (cmbManufacturer.SelectedItem == emptyManufacturer)
             {
                 returnCriteria.ManufacturerName = null;
-            } else
+            }
+            else
             {
                 returnCriteria.ManufacturerName = (string)cmbManufacturer.SelectedValue;
             }
@@ -196,73 +274,5 @@ namespace GTSport_DT.OwnerCars
                 returnCriteria.RegionDescription = (string)cmbRegion.SelectedValue;
             }
         }
-
-        private void btnCancel_Click(object sender, EventArgs e)
-        {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
-        }
-
-        private void nudYearFrom_Enter(object sender, EventArgs e)
-        {
-            nudYearFrom.Select(0, nudYearFrom.Text.Length);
-        }
-
-        private void nudYearTo_Enter(object sender, EventArgs e)
-        {
-            nudYearTo.Select(0, nudYearTo.Text.Length);
-        }
-
-        private void nudMaxPower_Enter(object sender, EventArgs e)
-        {
-            nudMaxPowerFrom.Select(0, nudMaxPowerFrom.Text.Length);
-        }
-
-        private void nudMaxPowerTo_Enter(object sender, EventArgs e)
-        {
-            nudMaxPowerTo.Select(0, nudMaxPowerTo.Text.Length);
-        }
-
-        private void UpdateDrivetrainList()
-        {
-            cmbDrivetrain.DataSource = DriveTrain.DriveTrains;
-        }
-
-        private void UpdateManufacturerList()
-        {
-            List<Manufacturer> manufacturers = new List<Manufacturer>();
-
-            manufacturers.Add(emptyManufacturer);
-            manufacturers.AddRange(manufacturersService.GetList(orderedList: true));
-
-            cmbManufacturer.ValueMember = "Name";
-            cmbManufacturer.DisplayMember = "Name";
-            cmbManufacturer.DataSource = manufacturers;
-        }
-
-        private void UpdateCountryList()
-        {
-            List<Country> countries = new List<Country>();
-
-            countries.Add(emptyCountry);
-            countries.AddRange(countiresService.GetList(orderedList: true));
-
-            cmbCountry.ValueMember = "Description";
-            cmbCountry.DisplayMember = "Description";
-            cmbCountry.DataSource = countries;
-        }
-
-        private void UpdateRegionList()
-        {
-            List<Regions.Region> regions = new List<Regions.Region>();
-
-            regions.Add(emptyRegion);
-            regions.AddRange(regionsService.GetList(orderedList: true));
-
-            cmbRegion.ValueMember = "Description";
-            cmbRegion.DisplayMember = "Description";
-            cmbRegion.DataSource = regions;
-        }
-
     }
 }

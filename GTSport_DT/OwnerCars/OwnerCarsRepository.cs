@@ -3,14 +3,15 @@ using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GTSport_DT.OwnerCars
 {
+    /// <summary>The repository for the owner cars table.</summary>
+    /// <seealso cref="GTSport_DT.General.SQLRespository{GTSport_DT.OwnerCars.OwnerCar}"/>
     public class OwnerCarsRepository : SQLRespository<OwnerCar>
     {
+        /// <summary>Initializes a new instance of the <see cref="OwnerCarsRepository"/> class.</summary>
+        /// <param name="npgsqlConnection">The NPGSQL connection.</param>
         public OwnerCarsRepository(NpgsqlConnection npgsqlConnection) : base(npgsqlConnection)
         {
             tableName = "OWNERCARS";
@@ -18,6 +19,41 @@ namespace GTSport_DT.OwnerCars
             getListOrderByField = "owccarid";
         }
 
+        /// <summary>Gets the owner car by car identifier.</summary>
+        /// <param name="carID">The car identifier to look for.</param>
+        /// <returns>The owner car found or null if not found.</returns>
+        public OwnerCar GetByCarID(string carID)
+        {
+            OwnerCar ownerCar = GetByFieldString(carID, "owccarid");
+
+            return ownerCar;
+        }
+
+        /// <summary>Gets the list of owner cars for car key.</summary>
+        /// <param name="carKey">The car key to filter on</param>
+        /// <param name="orderedList">If set true get the list ordered.</param>
+        /// <returns>The list of owner cars for the car key.</returns>
+        public List<OwnerCar> GetListForForCarKey(string carKey, Boolean orderedList = false)
+        {
+            List<OwnerCar> ownerCars = GetListForFieldString(carKey, "owccarkey", orderedList: orderedList);
+
+            return ownerCars;
+        }
+
+        /// <summary>Gets the list of owner cars for owner key.</summary>
+        /// <param name="ownerKey">The owner key.</param>
+        /// <param name="orderedList">If set to <c>true</c> order list.</param>
+        /// <returns>The owner cars list for the owner key.</returns>
+        public List<OwnerCar> GetListForOwnerKey(string ownerKey, Boolean orderedList = false)
+        {
+            List<OwnerCar> ownerCars = GetListForFieldString(ownerKey, "owcownkey", orderedList: orderedList);
+
+            return ownerCars;
+        }
+
+        /// <summary>Convert a record retrieved from the database to an entity object.</summary>
+        /// <param name="dataReader">The database reader with the results from a database request.</param>
+        /// <returns>A new entity with the data.</returns>
         protected override OwnerCar RecordToEntity(NpgsqlDataReader dataReader)
         {
             OwnerCar ownerCar = new OwnerCar();
@@ -34,6 +70,9 @@ namespace GTSport_DT.OwnerCars
             return ownerCar;
         }
 
+        /// <summary>Updates the passed data row.</summary>
+        /// <param name="dataRow">The data row to update.</param>
+        /// <param name="entity">The entity to update from.</param>
         protected override void UpdateRow(ref DataRow dataRow, OwnerCar entity)
         {
             dataRow["owckey"] = entity.PrimaryKey;
@@ -45,27 +84,6 @@ namespace GTSport_DT.OwnerCars
             dataRow["owcpowerlevel"] = entity.PowerLevel;
             dataRow["owcweightreductionlevel"] = entity.WeightReductionLevel;
             dataRow["owcdateaquired"] = entity.AcquiredDate;
-        }
-
-        public OwnerCar GetByCarID(string carID)
-        {
-            OwnerCar ownerCar = GetByFieldString(carID, "owccarid");
-
-            return ownerCar;
-        }
-
-        public List<OwnerCar> GetListForOwnerKey(string ownerKey, Boolean orderedList = false)
-        {
-            List<OwnerCar> ownerCars = GetListForFieldString(ownerKey, "owcownkey", orderedList: orderedList);
-
-            return ownerCars;
-        }
-
-        public List<OwnerCar> GetListForForCarKey(string carKey, Boolean orderedList = false)
-        {
-            List<OwnerCar> ownerCars = GetListForFieldString(carKey, "owccarkey", orderedList: orderedList);
-
-            return ownerCars;
         }
     }
 }
