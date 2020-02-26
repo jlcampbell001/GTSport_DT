@@ -18,6 +18,7 @@ namespace GTSport_DT.OwnerCars
         private ManufacturersService manufacturersService;
         private Car workingCar = new Car();
         private OwnerCar workingOwnerCar = new OwnerCar("", "", "", "", "", 0, 0, 0, DateTime.Today);
+        private CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
 
         /// <summary>Initializes a new instance of the <see cref="OwnerCarsForm"/> class.</summary>
         public OwnerCarsForm()
@@ -37,7 +38,7 @@ namespace GTSport_DT.OwnerCars
             ownerCarsService = new OwnerCarsService(con);
 
             //AddCarTestData();
-            
+
             InitializeComponent();
         }
 
@@ -424,27 +425,46 @@ namespace GTSport_DT.OwnerCars
 
         private void SetSelected(string carKey, string ownerCarKey)
         {
-            if (!String.IsNullOrWhiteSpace(carKey) || !String.IsNullOrWhiteSpace(ownerCarKey))
+            if (tvOwnedCars.Nodes.Count == 0)
             {
-                for (int i = 0; i < tvOwnedCars.Nodes.Count; i++)
-                {
-                    if (String.IsNullOrWhiteSpace(ownerCarKey))
-                    {
-                        Car car = (Car)tvOwnedCars.Nodes[i].Tag;
-                        if (car.PrimaryKey == carKey)
-                        {
-                            tvOwnedCars.SelectedNode = tvOwnedCars.Nodes[i];
-                        }
+                workingCar = new Car("", "", emptyManufacturer.PrimaryKey, 1900, CarCategory.Empty,
+                    0.00, "", 0, "", 0.00, "", DriveTrain.Empty, Aspiration.Empty, 0.00, 0.00, 0.00,
+                    0.00, 0.00, 0.0, 0.0, 0.0, 0.0);
 
-                        foreach(TreeNode treeNode in tvOwnedCars.Nodes[i].Nodes)
+                SetToWorkingCar();
+
+                workingOwnerCar = new OwnerCar("", GetCurrentOwnerKey(), "", "", "", 0, 0, 0, DateTime.Today);
+
+                SetToWorkingOwnerCar();
+            }
+            else
+            {
+                if (!String.IsNullOrWhiteSpace(carKey) || !String.IsNullOrWhiteSpace(ownerCarKey))
+                {
+                    for (int i = 0; i < tvOwnedCars.Nodes.Count; i++)
+                    {
+                        if (String.IsNullOrWhiteSpace(ownerCarKey))
                         {
-                            OwnerCar ownerCar = (OwnerCar)treeNode.Tag;
-                            if (ownerCar.PrimaryKey == ownerCarKey)
+                            Car car = (Car)tvOwnedCars.Nodes[i].Tag;
+                            if (car.PrimaryKey == carKey)
                             {
-                                tvOwnedCars.SelectedNode = treeNode;
+                                tvOwnedCars.SelectedNode = tvOwnedCars.Nodes[i];
+                            }
+
+                            foreach (TreeNode treeNode in tvOwnedCars.Nodes[i].Nodes)
+                            {
+                                OwnerCar ownerCar = (OwnerCar)treeNode.Tag;
+                                if (ownerCar.PrimaryKey == ownerCarKey)
+                                {
+                                    tvOwnedCars.SelectedNode = treeNode;
+                                }
                             }
                         }
                     }
+                }
+                else
+                {
+                    tvOwnedCars.SelectedNode = tvOwnedCars.Nodes[0];
                 }
             }
         }
@@ -480,7 +500,8 @@ namespace GTSport_DT.OwnerCars
             {
                 workingCar = (Car)tvOwnedCars.SelectedNode.Tag;
                 workingOwnerCar = new OwnerCar("", GetCurrentOwnerKey(), workingCar.PrimaryKey, "", "", 0, 0, 0, DateTime.Today);
-            } else
+            }
+            else
             {
                 workingCar = (Car)tvOwnedCars.SelectedNode.Parent.Tag;
                 workingOwnerCar = (OwnerCar)tvOwnedCars.SelectedNode.Tag;
@@ -533,15 +554,27 @@ namespace GTSport_DT.OwnerCars
             // Put it here so the owner key can be grabbed from the parent form.
             //AddOwnerCarTestData();
 
-            List<Car> cars = carsService.GetList(true);
+            List<Car> cars = carsService.GetListForSearchCriteria(carSearchCriteria, true);
 
             List<OwnerCar> ownerCars = ownerCarsService.GetListForOwnerKey(GetCurrentOwnerKey(), true);
 
             tvOwnedCars.BeginUpdate();
             tvOwnedCars.Nodes.Clear();
 
+            var searchValue = txtSearchText.Text.ToUpper();
+
             foreach (Car car in cars)
             {
+                if (!String.IsNullOrWhiteSpace(searchValue))
+                {
+                    var carName = car.Name.ToUpper();
+
+                    if (!carName.Contains(searchValue))
+                    {
+                        continue;
+                    }
+                }
+
                 TreeNode treeNode = new TreeNode();
                 treeNode.Tag = car;
                 treeNode.Text = car.Name;
@@ -552,6 +585,8 @@ namespace GTSport_DT.OwnerCars
             }
 
             tvOwnedCars.EndUpdate();
+
+            SetSelected(workingCar.PrimaryKey, workingOwnerCar.PrimaryKey);
         }
 
         private void AddOwnerCarsToList(ref TreeNode carNode, List<OwnerCar> ownerCars)
@@ -576,7 +611,7 @@ namespace GTSport_DT.OwnerCars
             if (ownerCarCount > 0)
             {
                 carNode.Text = "(" + ownerCarCount + ") - " + carNode.Text;
-                
+
             }
         }
 
@@ -776,6 +811,56 @@ namespace GTSport_DT.OwnerCars
 
             SetButtons();
 
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            UpdateList();
+
+            txtSearchText.Focus();
+        }
+
+        private void txtSearchText_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                UpdateList();
+            }
+        }
+
+        private void btnRandom_Click(object sender, EventArgs e)
+        {
+            if (tvOwnedCars.Nodes.Count > 0)
+            {
+                Random random = new Random();
+                var randomCar = random.Next(tvOwnedCars.Nodes.Count);
+
+                tvOwnedCars.SelectedNode = tvOwnedCars.Nodes[randomCar];
+
+                tvOwnedCars.Focus();
+            }
+        }
+
+        private void btnReset_Click(object sender, EventArgs e)
+        {
+            txtSearchText.Text = "";
+            carSearchCriteria = new CarSearchCriteria();
+
+            UpdateList();
+        }
+
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+            FilterCarsForm filterCarsForm = new FilterCarsForm(carSearchCriteria, con);
+
+            if (filterCarsForm.ShowDialog(this) == DialogResult.OK)
+            {
+                carSearchCriteria = filterCarsForm.returnCriteria;
+                UpdateList();
+                tvOwnedCars.Focus();
+            }
+
+            filterCarsForm.Dispose();
         }
     }
 }

@@ -177,6 +177,12 @@
     <Compile Include="Manufacturers\ManufacturersRepository.cs" />
     <Compile Include="Manufacturers\ManufacturersService.cs" />
     <Compile Include="Manufacturers\ManufacturerValidation.cs" />
+    <Compile Include="OwnerCars\FilterCarsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OwnerCars\FilterCarsForm.Designer.cs">
+      <DependentUpon>FilterCarsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="OwnerCars\OwnerCar.cs" />
     <Compile Include="OwnerCars\OwnerCarCarKeyNotSetException.cs" />
     <Compile Include="OwnerCars\OwnerCarIDNotSetException.cs" />
@@ -231,6 +237,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Manufacturers\ManufacturersForm.resx">
       <DependentUpon>ManufacturersForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OwnerCars\FilterCarsForm.resx">
+      <DependentUpon>FilterCarsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OwnerCars\OwnerCarsForm.resx">
       <DependentUpon>OwnerCarsForm.cs</DependentUpon>
