@@ -56,6 +56,9 @@ namespace GTSport_DT.Cars
         /// <summary>The N900 category.</summary>
         public static readonly Category N900 = new Category("N900", "09N900");
 
+        /// <summary>This is just a place holder for the total like on statistics.</summary>
+        public static readonly Category Total = new Category("Total", "ZZZZZZ");
+
         /// <summary>The list of categories for drop down lists.</summary>
         public static Category[] categories = { Empty, N100, N200, N300, N400, N500, N600, N700, N800, N900, N1000, GR4, GR3, GR1, GRB, GRX };
 

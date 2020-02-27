@@ -47,13 +47,17 @@
     <DocumentationFile>bin\Debug\GTSport_DT.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\GTSport_DT.xml</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>gtsport_icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -183,6 +187,8 @@
     <Compile Include="OwnerCars\FilterCarsForm.Designer.cs">
       <DependentUpon>FilterCarsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="OwnerCars\GTSportStatistic.cs" />
+    <Compile Include="OwnerCars\GTSportStatisticService.cs" />
     <Compile Include="OwnerCars\OwnerCar.cs" />
     <Compile Include="OwnerCars\OwnerCarCarKeyNotSetException.cs" />
     <Compile Include="OwnerCars\OwnerCarIDNotSetException.cs" />
@@ -196,6 +202,7 @@
     </Compile>
     <Compile Include="OwnerCars\OwnerCarsRepository.cs" />
     <Compile Include="OwnerCars\OwnerCarsService.cs" />
+    <Compile Include="OwnerCars\OwnerCarsStatistic.cs" />
     <Compile Include="OwnerCars\OwnerCarValidation.cs" />
     <Compile Include="Owners\Owner.cs" />
     <Compile Include="Owners\OwnerNameAlreadyExistsException.cs" />
@@ -263,6 +270,7 @@
       <Link>.editorconfig</Link>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\GTSport_DT.OwnerCars.GTSportStatistic.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -298,6 +306,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>false</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="gtsport_icon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

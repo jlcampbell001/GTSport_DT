@@ -34,6 +34,9 @@ namespace GTSport_DT_Testing.OwnerCars
         private const int numberOfOwnerCars = 3;
         private const int numberOfOwnerCarsForOwner = 2;
         private const int numberOfOwnerCarsForCar = 1;
+        private const int numberOfOwnerCarsStatistics = 2;
+        private const int numberOfOwnedCars = 3;
+        private const int numberOfUnqiueOwnedCars = 2;
 
         [ClassInitialize]
         public static void TestFixtureSetup(TestContext context)
@@ -292,12 +295,51 @@ namespace GTSport_DT_Testing.OwnerCars
         }
 
         [TestMethod]
-        public void A140_Delete3OwnerCars()
+        public void A140_AddOwnerCar()
+        {
+            ownerCarsRepository.SaveAndFlush(OwnerCar4);
+        }
+
+        [TestMethod]
+        public void A150_GetOwnerCarStatistics()
+        {
+            List<OwnerCarsStatistic> ownerCarsStatistics = ownerCarsRepository.GetOwnerCarStatistics(OwnerCar1.OwnerKey);
+
+            Assert.AreEqual(numberOfOwnerCarsStatistics, ownerCarsStatistics.Count);
+
+            var totalOwnedCars = 0;
+            foreach(OwnerCarsStatistic ownerCarsStatistic in ownerCarsStatistics)
+            {
+                totalOwnedCars = totalOwnedCars + ownerCarsStatistic.carsOwned;
+            }
+
+            Assert.AreEqual(numberOfOwnedCars, totalOwnedCars);
+        }
+
+        [TestMethod]
+        public void A150_GetUniqueOwnerCarStatistics()
+        {
+            List<OwnerCarsStatistic> ownerCarsStatistics = ownerCarsRepository.GetUniqueOwnerCarStatistics(OwnerCar1.OwnerKey);
+
+            Assert.AreEqual(numberOfOwnerCarsStatistics, ownerCarsStatistics.Count);
+
+            var totalOwnedCars = 0;
+            foreach (OwnerCarsStatistic ownerCarsStatistic in ownerCarsStatistics)
+            {
+                totalOwnedCars = totalOwnedCars + ownerCarsStatistic.uniqueCarsOwned;
+            }
+
+            Assert.AreEqual(numberOfUnqiueOwnedCars, totalOwnedCars);
+        }
+
+        [TestMethod]
+        public void A170_Delete4OwnerCars()
         {
             ownerCarsRepository.Refresh();
             ownerCarsRepository.Delete(OwnerCar1.PrimaryKey);
             ownerCarsRepository.Delete(OwnerCar2.PrimaryKey);
             ownerCarsRepository.Delete(OwnerCar3.PrimaryKey);
+            ownerCarsRepository.Delete(OwnerCar4.PrimaryKey);
             ownerCarsRepository.Flush();
         }
     }

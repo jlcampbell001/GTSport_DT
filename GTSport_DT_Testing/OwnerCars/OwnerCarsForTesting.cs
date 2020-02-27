@@ -39,6 +39,16 @@ namespace GTSport_DT_Testing.OwnerCars
         private const int ownerCar3WeightReductionLevel = 1;
         private static readonly DateTime ownerCar3AcquiredDate = new DateTime(2016, 12, 25);
 
+        private const string ownerCar4Key = "OWC900000004";
+        private static readonly string ownerCar4OwnerKey = Owner1.PrimaryKey;
+        private static readonly string ownerCar4CarKey = Car3.PrimaryKey;
+        private static readonly string ownerCar4CarID = Car3.Name + "_04";
+        private const string ownerCar4PaintJob = "White";
+        private static readonly int ownerCar4MaxPower = Car3.MaxPower;
+        private const int ownerCar4PowerLevel = 0;
+        private const int ownerCar4WeightReductionLevel = 0;
+        private static readonly DateTime ownerCar4AcquiredDate = new DateTime(2016, 12, 31);
+
         public static readonly OwnerCar OwnerCar1 = new OwnerCar(ownerCar1Key, ownerCar1OwnerKey, ownerCar1CarKey,
             ownerCar1CarID, ownerCar1PaintJob, ownerCar1MaxPower, ownerCar1PowerLevel, ownerCar1WeightReductionLevel, ownerCar1AcquiredDate);
 
@@ -47,5 +57,8 @@ namespace GTSport_DT_Testing.OwnerCars
 
         public static readonly OwnerCar OwnerCar3 = new OwnerCar(ownerCar3Key, ownerCar3OwnerKey, ownerCar3CarKey,
             ownerCar3CarID, ownerCar3PaintJob, ownerCar3MaxPower, ownerCar3PowerLevel, ownerCar3WeightReductionLevel, ownerCar3AcquiredDate);
+
+        public static readonly OwnerCar OwnerCar4 = new OwnerCar(ownerCar4Key, ownerCar4OwnerKey, ownerCar4CarKey,
+            ownerCar4CarID, ownerCar4PaintJob, ownerCar4MaxPower, ownerCar4PowerLevel, ownerCar4WeightReductionLevel, ownerCar4AcquiredDate);
     }
 }

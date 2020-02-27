@@ -16,6 +16,7 @@ namespace GTSport_DT.OwnerCars
         private OwnerCarsService ownerCarsService;
         private NpgsqlConnection con;
         private ManufacturersService manufacturersService;
+        private GTSportStatisticService statisticService;
         private Car workingCar = new Car();
         private OwnerCar workingOwnerCar = new OwnerCar("", "", "", "", "", 0, 0, 0, DateTime.Today);
         private CarSearchCriteria carSearchCriteria = new CarSearchCriteria();
@@ -36,6 +37,7 @@ namespace GTSport_DT.OwnerCars
             manufacturersService = new ManufacturersService(con);
             carsService = new CarsService(con);
             ownerCarsService = new OwnerCarsService(con);
+            statisticService = new GTSportStatisticService(con);
 
             //AddCarTestData();
 
@@ -63,6 +65,7 @@ namespace GTSport_DT.OwnerCars
             UpdateCategoryList();
             UpdateDrivetrainList();
             UpdateAspirationList();
+            UpdateStatistics();
             SetButtons();
         }
 
@@ -128,6 +131,7 @@ namespace GTSport_DT.OwnerCars
                         carsService.Delete(workingCar.PrimaryKey);
 
                         UpdateList();
+                        UpdateStatistics();
 
                         if (tvOwnedCars.Nodes.Count > 0)
                         {
@@ -184,6 +188,7 @@ namespace GTSport_DT.OwnerCars
                 carsService.Save(ref workingCar);
 
                 UpdateList();
+                UpdateStatistics();
 
                 SetSelected(workingCar.PrimaryKey, "");
             }
@@ -718,6 +723,7 @@ namespace GTSport_DT.OwnerCars
                 ownerCarsService.Save(ref workingOwnerCar);
 
                 UpdateList();
+                UpdateStatistics();
 
                 SetSelected(workingCar.PrimaryKey, workingOwnerCar.PrimaryKey);
             }
@@ -761,6 +767,7 @@ namespace GTSport_DT.OwnerCars
                         ownerCarsService.Delete(workingOwnerCar.PrimaryKey);
 
                         UpdateList();
+                        UpdateStatistics();
 
                         if (tvOwnedCars.Nodes.Count > 0)
                         {
@@ -861,6 +868,12 @@ namespace GTSport_DT.OwnerCars
             }
 
             filterCarsForm.Dispose();
+        }
+
+        private void UpdateStatistics()
+        {
+            List<GTSportStatistic> statistics = statisticService.GetGTSportStatistics(GetCurrentOwnerKey());
+            dgvStatistics.DataSource = statistics;
         }
     }
 }

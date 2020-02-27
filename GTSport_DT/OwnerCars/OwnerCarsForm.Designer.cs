@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OwnerCarsForm));
             this.tvOwnedCars = new System.Windows.Forms.TreeView();
             this.pnlCars = new System.Windows.Forms.Panel();
@@ -99,11 +100,25 @@
             this.btnCancelOwnedCar = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.pnlFilter = new System.Windows.Forms.Panel();
-            this.txtSearchText = new System.Windows.Forms.TextBox();
-            this.btnSearch = new System.Windows.Forms.Button();
-            this.btnFilter = new System.Windows.Forms.Button();
-            this.btnRandom = new System.Windows.Forms.Button();
             this.btnReset = new System.Windows.Forms.Button();
+            this.btnRandom = new System.Windows.Forms.Button();
+            this.btnFilter = new System.Windows.Forms.Button();
+            this.btnSearch = new System.Windows.Forms.Button();
+            this.txtSearchText = new System.Windows.Forms.TextBox();
+            this.pnlStatistics = new System.Windows.Forms.Panel();
+            this.dgvStatistics = new System.Windows.Forms.DataGridView();
+            this.categoryDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.numberOfCarsDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.carsOwnedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.uniqueCarsOwnedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.avgMaxPowerDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.avgMaxSpeedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.avgAccelerationDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.avgBrakingDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.avgCorneringDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.avgStabilityDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.avgPriceDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.gTSportStatisticBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.pnlCars.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudStability)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCornering)).BeginInit();
@@ -125,6 +140,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.nudOwnerCarMaxPower)).BeginInit();
             this.toolStrip2.SuspendLayout();
             this.pnlFilter.SuspendLayout();
+            this.pnlStatistics.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvStatistics)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gTSportStatisticBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // tvOwnedCars
@@ -187,7 +205,7 @@
             this.pnlCars.Controls.Add(this.toolStrip1);
             this.pnlCars.Location = new System.Drawing.Point(306, 0);
             this.pnlCars.Name = "pnlCars";
-            this.pnlCars.Size = new System.Drawing.Size(807, 205);
+            this.pnlCars.Size = new System.Drawing.Size(807, 187);
             this.pnlCars.TabIndex = 5;
             // 
             // nudStability
@@ -198,7 +216,7 @@
             0,
             0,
             65536});
-            this.nudStability.Location = new System.Drawing.Point(542, 177);
+            this.nudStability.Location = new System.Drawing.Point(542, 161);
             this.nudStability.Maximum = new decimal(new int[] {
             10,
             0,
@@ -213,7 +231,7 @@
             // label21
             // 
             this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(488, 181);
+            this.label21.Location = new System.Drawing.Point(488, 165);
             this.label21.Name = "label21";
             this.label21.Size = new System.Drawing.Size(46, 13);
             this.label21.TabIndex = 59;
@@ -227,7 +245,7 @@
             0,
             0,
             65536});
-            this.nudCornering.Location = new System.Drawing.Point(434, 177);
+            this.nudCornering.Location = new System.Drawing.Point(434, 161);
             this.nudCornering.Maximum = new decimal(new int[] {
             10,
             0,
@@ -242,7 +260,7 @@
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(371, 181);
+            this.label20.Location = new System.Drawing.Point(371, 165);
             this.label20.Name = "label20";
             this.label20.Size = new System.Drawing.Size(55, 13);
             this.label20.TabIndex = 57;
@@ -256,7 +274,7 @@
             0,
             0,
             65536});
-            this.nudBraking.Location = new System.Drawing.Point(317, 177);
+            this.nudBraking.Location = new System.Drawing.Point(317, 161);
             this.nudBraking.Maximum = new decimal(new int[] {
             10,
             0,
@@ -271,7 +289,7 @@
             // label19
             // 
             this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(263, 181);
+            this.label19.Location = new System.Drawing.Point(263, 165);
             this.label19.Name = "label19";
             this.label19.Size = new System.Drawing.Size(46, 13);
             this.label19.TabIndex = 55;
@@ -285,7 +303,7 @@
             0,
             0,
             65536});
-            this.nudAcceleration.Location = new System.Drawing.Point(209, 177);
+            this.nudAcceleration.Location = new System.Drawing.Point(209, 161);
             this.nudAcceleration.Maximum = new decimal(new int[] {
             10,
             0,
@@ -300,7 +318,7 @@
             // label18
             // 
             this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(132, 181);
+            this.label18.Location = new System.Drawing.Point(132, 165);
             this.label18.Name = "label18";
             this.label18.Size = new System.Drawing.Size(69, 13);
             this.label18.TabIndex = 53;
@@ -314,7 +332,7 @@
             0,
             0,
             65536});
-            this.nudMaxSpeed.Location = new System.Drawing.Point(78, 177);
+            this.nudMaxSpeed.Location = new System.Drawing.Point(78, 161);
             this.nudMaxSpeed.Maximum = new decimal(new int[] {
             10,
             0,
@@ -329,7 +347,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(6, 181);
+            this.label17.Location = new System.Drawing.Point(6, 165);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(64, 13);
             this.label17.TabIndex = 51;
@@ -343,7 +361,7 @@
             0,
             0,
             0});
-            this.nudWeight.Location = new System.Drawing.Point(642, 150);
+            this.nudWeight.Location = new System.Drawing.Point(642, 134);
             this.nudWeight.Maximum = new decimal(new int[] {
             999999,
             0,
@@ -358,7 +376,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(592, 154);
+            this.label16.Location = new System.Drawing.Point(592, 138);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(44, 13);
             this.label16.TabIndex = 49;
@@ -372,7 +390,7 @@
             0,
             0,
             0});
-            this.nudHeight.Location = new System.Drawing.Point(521, 150);
+            this.nudHeight.Location = new System.Drawing.Point(521, 134);
             this.nudHeight.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -387,7 +405,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(474, 154);
+            this.label15.Location = new System.Drawing.Point(474, 138);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(41, 13);
             this.label15.TabIndex = 47;
@@ -401,7 +419,7 @@
             0,
             0,
             0});
-            this.nudWidth.Location = new System.Drawing.Point(403, 150);
+            this.nudWidth.Location = new System.Drawing.Point(403, 134);
             this.nudWidth.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -416,7 +434,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(359, 154);
+            this.label14.Location = new System.Drawing.Point(359, 138);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(38, 13);
             this.label14.TabIndex = 45;
@@ -430,7 +448,7 @@
             0,
             0,
             0});
-            this.nudLength.Location = new System.Drawing.Point(288, 150);
+            this.nudLength.Location = new System.Drawing.Point(288, 134);
             this.nudLength.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -445,7 +463,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(239, 154);
+            this.label13.Location = new System.Drawing.Point(239, 138);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(43, 13);
             this.label13.TabIndex = 43;
@@ -455,7 +473,7 @@
             // 
             this.cmbAspiration.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbAspiration.FormattingEnabled = true;
-            this.cmbAspiration.Location = new System.Drawing.Point(183, 150);
+            this.cmbAspiration.Location = new System.Drawing.Point(183, 134);
             this.cmbAspiration.Name = "cmbAspiration";
             this.cmbAspiration.Size = new System.Drawing.Size(50, 21);
             this.cmbAspiration.TabIndex = 42;
@@ -464,7 +482,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(121, 154);
+            this.label12.Location = new System.Drawing.Point(121, 138);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(56, 13);
             this.label12.TabIndex = 41;
@@ -474,7 +492,7 @@
             // 
             this.cmbDrivetrain.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbDrivetrain.FormattingEnabled = true;
-            this.cmbDrivetrain.Location = new System.Drawing.Point(65, 150);
+            this.cmbDrivetrain.Location = new System.Drawing.Point(65, 134);
             this.cmbDrivetrain.Name = "cmbDrivetrain";
             this.cmbDrivetrain.Size = new System.Drawing.Size(50, 21);
             this.cmbDrivetrain.TabIndex = 40;
@@ -483,7 +501,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(4, 154);
+            this.label11.Location = new System.Drawing.Point(4, 138);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(55, 13);
             this.label11.TabIndex = 39;
@@ -491,7 +509,7 @@
             // 
             // txtTorqueRPM
             // 
-            this.txtTorqueRPM.Location = new System.Drawing.Point(612, 124);
+            this.txtTorqueRPM.Location = new System.Drawing.Point(612, 108);
             this.txtTorqueRPM.Name = "txtTorqueRPM";
             this.txtTorqueRPM.Size = new System.Drawing.Size(88, 20);
             this.txtTorqueRPM.TabIndex = 38;
@@ -500,7 +518,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(573, 128);
+            this.label10.Location = new System.Drawing.Point(573, 112);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(34, 13);
             this.label10.TabIndex = 37;
@@ -514,7 +532,7 @@
             0,
             0,
             0});
-            this.nudTorqueFTLB.Location = new System.Drawing.Point(503, 124);
+            this.nudTorqueFTLB.Location = new System.Drawing.Point(503, 108);
             this.nudTorqueFTLB.Maximum = new decimal(new int[] {
             99999,
             0,
@@ -529,7 +547,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(431, 128);
+            this.label9.Location = new System.Drawing.Point(431, 112);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(67, 13);
             this.label9.TabIndex = 35;
@@ -537,7 +555,7 @@
             // 
             // txtPowerRPM
             // 
-            this.txtPowerRPM.Location = new System.Drawing.Point(338, 124);
+            this.txtPowerRPM.Location = new System.Drawing.Point(338, 108);
             this.txtPowerRPM.Name = "txtPowerRPM";
             this.txtPowerRPM.Size = new System.Drawing.Size(88, 20);
             this.txtPowerRPM.TabIndex = 34;
@@ -546,7 +564,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(299, 128);
+            this.label8.Location = new System.Drawing.Point(299, 112);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(34, 13);
             this.label8.TabIndex = 33;
@@ -554,7 +572,7 @@
             // 
             // nudMaxPower
             // 
-            this.nudMaxPower.Location = new System.Drawing.Point(244, 124);
+            this.nudMaxPower.Location = new System.Drawing.Point(244, 108);
             this.nudMaxPower.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -569,7 +587,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(173, 128);
+            this.label7.Location = new System.Drawing.Point(173, 112);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(66, 13);
             this.label7.TabIndex = 31;
@@ -577,7 +595,7 @@
             // 
             // txtDisplacementCC
             // 
-            this.txtDisplacementCC.Location = new System.Drawing.Point(100, 124);
+            this.txtDisplacementCC.Location = new System.Drawing.Point(100, 108);
             this.txtDisplacementCC.Name = "txtDisplacementCC";
             this.txtDisplacementCC.Size = new System.Drawing.Size(68, 20);
             this.txtDisplacementCC.TabIndex = 30;
@@ -586,7 +604,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(4, 128);
+            this.label6.Location = new System.Drawing.Point(4, 112);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(91, 13);
             this.label6.TabIndex = 29;
@@ -600,7 +618,7 @@
             0,
             0,
             0});
-            this.nudPrice.Location = new System.Drawing.Point(255, 97);
+            this.nudPrice.Location = new System.Drawing.Point(255, 81);
             this.nudPrice.Maximum = new decimal(new int[] {
             20000000,
             0,
@@ -621,7 +639,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(215, 101);
+            this.label5.Location = new System.Drawing.Point(215, 85);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(34, 13);
             this.label5.TabIndex = 27;
@@ -631,7 +649,7 @@
             // 
             this.cmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCategory.FormattingEnabled = true;
-            this.cmbCategory.Location = new System.Drawing.Point(159, 97);
+            this.cmbCategory.Location = new System.Drawing.Point(159, 81);
             this.cmbCategory.Name = "cmbCategory";
             this.cmbCategory.Size = new System.Drawing.Size(50, 21);
             this.cmbCategory.TabIndex = 26;
@@ -640,7 +658,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(101, 101);
+            this.label4.Location = new System.Drawing.Point(101, 85);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(52, 13);
             this.label4.TabIndex = 25;
@@ -648,7 +666,7 @@
             // 
             // nudYear
             // 
-            this.nudYear.Location = new System.Drawing.Point(45, 97);
+            this.nudYear.Location = new System.Drawing.Point(45, 81);
             this.nudYear.Maximum = new decimal(new int[] {
             2050,
             0,
@@ -673,7 +691,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(7, 101);
+            this.label3.Location = new System.Drawing.Point(7, 85);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(32, 13);
             this.label3.TabIndex = 23;
@@ -685,7 +703,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbManufacturer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbManufacturer.FormattingEnabled = true;
-            this.cmbManufacturer.Location = new System.Drawing.Point(82, 68);
+            this.cmbManufacturer.Location = new System.Drawing.Point(82, 52);
             this.cmbManufacturer.Name = "cmbManufacturer";
             this.cmbManufacturer.Size = new System.Drawing.Size(711, 21);
             this.cmbManufacturer.TabIndex = 1;
@@ -694,7 +712,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 72);
+            this.label2.Location = new System.Drawing.Point(3, 56);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(73, 13);
             this.label2.TabIndex = 22;
@@ -704,7 +722,7 @@
             // 
             this.txtNameCar.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtNameCar.Location = new System.Drawing.Point(48, 42);
+            this.txtNameCar.Location = new System.Drawing.Point(48, 26);
             this.txtNameCar.Name = "txtNameCar";
             this.txtNameCar.Size = new System.Drawing.Size(745, 20);
             this.txtNameCar.TabIndex = 0;
@@ -713,7 +731,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(4, 46);
+            this.label1.Location = new System.Drawing.Point(4, 30);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(38, 13);
             this.label1.TabIndex = 20;
@@ -796,14 +814,14 @@
             this.pnlOwnerCars.Controls.Add(this.txtCarID);
             this.pnlOwnerCars.Controls.Add(this.label42);
             this.pnlOwnerCars.Controls.Add(this.toolStrip2);
-            this.pnlOwnerCars.Location = new System.Drawing.Point(305, 211);
+            this.pnlOwnerCars.Location = new System.Drawing.Point(305, 189);
             this.pnlOwnerCars.Name = "pnlOwnerCars";
-            this.pnlOwnerCars.Size = new System.Drawing.Size(807, 153);
+            this.pnlOwnerCars.Size = new System.Drawing.Size(807, 132);
             this.pnlOwnerCars.TabIndex = 61;
             // 
             // nudWeightReductionLevel
             // 
-            this.nudWeightReductionLevel.Location = new System.Drawing.Point(637, 121);
+            this.nudWeightReductionLevel.Location = new System.Drawing.Point(637, 105);
             this.nudWeightReductionLevel.Maximum = new decimal(new int[] {
             10,
             0,
@@ -818,7 +836,7 @@
             // label26
             // 
             this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(506, 125);
+            this.label26.Location = new System.Drawing.Point(506, 109);
             this.label26.Name = "label26";
             this.label26.Size = new System.Drawing.Size(125, 13);
             this.label26.TabIndex = 37;
@@ -826,7 +844,7 @@
             // 
             // nudPowerLevel
             // 
-            this.nudPowerLevel.Location = new System.Drawing.Point(466, 121);
+            this.nudPowerLevel.Location = new System.Drawing.Point(466, 105);
             this.nudPowerLevel.Maximum = new decimal(new int[] {
             10,
             0,
@@ -841,7 +859,7 @@
             // label25
             // 
             this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(395, 125);
+            this.label25.Location = new System.Drawing.Point(395, 109);
             this.label25.Name = "label25";
             this.label25.Size = new System.Drawing.Size(69, 13);
             this.label25.TabIndex = 35;
@@ -849,7 +867,7 @@
             // 
             // nudOwnerCarMaxPower
             // 
-            this.nudOwnerCarMaxPower.Location = new System.Drawing.Point(339, 121);
+            this.nudOwnerCarMaxPower.Location = new System.Drawing.Point(339, 105);
             this.nudOwnerCarMaxPower.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -864,7 +882,7 @@
             // label24
             // 
             this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(268, 125);
+            this.label24.Location = new System.Drawing.Point(268, 109);
             this.label24.Name = "label24";
             this.label24.Size = new System.Drawing.Size(66, 13);
             this.label24.TabIndex = 33;
@@ -873,7 +891,7 @@
             // label23
             // 
             this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(0, 125);
+            this.label23.Location = new System.Drawing.Point(0, 109);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(52, 13);
             this.label23.TabIndex = 24;
@@ -881,7 +899,7 @@
             // 
             // dtpAcquired
             // 
-            this.dtpAcquired.Location = new System.Drawing.Point(60, 121);
+            this.dtpAcquired.Location = new System.Drawing.Point(60, 105);
             this.dtpAcquired.Name = "dtpAcquired";
             this.dtpAcquired.Size = new System.Drawing.Size(200, 20);
             this.dtpAcquired.TabIndex = 23;
@@ -892,7 +910,7 @@
             // 
             this.txtPaintJob.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPaintJob.Location = new System.Drawing.Point(64, 68);
+            this.txtPaintJob.Location = new System.Drawing.Point(64, 52);
             this.txtPaintJob.Multiline = true;
             this.txtPaintJob.Name = "txtPaintJob";
             this.txtPaintJob.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -903,7 +921,7 @@
             // label22
             // 
             this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(4, 72);
+            this.label22.Location = new System.Drawing.Point(4, 56);
             this.label22.Name = "label22";
             this.label22.Size = new System.Drawing.Size(54, 13);
             this.label22.TabIndex = 22;
@@ -913,7 +931,7 @@
             // 
             this.txtCarID.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtCarID.Location = new System.Drawing.Point(48, 42);
+            this.txtCarID.Location = new System.Drawing.Point(48, 26);
             this.txtCarID.Name = "txtCarID";
             this.txtCarID.Size = new System.Drawing.Size(745, 20);
             this.txtCarID.TabIndex = 0;
@@ -922,7 +940,7 @@
             // label42
             // 
             this.label42.AutoSize = true;
-            this.label42.Location = new System.Drawing.Point(4, 46);
+            this.label42.Location = new System.Drawing.Point(4, 30);
             this.label42.Name = "label42";
             this.label42.Size = new System.Drawing.Size(40, 13);
             this.label42.TabIndex = 20;
@@ -999,33 +1017,15 @@
             this.pnlFilter.Size = new System.Drawing.Size(299, 68);
             this.pnlFilter.TabIndex = 62;
             // 
-            // txtSearchText
+            // btnReset
             // 
-            this.txtSearchText.Location = new System.Drawing.Point(4, 46);
-            this.txtSearchText.Name = "txtSearchText";
-            this.txtSearchText.Size = new System.Drawing.Size(257, 20);
-            this.txtSearchText.TabIndex = 0;
-            this.txtSearchText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearchText_KeyDown);
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.Image = ((System.Drawing.Image)(resources.GetObject("btnSearch.Image")));
-            this.btnSearch.Location = new System.Drawing.Point(261, 46);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(36, 19);
-            this.btnSearch.TabIndex = 1;
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
-            // 
-            // btnFilter
-            // 
-            this.btnFilter.Location = new System.Drawing.Point(16, 10);
-            this.btnFilter.Name = "btnFilter";
-            this.btnFilter.Size = new System.Drawing.Size(75, 23);
-            this.btnFilter.TabIndex = 2;
-            this.btnFilter.Text = "Filter";
-            this.btnFilter.UseVisualStyleBackColor = true;
-            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
+            this.btnReset.Location = new System.Drawing.Point(114, 10);
+            this.btnReset.Name = "btnReset";
+            this.btnReset.Size = new System.Drawing.Size(75, 23);
+            this.btnReset.TabIndex = 4;
+            this.btnReset.Text = "Reset";
+            this.btnReset.UseVisualStyleBackColor = true;
+            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
             // 
             // btnRandom
             // 
@@ -1037,21 +1037,169 @@
             this.btnRandom.UseVisualStyleBackColor = true;
             this.btnRandom.Click += new System.EventHandler(this.btnRandom_Click);
             // 
-            // btnReset
+            // btnFilter
             // 
-            this.btnReset.Location = new System.Drawing.Point(114, 10);
-            this.btnReset.Name = "btnReset";
-            this.btnReset.Size = new System.Drawing.Size(75, 23);
-            this.btnReset.TabIndex = 4;
-            this.btnReset.Text = "Reset";
-            this.btnReset.UseVisualStyleBackColor = true;
-            this.btnReset.Click += new System.EventHandler(this.btnReset_Click);
+            this.btnFilter.Location = new System.Drawing.Point(16, 10);
+            this.btnFilter.Name = "btnFilter";
+            this.btnFilter.Size = new System.Drawing.Size(75, 23);
+            this.btnFilter.TabIndex = 2;
+            this.btnFilter.Text = "Filter";
+            this.btnFilter.UseVisualStyleBackColor = true;
+            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
+            // 
+            // btnSearch
+            // 
+            this.btnSearch.Image = ((System.Drawing.Image)(resources.GetObject("btnSearch.Image")));
+            this.btnSearch.Location = new System.Drawing.Point(261, 46);
+            this.btnSearch.Name = "btnSearch";
+            this.btnSearch.Size = new System.Drawing.Size(36, 19);
+            this.btnSearch.TabIndex = 1;
+            this.btnSearch.UseVisualStyleBackColor = true;
+            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            // 
+            // txtSearchText
+            // 
+            this.txtSearchText.Location = new System.Drawing.Point(4, 46);
+            this.txtSearchText.Name = "txtSearchText";
+            this.txtSearchText.Size = new System.Drawing.Size(257, 20);
+            this.txtSearchText.TabIndex = 0;
+            this.txtSearchText.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtSearchText_KeyDown);
+            // 
+            // pnlStatistics
+            // 
+            this.pnlStatistics.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlStatistics.Controls.Add(this.dgvStatistics);
+            this.pnlStatistics.Location = new System.Drawing.Point(309, 324);
+            this.pnlStatistics.Name = "pnlStatistics";
+            this.pnlStatistics.Size = new System.Drawing.Size(803, 403);
+            this.pnlStatistics.TabIndex = 63;
+            // 
+            // dgvStatistics
+            // 
+            this.dgvStatistics.AllowUserToAddRows = false;
+            this.dgvStatistics.AllowUserToDeleteRows = false;
+            this.dgvStatistics.AutoGenerateColumns = false;
+            this.dgvStatistics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvStatistics.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.categoryDataGridViewTextBoxColumn,
+            this.numberOfCarsDataGridViewTextBoxColumn,
+            this.carsOwnedDataGridViewTextBoxColumn,
+            this.uniqueCarsOwnedDataGridViewTextBoxColumn,
+            this.avgMaxPowerDataGridViewTextBoxColumn,
+            this.avgMaxSpeedDataGridViewTextBoxColumn,
+            this.avgAccelerationDataGridViewTextBoxColumn,
+            this.avgBrakingDataGridViewTextBoxColumn,
+            this.avgCorneringDataGridViewTextBoxColumn,
+            this.avgStabilityDataGridViewTextBoxColumn,
+            this.avgPriceDataGridViewTextBoxColumn});
+            this.dgvStatistics.DataSource = this.gTSportStatisticBindingSource;
+            this.dgvStatistics.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvStatistics.Location = new System.Drawing.Point(0, 0);
+            this.dgvStatistics.Name = "dgvStatistics";
+            this.dgvStatistics.ReadOnly = true;
+            this.dgvStatistics.Size = new System.Drawing.Size(803, 403);
+            this.dgvStatistics.TabIndex = 0;
+            this.dgvStatistics.TabStop = false;
+            // 
+            // categoryDataGridViewTextBoxColumn
+            // 
+            this.categoryDataGridViewTextBoxColumn.DataPropertyName = "Category";
+            this.categoryDataGridViewTextBoxColumn.HeaderText = "Cat";
+            this.categoryDataGridViewTextBoxColumn.Name = "categoryDataGridViewTextBoxColumn";
+            this.categoryDataGridViewTextBoxColumn.ReadOnly = true;
+            this.categoryDataGridViewTextBoxColumn.Width = 50;
+            // 
+            // numberOfCarsDataGridViewTextBoxColumn
+            // 
+            this.numberOfCarsDataGridViewTextBoxColumn.DataPropertyName = "NumberOfCars";
+            this.numberOfCarsDataGridViewTextBoxColumn.HeaderText = "Cars";
+            this.numberOfCarsDataGridViewTextBoxColumn.Name = "numberOfCarsDataGridViewTextBoxColumn";
+            this.numberOfCarsDataGridViewTextBoxColumn.ReadOnly = true;
+            this.numberOfCarsDataGridViewTextBoxColumn.Width = 50;
+            // 
+            // carsOwnedDataGridViewTextBoxColumn
+            // 
+            this.carsOwnedDataGridViewTextBoxColumn.DataPropertyName = "carsOwned";
+            this.carsOwnedDataGridViewTextBoxColumn.HeaderText = "Ownd";
+            this.carsOwnedDataGridViewTextBoxColumn.Name = "carsOwnedDataGridViewTextBoxColumn";
+            this.carsOwnedDataGridViewTextBoxColumn.ReadOnly = true;
+            this.carsOwnedDataGridViewTextBoxColumn.Width = 50;
+            // 
+            // uniqueCarsOwnedDataGridViewTextBoxColumn
+            // 
+            this.uniqueCarsOwnedDataGridViewTextBoxColumn.DataPropertyName = "uniqueCarsOwned";
+            this.uniqueCarsOwnedDataGridViewTextBoxColumn.HeaderText = "Uniq";
+            this.uniqueCarsOwnedDataGridViewTextBoxColumn.Name = "uniqueCarsOwnedDataGridViewTextBoxColumn";
+            this.uniqueCarsOwnedDataGridViewTextBoxColumn.ReadOnly = true;
+            this.uniqueCarsOwnedDataGridViewTextBoxColumn.Width = 50;
+            // 
+            // avgMaxPowerDataGridViewTextBoxColumn
+            // 
+            this.avgMaxPowerDataGridViewTextBoxColumn.DataPropertyName = "AvgMaxPower";
+            this.avgMaxPowerDataGridViewTextBoxColumn.HeaderText = "Pow";
+            this.avgMaxPowerDataGridViewTextBoxColumn.Name = "avgMaxPowerDataGridViewTextBoxColumn";
+            this.avgMaxPowerDataGridViewTextBoxColumn.ReadOnly = true;
+            this.avgMaxPowerDataGridViewTextBoxColumn.Width = 50;
+            // 
+            // avgMaxSpeedDataGridViewTextBoxColumn
+            // 
+            this.avgMaxSpeedDataGridViewTextBoxColumn.DataPropertyName = "AvgMaxSpeed";
+            this.avgMaxSpeedDataGridViewTextBoxColumn.HeaderText = "Spd";
+            this.avgMaxSpeedDataGridViewTextBoxColumn.Name = "avgMaxSpeedDataGridViewTextBoxColumn";
+            this.avgMaxSpeedDataGridViewTextBoxColumn.ReadOnly = true;
+            this.avgMaxSpeedDataGridViewTextBoxColumn.Width = 50;
+            // 
+            // avgAccelerationDataGridViewTextBoxColumn
+            // 
+            this.avgAccelerationDataGridViewTextBoxColumn.DataPropertyName = "AvgAcceleration";
+            this.avgAccelerationDataGridViewTextBoxColumn.HeaderText = "Accl";
+            this.avgAccelerationDataGridViewTextBoxColumn.Name = "avgAccelerationDataGridViewTextBoxColumn";
+            this.avgAccelerationDataGridViewTextBoxColumn.ReadOnly = true;
+            this.avgAccelerationDataGridViewTextBoxColumn.Width = 50;
+            // 
+            // avgBrakingDataGridViewTextBoxColumn
+            // 
+            this.avgBrakingDataGridViewTextBoxColumn.DataPropertyName = "AvgBraking";
+            this.avgBrakingDataGridViewTextBoxColumn.HeaderText = "Brak";
+            this.avgBrakingDataGridViewTextBoxColumn.Name = "avgBrakingDataGridViewTextBoxColumn";
+            this.avgBrakingDataGridViewTextBoxColumn.ReadOnly = true;
+            this.avgBrakingDataGridViewTextBoxColumn.Width = 50;
+            // 
+            // avgCorneringDataGridViewTextBoxColumn
+            // 
+            this.avgCorneringDataGridViewTextBoxColumn.DataPropertyName = "AvgCornering";
+            this.avgCorneringDataGridViewTextBoxColumn.HeaderText = "Corn";
+            this.avgCorneringDataGridViewTextBoxColumn.Name = "avgCorneringDataGridViewTextBoxColumn";
+            this.avgCorneringDataGridViewTextBoxColumn.ReadOnly = true;
+            this.avgCorneringDataGridViewTextBoxColumn.Width = 50;
+            // 
+            // avgStabilityDataGridViewTextBoxColumn
+            // 
+            this.avgStabilityDataGridViewTextBoxColumn.DataPropertyName = "AvgStability";
+            this.avgStabilityDataGridViewTextBoxColumn.HeaderText = "Stab";
+            this.avgStabilityDataGridViewTextBoxColumn.Name = "avgStabilityDataGridViewTextBoxColumn";
+            this.avgStabilityDataGridViewTextBoxColumn.ReadOnly = true;
+            this.avgStabilityDataGridViewTextBoxColumn.Width = 50;
+            // 
+            // avgPriceDataGridViewTextBoxColumn
+            // 
+            this.avgPriceDataGridViewTextBoxColumn.DataPropertyName = "AvgPrice";
+            this.avgPriceDataGridViewTextBoxColumn.HeaderText = "$$";
+            this.avgPriceDataGridViewTextBoxColumn.Name = "avgPriceDataGridViewTextBoxColumn";
+            this.avgPriceDataGridViewTextBoxColumn.ReadOnly = true;
+            // 
+            // gTSportStatisticBindingSource
+            // 
+            this.gTSportStatisticBindingSource.DataSource = typeof(GTSport_DT.OwnerCars.GTSportStatistic);
             // 
             // OwnerCarsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1113, 729);
+            this.Controls.Add(this.pnlStatistics);
             this.Controls.Add(this.pnlFilter);
             this.Controls.Add(this.pnlOwnerCars);
             this.Controls.Add(this.pnlCars);
@@ -1085,6 +1233,9 @@
             this.toolStrip2.PerformLayout();
             this.pnlFilter.ResumeLayout(false);
             this.pnlFilter.PerformLayout();
+            this.pnlStatistics.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvStatistics)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gTSportStatisticBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -1166,5 +1317,19 @@
         private System.Windows.Forms.Button btnRandom;
         private System.Windows.Forms.Button btnFilter;
         private System.Windows.Forms.Button btnReset;
+        private System.Windows.Forms.Panel pnlStatistics;
+        private System.Windows.Forms.DataGridView dgvStatistics;
+        private System.Windows.Forms.BindingSource gTSportStatisticBindingSource;
+        private System.Windows.Forms.DataGridViewTextBoxColumn categoryDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn numberOfCarsDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn carsOwnedDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn uniqueCarsOwnedDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn avgMaxPowerDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn avgMaxSpeedDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn avgAccelerationDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn avgBrakingDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn avgCorneringDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn avgStabilityDataGridViewTextBoxColumn;
+        private System.Windows.Forms.DataGridViewTextBoxColumn avgPriceDataGridViewTextBoxColumn;
     }
 }

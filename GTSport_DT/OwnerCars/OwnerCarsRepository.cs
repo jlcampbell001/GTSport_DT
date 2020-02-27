@@ -1,4 +1,5 @@
-﻿using GTSport_DT.General;
+﻿using GTSport_DT.Cars;
+using GTSport_DT.General;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -51,6 +52,77 @@ namespace GTSport_DT.OwnerCars
             return ownerCars;
         }
 
+        /// <summary>
+        /// <para>Gets the owner car statistics.</para>
+        /// <para><font color="#333333">Totals are every car owned even duplicates.</font></para>
+        /// </summary>
+        /// <param name="ownerKey">The owner key to filter on.</param>
+        /// <returns>The statistics found.</returns>
+        public List<OwnerCarsStatistic> GetOwnerCarStatistics(string ownerKey)
+        {
+            List<OwnerCarsStatistic> ownerCarsStatistics = new List<OwnerCarsStatistic>();
+
+            var cmd = new NpgsqlCommand();
+
+            cmd.Connection = npgsqlConnection;
+            cmd.CommandText = "SELECT carcategory, count(*) FROM " + tableName + " "
+                + "INNER JOIN CARS on carkey = owccarkey "
+                + "WHERE owcownkey = @ownerkey "
+                + "GROUP BY carcategory  ORDER BY carcategory ";
+
+            cmd.Parameters.AddWithValue("ownerkey", ownerKey);
+            cmd.Prepare();
+
+            NpgsqlDataReader dataReader = cmd.ExecuteReader();
+
+            while (dataReader.Read())
+            {
+                OwnerCarsStatistic ownerCarStatistic = RecordToOwnerCarStatistic(dataReader);
+
+                ownerCarsStatistics.Add(ownerCarStatistic);
+            }
+
+            dataReader.Close();
+
+            cmd.Dispose();
+
+            return ownerCarsStatistics;
+        }
+
+        /// <summary>Gets the unique owner car statistics.</summary>
+        /// <param name="ownerKey">The owner key.</param>
+        /// <returns>A list of statistics for the unique cars owned.</returns>
+        public List<OwnerCarsStatistic> GetUniqueOwnerCarStatistics(string ownerKey)
+        {
+            List<OwnerCarsStatistic> ownerCarsStatistics = new List<OwnerCarsStatistic>();
+
+            var cmd = new NpgsqlCommand();
+
+            cmd.Connection = npgsqlConnection;
+            cmd.CommandText = "SELECT carcategory, count(DISTINCT owccarkey) FROM " + tableName + " "
+                + "INNER JOIN CARS on carkey = owccarkey "
+                + "WHERE owcownkey = @ownerkey "
+                + "GROUP BY carcategory  ORDER BY carcategory ";
+
+            cmd.Parameters.AddWithValue("ownerkey", ownerKey);
+            cmd.Prepare();
+
+            NpgsqlDataReader dataReader = cmd.ExecuteReader();
+
+            while (dataReader.Read())
+            {
+                OwnerCarsStatistic ownerCarStatistic = RecordToUniqueOwnerCarStatistic(dataReader);
+
+                ownerCarsStatistics.Add(ownerCarStatistic);
+            }
+
+            dataReader.Close();
+
+            cmd.Dispose();
+
+            return ownerCarsStatistics;
+        }
+
         /// <summary>Convert a record retrieved from the database to an entity object.</summary>
         /// <param name="dataReader">The database reader with the results from a database request.</param>
         /// <returns>A new entity with the data.</returns>
@@ -84,6 +156,24 @@ namespace GTSport_DT.OwnerCars
             dataRow["owcpowerlevel"] = entity.PowerLevel;
             dataRow["owcweightreductionlevel"] = entity.WeightReductionLevel;
             dataRow["owcdateaquired"] = entity.AcquiredDate;
+        }
+
+        private OwnerCarsStatistic RecordToOwnerCarStatistic(NpgsqlDataReader dataReader)
+        {
+            OwnerCarsStatistic ownerCarsStatistic = new OwnerCarsStatistic();
+            ownerCarsStatistic.Category = CarCategory.GetCategoryByDBValue(dataReader.GetString(0));
+            ownerCarsStatistic.carsOwned = dataReader.GetInt32(1);
+
+            return ownerCarsStatistic;
+        }
+
+        private OwnerCarsStatistic RecordToUniqueOwnerCarStatistic(NpgsqlDataReader dataReader)
+        {
+            OwnerCarsStatistic ownerCarsStatistic = new OwnerCarsStatistic();
+            ownerCarsStatistic.Category = CarCategory.GetCategoryByDBValue(dataReader.GetString(0));
+            ownerCarsStatistic.uniqueCarsOwned = dataReader.GetInt32(1);
+
+            return ownerCarsStatistic;
         }
     }
 }
