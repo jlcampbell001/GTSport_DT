@@ -35,7 +35,7 @@ namespace GTSport_DT.OwnerCars
         /// </para>
         /// </summary>
         /// <param name="ownerKey">The owner key.</param>
-        /// <returns>A list of gt sport statistics for each catergory and the total line.</returns>
+        /// <returns>A list of gt sport statistics for each category and the total line.</returns>
         public List<GTSportStatistic> GetGTSportStatistics(string ownerKey)
         {
             List<GTSportStatistic> statistics = new List<GTSportStatistic>();
@@ -108,9 +108,18 @@ namespace GTSport_DT.OwnerCars
                 statistic.NumberOfCars = statistic.NumberOfCars + sportStatistic.NumberOfCars;
                 statistic.carsOwned = statistic.carsOwned + sportStatistic.carsOwned;
                 statistic.uniqueCarsOwned = statistic.uniqueCarsOwned + sportStatistic.uniqueCarsOwned;
+
+                if (sportStatistic.NumberOfCars > 0)
+                {
+                    sportStatistic.percentOwned = (double)sportStatistic.uniqueCarsOwned / sportStatistic.NumberOfCars;
+                }
             }
 
-            statistics.Add(statistic);
+            if (statistic.NumberOfCars > 0)
+            {
+                statistic.percentOwned = (double)statistic.uniqueCarsOwned / statistic.NumberOfCars;
+            }
+            statistics.Insert(0, statistic);
         }
 
         private void AddUniqueOwnedStatistics(ref List<GTSportStatistic> statistics, string ownerKey)

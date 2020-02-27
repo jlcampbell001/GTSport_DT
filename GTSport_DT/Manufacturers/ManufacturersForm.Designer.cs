@@ -105,7 +105,7 @@
             this.btnCancel.Image = ((System.Drawing.Image)(resources.GetObject("btnCancel.Image")));
             this.btnCancel.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(23, 20);
+            this.btnCancel.Size = new System.Drawing.Size(23, 22);
             this.btnCancel.Text = "Cancel Changes";
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
@@ -167,6 +167,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.tvManufacturers);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "ManufacturersForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Manufacturers";

@@ -162,6 +162,7 @@
             this.Controls.Add(this.txtOwnerName);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tvOwners);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "OwnersForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Owners";
