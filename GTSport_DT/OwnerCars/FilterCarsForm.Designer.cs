@@ -68,16 +68,16 @@
             this.cmbCategoryFrom.FormattingEnabled = true;
             this.cmbCategoryFrom.Location = new System.Drawing.Point(73, 12);
             this.cmbCategoryFrom.Name = "cmbCategoryFrom";
-            this.cmbCategoryFrom.Size = new System.Drawing.Size(50, 21);
+            this.cmbCategoryFrom.Size = new System.Drawing.Size(60, 21);
             this.cmbCategoryFrom.TabIndex = 27;
             // 
             // cmbCategoryTo
             // 
             this.cmbCategoryTo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCategoryTo.FormattingEnabled = true;
-            this.cmbCategoryTo.Location = new System.Drawing.Point(129, 12);
+            this.cmbCategoryTo.Location = new System.Drawing.Point(142, 12);
             this.cmbCategoryTo.Name = "cmbCategoryTo";
-            this.cmbCategoryTo.Size = new System.Drawing.Size(50, 21);
+            this.cmbCategoryTo.Size = new System.Drawing.Size(60, 21);
             this.cmbCategoryTo.TabIndex = 28;
             // 
             // btnOK

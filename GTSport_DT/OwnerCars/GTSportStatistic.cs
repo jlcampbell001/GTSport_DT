@@ -35,7 +35,7 @@ namespace GTSport_DT.OwnerCars
 
         /// <summary>Gets or sets the cars owned.</summary>
         /// <value>The cars owned.</value>
-        public int carsOwned { get; set; }
+        public int CarsOwned { get; set; }
 
         /// <summary>Gets or sets the category.</summary>
         /// <value>The category.</value>
@@ -47,10 +47,10 @@ namespace GTSport_DT.OwnerCars
 
         /// <summary>Gets or sets the percent owned.</summary>
         /// <value>The percent owned.</value>
-        public double percentOwned { get; set; }
+        public double PercentOwned { get; set; }
 
         /// <summary>Gets or sets the unique cars owned.</summary>
         /// <value>The unique cars owned.</value>
-        public int uniqueCarsOwned { get; set; }
+        public int UniqueCarsOwned { get; set; }
     }
 }

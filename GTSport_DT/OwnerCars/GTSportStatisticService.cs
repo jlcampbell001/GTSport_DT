@@ -92,7 +92,7 @@ namespace GTSport_DT.OwnerCars
                 {
                     if (statistic.Category == ownerCarsStatistic.Category)
                     {
-                        statistic.carsOwned = ownerCarsStatistic.carsOwned;
+                        statistic.CarsOwned = ownerCarsStatistic.carsOwned;
                     }
                 }
             }
@@ -106,18 +106,18 @@ namespace GTSport_DT.OwnerCars
             foreach (GTSportStatistic sportStatistic in statistics)
             {
                 statistic.NumberOfCars = statistic.NumberOfCars + sportStatistic.NumberOfCars;
-                statistic.carsOwned = statistic.carsOwned + sportStatistic.carsOwned;
-                statistic.uniqueCarsOwned = statistic.uniqueCarsOwned + sportStatistic.uniqueCarsOwned;
+                statistic.CarsOwned = statistic.CarsOwned + sportStatistic.CarsOwned;
+                statistic.UniqueCarsOwned = statistic.UniqueCarsOwned + sportStatistic.UniqueCarsOwned;
 
                 if (sportStatistic.NumberOfCars > 0)
                 {
-                    sportStatistic.percentOwned = (double)sportStatistic.uniqueCarsOwned / sportStatistic.NumberOfCars;
+                    sportStatistic.PercentOwned = (double)sportStatistic.UniqueCarsOwned / sportStatistic.NumberOfCars;
                 }
             }
 
             if (statistic.NumberOfCars > 0)
             {
-                statistic.percentOwned = (double)statistic.uniqueCarsOwned / statistic.NumberOfCars;
+                statistic.PercentOwned = (double)statistic.UniqueCarsOwned / statistic.NumberOfCars;
             }
             statistics.Insert(0, statistic);
         }
@@ -132,7 +132,7 @@ namespace GTSport_DT.OwnerCars
                 {
                     if (statistic.Category == ownerCarsStatistic.Category)
                     {
-                        statistic.uniqueCarsOwned = ownerCarsStatistic.uniqueCarsOwned;
+                        statistic.UniqueCarsOwned = ownerCarsStatistic.uniqueCarsOwned;
                     }
                 }
             }

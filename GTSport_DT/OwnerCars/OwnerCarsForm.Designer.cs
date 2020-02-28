@@ -109,19 +109,19 @@
             this.txtSearchText = new System.Windows.Forms.TextBox();
             this.pnlStatistics = new System.Windows.Forms.Panel();
             this.dgvStatistics = new System.Windows.Forms.DataGridView();
-            this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.carsOwned = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn10 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn11 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.percentOwnedDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.gTSportStatisticBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.NumberOfCars = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.carsOwned = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.uniqueCarsOwned = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.percentageOwned = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.avgMaxPower = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AvgMaxSpeed = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AvgAcceleration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AvgBraking = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AvgCornering = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AvgStability = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.AvgPrice = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.pnlCars.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudStability)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudCornering)).BeginInit();
@@ -621,7 +621,7 @@
             0,
             0,
             0});
-            this.nudPrice.Location = new System.Drawing.Point(255, 81);
+            this.nudPrice.Location = new System.Drawing.Point(272, 81);
             this.nudPrice.Maximum = new decimal(new int[] {
             20000000,
             0,
@@ -642,7 +642,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(215, 85);
+            this.label5.Location = new System.Drawing.Point(232, 85);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(34, 13);
             this.label5.TabIndex = 27;
@@ -650,11 +650,12 @@
             // 
             // cmbCategory
             // 
+            this.cmbCategory.DisplayMember = "CarCategory.N1000";
             this.cmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCategory.FormattingEnabled = true;
             this.cmbCategory.Location = new System.Drawing.Point(159, 81);
             this.cmbCategory.Name = "cmbCategory";
-            this.cmbCategory.Size = new System.Drawing.Size(50, 21);
+            this.cmbCategory.Size = new System.Drawing.Size(60, 21);
             this.cmbCategory.TabIndex = 26;
             this.cmbCategory.SelectedIndexChanged += new System.EventHandler(this.cmbCategory_SelectedIndexChanged);
             // 
@@ -1087,17 +1088,17 @@
             this.dgvStatistics.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvStatistics.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Category,
-            this.dataGridViewTextBoxColumn10,
+            this.NumberOfCars,
             this.carsOwned,
-            this.dataGridViewTextBoxColumn11,
-            this.percentOwnedDataGridViewTextBoxColumn,
-            this.dataGridViewTextBoxColumn4,
-            this.dataGridViewTextBoxColumn5,
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2,
-            this.dataGridViewTextBoxColumn3,
-            this.dataGridViewTextBoxColumn7,
-            this.dataGridViewTextBoxColumn6});
+            this.uniqueCarsOwned,
+            this.percentageOwned,
+            this.avgMaxPower,
+            this.AvgMaxSpeed,
+            this.AvgAcceleration,
+            this.AvgBraking,
+            this.AvgCornering,
+            this.AvgStability,
+            this.AvgPrice});
             this.dgvStatistics.DataSource = this.gTSportStatisticBindingSource;
             this.dgvStatistics.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvStatistics.Location = new System.Drawing.Point(0, 0);
@@ -1106,6 +1107,10 @@
             this.dgvStatistics.Size = new System.Drawing.Size(803, 403);
             this.dgvStatistics.TabIndex = 0;
             this.dgvStatistics.TabStop = false;
+            // 
+            // gTSportStatisticBindingSource
+            // 
+            this.gTSportStatisticBindingSource.AllowNew = false;
             // 
             // Category
             // 
@@ -1117,125 +1122,112 @@
             this.Category.ReadOnly = true;
             this.Category.Width = 48;
             // 
+            // NumberOfCars
+            // 
+            this.NumberOfCars.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.NumberOfCars.DataPropertyName = "numberOfCars";
+            this.NumberOfCars.HeaderText = "#Cars";
+            this.NumberOfCars.Name = "NumberOfCars";
+            this.NumberOfCars.ReadOnly = true;
+            this.NumberOfCars.Width = 60;
+            // 
             // carsOwned
             // 
             this.carsOwned.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.carsOwned.DataPropertyName = "carsOwned";
-            this.carsOwned.Frozen = true;
             this.carsOwned.HeaderText = "Owned";
             this.carsOwned.Name = "carsOwned";
             this.carsOwned.ReadOnly = true;
             this.carsOwned.Width = 66;
             // 
-            // dataGridViewTextBoxColumn10
+            // uniqueCarsOwned
             // 
-            this.dataGridViewTextBoxColumn10.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn10.DataPropertyName = "NumberOfCars";
-            this.dataGridViewTextBoxColumn10.Frozen = true;
-            this.dataGridViewTextBoxColumn10.HeaderText = "#Cars";
-            this.dataGridViewTextBoxColumn10.Name = "dataGridViewTextBoxColumn10";
-            this.dataGridViewTextBoxColumn10.ReadOnly = true;
-            this.dataGridViewTextBoxColumn10.Width = 60;
+            this.uniqueCarsOwned.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.uniqueCarsOwned.DataPropertyName = "uniqueCarsOwned";
+            this.uniqueCarsOwned.HeaderText = "Unique";
+            this.uniqueCarsOwned.Name = "uniqueCarsOwned";
+            this.uniqueCarsOwned.ReadOnly = true;
+            this.uniqueCarsOwned.Width = 66;
             // 
-            // dataGridViewTextBoxColumn11
+            // percentageOwned
             // 
-            this.dataGridViewTextBoxColumn11.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn11.DataPropertyName = "uniqueCarsOwned";
-            this.dataGridViewTextBoxColumn11.Frozen = true;
-            this.dataGridViewTextBoxColumn11.HeaderText = "Unique";
-            this.dataGridViewTextBoxColumn11.Name = "dataGridViewTextBoxColumn11";
-            this.dataGridViewTextBoxColumn11.ReadOnly = true;
-            this.dataGridViewTextBoxColumn11.Width = 66;
-            // 
-            // percentOwnedDataGridViewTextBoxColumn
-            // 
-            this.percentOwnedDataGridViewTextBoxColumn.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.percentOwnedDataGridViewTextBoxColumn.DataPropertyName = "percentOwned";
-            dataGridViewCellStyle1.Format = "P";
+            this.percentageOwned.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.percentageOwned.DataPropertyName = "PercentOwned";
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle1.Format = "P2";
             dataGridViewCellStyle1.NullValue = null;
-            this.percentOwnedDataGridViewTextBoxColumn.DefaultCellStyle = dataGridViewCellStyle1;
-            this.percentOwnedDataGridViewTextBoxColumn.Frozen = true;
-            this.percentOwnedDataGridViewTextBoxColumn.HeaderText = "%Owned";
-            this.percentOwnedDataGridViewTextBoxColumn.Name = "percentOwnedDataGridViewTextBoxColumn";
-            this.percentOwnedDataGridViewTextBoxColumn.ReadOnly = true;
-            this.percentOwnedDataGridViewTextBoxColumn.Width = 74;
+            this.percentageOwned.DefaultCellStyle = dataGridViewCellStyle1;
+            this.percentageOwned.HeaderText = "%Owned";
+            this.percentageOwned.Name = "percentageOwned";
+            this.percentageOwned.ReadOnly = true;
+            this.percentageOwned.Width = 74;
             // 
-            // dataGridViewTextBoxColumn4
+            // avgMaxPower
             // 
-            this.dataGridViewTextBoxColumn4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn4.DataPropertyName = "AvgMaxPower";
-            this.dataGridViewTextBoxColumn4.Frozen = true;
-            this.dataGridViewTextBoxColumn4.HeaderText = "Pow";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.ReadOnly = true;
-            this.dataGridViewTextBoxColumn4.Width = 53;
+            this.avgMaxPower.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.avgMaxPower.DataPropertyName = "avgMaxPower";
+            this.avgMaxPower.HeaderText = "Pwr";
+            this.avgMaxPower.Name = "avgMaxPower";
+            this.avgMaxPower.ReadOnly = true;
+            this.avgMaxPower.Width = 50;
             // 
-            // dataGridViewTextBoxColumn5
+            // AvgMaxSpeed
             // 
-            this.dataGridViewTextBoxColumn5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn5.DataPropertyName = "AvgMaxSpeed";
-            this.dataGridViewTextBoxColumn5.Frozen = true;
-            this.dataGridViewTextBoxColumn5.HeaderText = "Spd";
-            this.dataGridViewTextBoxColumn5.Name = "dataGridViewTextBoxColumn5";
-            this.dataGridViewTextBoxColumn5.ReadOnly = true;
-            this.dataGridViewTextBoxColumn5.Width = 51;
+            this.AvgMaxSpeed.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.AvgMaxSpeed.DataPropertyName = "avgMaxSpeed";
+            this.AvgMaxSpeed.HeaderText = "Spd";
+            this.AvgMaxSpeed.Name = "AvgMaxSpeed";
+            this.AvgMaxSpeed.ReadOnly = true;
+            this.AvgMaxSpeed.Width = 51;
             // 
-            // dataGridViewTextBoxColumn1
+            // AvgAcceleration
             // 
-            this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn1.DataPropertyName = "AvgAcceleration";
-            this.dataGridViewTextBoxColumn1.Frozen = true;
-            this.dataGridViewTextBoxColumn1.HeaderText = "Accl";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.Width = 53;
+            this.AvgAcceleration.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.AvgAcceleration.DataPropertyName = "avgAcceleration";
+            this.AvgAcceleration.HeaderText = "Accel";
+            this.AvgAcceleration.Name = "AvgAcceleration";
+            this.AvgAcceleration.ReadOnly = true;
+            this.AvgAcceleration.Width = 59;
             // 
-            // dataGridViewTextBoxColumn2
+            // AvgBraking
             // 
-            this.dataGridViewTextBoxColumn2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn2.DataPropertyName = "AvgBraking";
-            this.dataGridViewTextBoxColumn2.Frozen = true;
-            this.dataGridViewTextBoxColumn2.HeaderText = "Brak";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Width = 54;
+            this.AvgBraking.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.AvgBraking.DataPropertyName = "avgBraking";
+            this.AvgBraking.HeaderText = "Brak";
+            this.AvgBraking.Name = "AvgBraking";
+            this.AvgBraking.ReadOnly = true;
+            this.AvgBraking.Width = 54;
             // 
-            // dataGridViewTextBoxColumn3
+            // AvgCornering
             // 
-            this.dataGridViewTextBoxColumn3.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn3.DataPropertyName = "AvgCornering";
-            this.dataGridViewTextBoxColumn3.Frozen = true;
-            this.dataGridViewTextBoxColumn3.HeaderText = "Corn";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            this.dataGridViewTextBoxColumn3.Width = 54;
+            this.AvgCornering.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.AvgCornering.DataPropertyName = "avgCornering";
+            this.AvgCornering.HeaderText = "Corn";
+            this.AvgCornering.Name = "AvgCornering";
+            this.AvgCornering.ReadOnly = true;
+            this.AvgCornering.Width = 54;
             // 
-            // dataGridViewTextBoxColumn7
+            // AvgStability
             // 
-            this.dataGridViewTextBoxColumn7.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn7.DataPropertyName = "AvgStability";
-            this.dataGridViewTextBoxColumn7.Frozen = true;
-            this.dataGridViewTextBoxColumn7.HeaderText = "Stab";
-            this.dataGridViewTextBoxColumn7.Name = "dataGridViewTextBoxColumn7";
-            this.dataGridViewTextBoxColumn7.ReadOnly = true;
-            this.dataGridViewTextBoxColumn7.Width = 54;
+            this.AvgStability.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.AvgStability.DataPropertyName = "avgStability";
+            this.AvgStability.HeaderText = "Stab";
+            this.AvgStability.Name = "AvgStability";
+            this.AvgStability.ReadOnly = true;
+            this.AvgStability.Width = 54;
             // 
-            // dataGridViewTextBoxColumn6
+            // AvgPrice
             // 
-            this.dataGridViewTextBoxColumn6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dataGridViewTextBoxColumn6.DataPropertyName = "AvgPrice";
+            this.AvgPrice.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.AvgPrice.DataPropertyName = "avgPrice";
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
             dataGridViewCellStyle2.Format = "N2";
             dataGridViewCellStyle2.NullValue = null;
-            this.dataGridViewTextBoxColumn6.DefaultCellStyle = dataGridViewCellStyle2;
-            this.dataGridViewTextBoxColumn6.HeaderText = "Price";
-            this.dataGridViewTextBoxColumn6.Name = "dataGridViewTextBoxColumn6";
-            this.dataGridViewTextBoxColumn6.ReadOnly = true;
-            this.dataGridViewTextBoxColumn6.Width = 56;
-            // 
-            // gTSportStatisticBindingSource
-            // 
-            this.gTSportStatisticBindingSource.AllowNew = false;
-            this.gTSportStatisticBindingSource.DataSource = typeof(GTSport_DT.OwnerCars.GTSportStatistic);
+            this.AvgPrice.DefaultCellStyle = dataGridViewCellStyle2;
+            this.AvgPrice.HeaderText = "Price";
+            this.AvgPrice.Name = "AvgPrice";
+            this.AvgPrice.ReadOnly = true;
+            this.AvgPrice.Width = 56;
             // 
             // OwnerCarsForm
             // 
@@ -1375,9 +1367,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn avgCorneringDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn avgStabilityDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn avgPriceDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Category;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
-        private System.Windows.Forms.DataGridViewTextBoxColumn carsOwned;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
         private System.Windows.Forms.DataGridViewTextBoxColumn percentOwnedDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
@@ -1387,5 +1377,17 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Category;
+        private System.Windows.Forms.DataGridViewTextBoxColumn NumberOfCars;
+        private System.Windows.Forms.DataGridViewTextBoxColumn carsOwned;
+        private System.Windows.Forms.DataGridViewTextBoxColumn uniqueCarsOwned;
+        private System.Windows.Forms.DataGridViewTextBoxColumn percentageOwned;
+        private System.Windows.Forms.DataGridViewTextBoxColumn avgMaxPower;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AvgMaxSpeed;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AvgAcceleration;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AvgBraking;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AvgCornering;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AvgStability;
+        private System.Windows.Forms.DataGridViewTextBoxColumn AvgPrice;
     }
 }
