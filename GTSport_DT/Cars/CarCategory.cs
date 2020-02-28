@@ -9,7 +9,11 @@ namespace GTSport_DT.Cars
         public static readonly Category Empty = new Category("", "");
 
         /// <summary>The GR1 category.</summary>
-        public static readonly Category GR1 = new Category("GR.1", "13GR1");
+        public static readonly Category GR1 = new Category("GR.1", "14GR1");
+
+        /// <summary>The GR2 category.</summary>
+        /// Had to insert this value so I have to leave the sort start number as 13 to make it sort properly.
+        public static readonly Category GR2 = new Category("GR.2", "13GR2");
 
         /// <summary>The GR3 category.</summary>
         public static readonly Category GR3 = new Category("GR.3", "12GR3");
@@ -18,10 +22,10 @@ namespace GTSport_DT.Cars
         public static readonly Category GR4 = new Category("GR.4", "11GR4");
 
         /// <summary>The GRB category.</summary>
-        public static readonly Category GRB = new Category("GR.B", "14GRB");
+        public static readonly Category GRB = new Category("GR.B", "15GRB");
 
         /// <summary>The GRX category.</summary>
-        public static readonly Category GRX = new Category("GR.X", "15GRX");
+        public static readonly Category GRX = new Category("GR.X", "16GRX");
 
         /// <summary>Determines the maximum of the parameters.</summary>
         public static readonly Category Max = new Category("ZZZZZ", "ZZZZZZ");
@@ -60,7 +64,7 @@ namespace GTSport_DT.Cars
         public static readonly Category Total = new Category("Total", "ZZZZZZ");
 
         /// <summary>The list of categories for drop down lists.</summary>
-        public static Category[] categories = { Empty, N100, N200, N300, N400, N500, N600, N700, N800, N900, N1000, GR4, GR3, GR1, GRB, GRX };
+        public static Category[] categories = { Empty, N100, N200, N300, N400, N500, N600, N700, N800, N900, N1000, GR4, GR3, GR2, GR1, GRB, GRX };
 
         /// <summary>Gets the category by database value.</summary>
         /// <param name="dbValue">The database value.</param>

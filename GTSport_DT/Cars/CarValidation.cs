@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace GTSport_DT.Cars
 {
     /// <summary>The validation calls for a car.</summary>
-    /// <seealso cref="GTSport_DT.General.Validation{GTSport_DT.Cars.Car}"/>
+    /// <seealso cref="GTSport_DT.General.Validation{GTSport_DT.Cars.Car}" />
     public class CarValidation : Validation<Car>
     {
         private CarsRepository carsRepository;
